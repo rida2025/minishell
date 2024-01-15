@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 21:33:27 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/01/15 22:18:45 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,49 +16,53 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
 # include <readline/readline.h>
+# include <unistd.h>
 
 /*
-0=||
-0=&&
-1=|
-2=>
-3=<
-4=<<
-2=` ` || (9>=&&<=13)
-2=""
-3=''
-8=<<
-9=$?
-10=$
+type:
+0 = word
+1 = | pipe
+2 = " dquote
+3 = ' quote
+4 = > right redirection
+5 = < left redirection
+6 = >> right append
+7 = << here_doc
+8 = $ variable
+9 =   is_space 
+status:
+1 = normal
+2 = between dquotes
+3 = between quotes
 */
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
-
-typedef struct s_holyshit
+typedef struct s_tokenlist
 {
 	int					position;
-	char				*cmd;
-	char				*cmdpath;
+	char				*word;
 	int					type;
-	struct s_holyshit	*next;
-}	t_holyshit;
+	int					status;
+	struct s_tokenlist	*next;
+	struct s_tokenlist	*previous;
+}	t_tokenlist;
 
+void	create_info(t_tokenlist **info, int argc, char **argv, char **envp);
+void	insert_data(t_tokenlist **info, char *input);
+//void	execute_input(t_tokenlist *info);
+void	free_list(t_tokenlist **info);
 
-typedef struct s_word
-{
-	
-}		t_word;
+//structure tools
+char	*get_word(char **str);
+void	add_node(t_tokenlist **info, char *nword, int nposition);
 
-void	create_info(t_holyshit **info, int argc, char **argv, char **envp);
-void	insert_data(t_holyshit **info, char *input);
-void	execute_input(t_holyshit *info);
-void	free_input(t_holyshit *info);
+//parsing tools
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strdup(const char *s1);
+char	*ft_strndup(const char *s1, int size);
+int		check_space(char c);
+int		check_s_c(char c);
+size_t	ft_strlen(const char *s);
 
 #endif

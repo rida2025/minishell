@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_holyshit.c                                  :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 12:38:52 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 22:20:59 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/15 05:16:16 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/01/15 05:16:26 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//we will come back to this later
-void	create_info(t_tokenlist **info, int argc, char **argv, char **envp)
+size_t	ft_strlen(const char *s)
 {
-	*info = malloc(sizeof(t_tokenlist));
-	if (!*info)
-		exit(1);
-	(*info)->position = -1;
-	(*info)->word = NULL;
-	(*info)->type = -1;
-	(*info)->next = NULL;
-	(*info)->previous = NULL;
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }

@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_holyshit.c                                  :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 12:38:52 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 22:20:59 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/14 23:33:01 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/01/15 18:45:50 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//we will come back to this later
-void	create_info(t_tokenlist **info, int argc, char **argv, char **envp)
+char	*ft_strndup(const char *s1, int size)
 {
-	*info = malloc(sizeof(t_tokenlist));
-	if (!*info)
-		exit(1);
-	(*info)->position = -1;
-	(*info)->word = NULL;
-	(*info)->type = -1;
-	(*info)->next = NULL;
-	(*info)->previous = NULL;
+	size_t	i;
+	size_t	len;
+	char	*str;
+
+	i = 0;
+	len = ft_strlen(s1);
+	str = (char *)malloc((len + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	while (s1[i] != '\0' && size > 0)
+	{
+		str[i] = s1[i];
+		i++;
+		size--;
+	}
+	str[i] = '\0';
+	return (str);
 }
