@@ -14,7 +14,7 @@ all: $(NAME)
 $(NAME) : $(OBJ)
 	$(COMPILER) $(FLAGS) $(OTHERFLAGS) $(OBJ) -o $(NAME)
 
-%.o: %.c minishell.h
+%.o: %.c minishell.h libft/libft.h
 	$(COMPILER) $(FLAGS) -c $< -o $@
 
 clean:

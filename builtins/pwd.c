@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/14 15:50:11 by sacharai         ###   ########.fr       */
+/*   Created: 2024/01/13 12:18:17 by sacharai          #+#    #+#             */
+/*   Updated: 2024/01/13 12:18:20 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+#include "includes/minishell.h"
+
+void	put_str(char *str)
 {
-	char		*input;
-	t_holyshit	*info;
+	int	i;
 
-	input = NULL;
-	info = NULL;
-	while (1)
+	i = 0;
+	while (str[i])
+		write(1, &str[i++], 1);
+}
+
+int main()
+{
+
+	char *cwd;
+	if (getcwd(cwd,sizeof(cwd)) != NULL)
+		put_str(cwd);
+	else
 	{
-		input = readline("minishell: ");
-		if (!input)
-			break ;
-		add_history(input);
-		create_info(&info, argc, argv, envp);
-		insert_data(&info, input);
-		execute_input(info);
-		free_input(&info);
-		free(input);
+		perror("getcwd() error");
+		return 1;
 	}
-	return (0);
+	return 0;
 }

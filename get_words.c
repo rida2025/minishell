@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_words.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 13:35:43 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/14 15:27:55 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/01/14 18:35:05 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@ void	skip_spaces(char **str)
 	int		i;
 
 	tmp = *str;
-
 	i = 0;
 	while (tmp[i])
 	{
-		if ()
+		if ();
 	}
 }
 
@@ -30,6 +29,7 @@ char	**get_words(char *str)
 {
 	char **strs;
 
-	
+
+
 	return (strs);	
 }
