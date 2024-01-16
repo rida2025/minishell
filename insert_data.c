@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:46:17 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 22:14:03 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/01/16 14:06:08 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,46 @@ int	get_type(char *str)
 		return (7);
 	if (*str == '$')
 		return (8);
-	if (check_space(*str) == 0)
+	if (check_space(*str))
 		return (9);
 	return (0);
 }
 
-void	help_update_status(t_tokenlist **info)
+t_tokenlist	*tokenizing_status_helper(t_tokenlist *tmp, char *status, int value)
 {
-	t_tokenlist	*tmp;
-
-	tmp = *info;
+	tmp = tmp->next;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->word, "'") == 0)
-			tmp = tmp->next;
-		while (tmp)
-		{
-			tmp->status = 3;
-			tmp = tmp->next;
-			if (tmp && ft_strcmp(tmp->word, "'") == 0)
-			{
-				tmp->status = 1;
-				break ;
-			}
-		}
-		if (tmp)
+		tmp->status = value;
 		tmp = tmp->next;
+		if (tmp && ft_strcmp(tmp->word, status) == 0)
+		{
+			tmp->status = 1;
+			break ;
+		}
 	}
+	if (tmp)
+		tmp = tmp->next;
+	return (tmp);
 }
+
+// t_tokenlist	*tokenizing_status_helper2(t_tokenlist *tmp)
+// {
+// 	tmp = tmp->next;
+// 	while (tmp)
+// 	{
+// 		tmp->status = 3;
+// 		tmp = tmp->next;
+// 		if (tmp && ft_strcmp(tmp->word, "\'") == 0)
+// 		{
+// 			tmp->status = 1;
+// 			break ;
+// 		}
+// 	}
+// 	if (tmp)
+// 		tmp = tmp->next;
+// 	return (tmp);
+// }
 
 void	update_status(t_tokenlist **info)
 {
@@ -67,19 +79,16 @@ void	update_status(t_tokenlist **info)
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->word, "\"") == 0)
-			tmp = tmp->next;
-		while (tmp)
 		{
-			tmp->status = 2;
-			tmp = tmp->next;
-			if (tmp && ft_strcmp(tmp->word, "\"") == 0)
-			{
-				tmp->status = 1;
-				break ;
-			}
+			tmp = tokenizing_status_helper(tmp, "\"", 2);
 		}
-		if (tmp)
-			tmp = tmp->next;
+		else if (ft_strcmp(tmp->word, "\'") == 0)
+		{
+			tmp = tokenizing_status_helper(tmp, "\'", 3);
+		}
+		else
+			tmp->status = 1;
+		tmp = tmp->next;
 	}
 }
 
@@ -95,7 +104,6 @@ void	update_nodes(t_tokenlist **info)
 	}
 	printf("1 is done\n");
 	update_status(info);
-	help_update_status(info);
 }
 
 void	insert_data(t_tokenlist **info, char *input)
