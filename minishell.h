@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 22:18:45 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/01/17 21:10:34 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ typedef struct s_tokenlist
 	struct s_tokenlist	*next;
 	struct s_tokenlist	*previous;
 }	t_tokenlist;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}		t_env;
 
 void	create_info(t_tokenlist **info, int argc, char **argv, char **envp);
 void	insert_data(t_tokenlist **info, char *input);
