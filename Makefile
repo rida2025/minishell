@@ -13,7 +13,11 @@ FILES = main.c \
 		insert_data.c \
 		get_words.c \
 		structure_tools.c \
-		ft_strlen.c
+		ft_strlen.c \
+		ft_strchr.c \
+		ft_substr.c \
+		get_index.c \
+		execution/get_env.c
 		
 OBJ = $(FILES:.c=.o)
 

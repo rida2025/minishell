@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/13 12:18:17 by sacharai          #+#    #+#             */
-/*   Updated: 2024/01/18 11:33:12 by sacharai         ###   ########.fr       */
+/*   Created: 2024/01/18 15:30:04 by sacharai          #+#    #+#             */
+/*   Updated: 2024/01/18 15:34:23 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 
-// #include "includes/minishell.h"
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+	char	*str;
 
-// void	put_str(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i])
-// 		write(1, &str[i++], 1);
-// }
-
-// int main()
-// {
-
-// 	char *cwd;
-// 	if (getcwd(cwd,sizeof(cwd)) != NULL)
-// 		put_str(cwd);
-// 	else
-// 	{
-// 		perror("getcwd() error");
-// 		return 1;
-// 	}
-// 	return 0;
-// }
+	i = 0;
+	str = (char *)s;
+	while (str[i] && str[i] != (char)c)
+		i++;
+	if (str[i] == (char)c)
+		return (str + i);
+	else
+		return (NULL);
+}

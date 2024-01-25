@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/17 21:10:34 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/01/24 13:19:57 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ typedef struct s_env
 	struct s_env	*next;
 }		t_env;
 
+typedef struct s_exp
+{
+	char			*key;
+	char			*value;
+	struct s_exp	*next;
+}		t_exp;
+
 void	create_info(t_tokenlist **info, int argc, char **argv, char **envp);
 void	insert_data(t_tokenlist **info, char *input);
 //void	execute_input(t_tokenlist *info);
@@ -71,5 +78,14 @@ char	*ft_strndup(const char *s1, int size);
 int		check_space(char c);
 int		check_s_c(char c);
 size_t	ft_strlen(const char *s);
+
+//execution tools
+t_env	*get_env(char **envp);
+t_exp	*get_exp(char **envp);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strchr(const char *s, int c);
+int		get_index(char *str, char c);
+void	pars_args(char **args, char *cmd);
+t_env	add_to_list(char **args);
 
 #endif
