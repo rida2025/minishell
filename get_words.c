@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 13:35:43 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 21:59:36 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:49:18 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,16 @@ int	check_space(char c)
 int	check_s_c(char c)
 {
 	if ((c == '$' || c == '|' || c == '>' || c == '<' || \
-	!(ft_strcmp(&c, ">>")) || !(ft_strcmp(&c, "<<")) || \
-	c == '\'' || c == '\"'))
+		c == '\'' || c == '\"'))
 		return (1);
 	return (0);
 }
 
-char	*skip_spaces(char *str)
+int	dcheck_s_c(char *str)
 {
-	char	*tmp;
-	int		i;
-
-	tmp = NULL;
-	i = 0;
-	while (str && str[i])
-	{
-		if ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')
-			i++;
-		else
-			break ;
-	}
-	tmp = ft_strdup(str + i);
-	free(str);
-	return (tmp);
+	if (!(ft_strncmp(str, ">>", 2)) || !(ft_strncmp(str, "<<", 2)))
+		return (2);
+	return (0);
 }
 
 char	*get_word(char **str)
@@ -53,16 +40,18 @@ char	*get_word(char **str)
 	int		i;
 
 	i = 0;
-	//*str = skip_spaces(*str);
 	while (*str && (*str)[i])
 	{
-		if (check_space((*str)[i]) || check_s_c((*str)[i]))
+		if (check_space((*str)[i]) || check_s_c((*str)[i]) \
+			|| dcheck_s_c(&(*str)[i]))
 		{
+			if (dcheck_s_c((*str)))
+				i = dcheck_s_c(&(*str)[i]);
 			if (i == 0)
 				i = 1;
 			return (ft_strndup(*str, i));
 		}
 		i++;
 	}
-	return (*str);
+	return (ft_strdup(*str));
 }

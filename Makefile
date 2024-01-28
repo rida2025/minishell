@@ -2,7 +2,7 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 OTHERFLAGS = -lreadline
 
 FILES = main.c \
@@ -13,8 +13,15 @@ FILES = main.c \
 		insert_data.c \
 		get_words.c \
 		structure_tools.c \
-		ft_strlen.c
-		
+		ft_strlen.c \
+		parsing.c \
+		ft_strjoin.c \
+		ft_strchr.c \
+		get_env.c \
+		ft_substr.c \
+		reda_hammer.c \
+		check_syntax_error.c
+
 OBJ = $(FILES:.c=.o)
 
 all: $(NAME)

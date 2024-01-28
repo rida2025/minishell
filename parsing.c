@@ -6,22 +6,26 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/24 20:36:57 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/01/28 12:57:11 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//temerory fun
-char *ret_val(t_env *env_list,char *var)
+char	*ret_val(t_env *env_list, char *var)
 {
-    while (env_list)
+	t_env	*tmp;
+
+	tmp = env_list;
+	if (!var)
+		return (NULL);
+	while (tmp)
 	{
-        if (ft_strcmp(env_list->key, var) == 0)
-            return (env_list->value);
-        env_list = env_list->next;
-    }
-    return (NULL);
+		if (ft_strcmp(tmp->key, var) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }
 
 void	add_command(t_parselist **commands, char *cmd, t_info *infox)
@@ -54,18 +58,12 @@ void	parser(t_tokenlist *infox, t_parselist **commands)
 	int			location;
 	int			check;
 
+	int i = 0;
 	location = 0;
 	tmp = infox;
 	check = 0;
 	while (tmp)
 	{
-		//i dont remember why i have add those lines once i remember i will put the back
-		// if (tmp && tmp->info->type == 9 && tmp->info->type != 1)
-		// {
-		// 	printf("ignore space\n");
-		// 	tmp = tmp->next;
-		// 	check = 1;
-		// }
 		if (tmp && tmp->info->type == 1)
 		{
 			printf("pipe\n");
@@ -73,22 +71,22 @@ void	parser(t_tokenlist *infox, t_parselist **commands)
 		}
 		else if (tmp && tmp->info->type == 4)
 		{
-			printf(">\n");
+			printf("right redirection\n");
 			insert_rredirection(tmp, commands, location);
 		}
 		else if (tmp && tmp->info->type == 5)
 		{
-			printf("<\n");
+			printf("left redirection\n");
 			insert_lredirection(tmp, commands, location);
 		}
 		else if (tmp && tmp->info->type == 6)
 		{
-			printf(">>\n");
+			printf("right append\n");
 			insert_rdredirection(tmp, commands, location);
 		}
 		else if (tmp && tmp->info->type == 7)
 		{
-			printf("<<\n");
+			printf("here_doc\n");
 			insert_ldredirection(tmp, commands, location);
 		}
 		else if (tmp && tmp->info->type == 8)
@@ -96,15 +94,24 @@ void	parser(t_tokenlist *infox, t_parselist **commands)
 			printf("variable\n");
 			tmp = insert_variable(tmp, commands, location);
 		}
-		else if (tmp && tmp->info->type == 9 && tmp->info->status == 1)
+		else if (tmp && tmp->info->status == -1)
 		{
-			printf("spaces\n");
-			tmp = join_spaces(tmp, commands, location);
+			tmp = tmp->next;
 			check = 1;
 		}
 		else
 		{
 			printf("word\n");
+			// printf("and the word=[%s], type=[%d], position=[%d]\n", tmp->word, tmp->info->type, tmp->info->position);
+			// printf("and the status=[%d]\n", tmp->info->status);
+			// if (tmp)
+			// {
+			// 	printf("see if its null\n");
+			// 	printf("%s\n", tmp->next->word);
+			// }
+			i++;
+			if (i == 10)
+				break ;
 			tmp = join_words(tmp, commands, location);
 			check = 1;
 		}
@@ -113,6 +120,7 @@ void	parser(t_tokenlist *infox, t_parselist **commands)
 			tmp = tmp->next;
 		check = 0;
 	}
+	printf("parsing was done\n");
 }
 
 t_tokenlist	*insert_variable(t_tokenlist *info, t_parselist	**commands, int location)
@@ -121,47 +129,45 @@ t_tokenlist	*insert_variable(t_tokenlist *info, t_parselist	**commands, int loca
 	char		*str;
 	t_info		basic;
 
-	basic.position = location;
-	basic.type = 8;
-	basic.status = 1;
 	tmp = info;
 	tmp = tmp->next;
-	str = NULL;
-	if (tmp->info->type == 0 && tmp->info->status == 1)
-	{
-		str = ft_strdup(tmp->word);
-	}
-	add_command(commands, str, &basic);
-	return (tmp);
-}
-
-t_tokenlist	*join_spaces(t_tokenlist *info, t_parselist	**commands, int location)
-{
-	t_tokenlist	*tmp;
-	char		*str;
-	t_info		basic;
-
 	basic.position = location;
-	basic.type = 9;
-	basic.status = 1;
-	tmp = info;
-	str = ft_strdup(" ");
-	while (tmp)
-	{
-		if (tmp->info->type == 9 && tmp->info->status == 1)
-		{
-			tmp = tmp->next;
-			if (tmp->info->type == 9 && tmp->info->status == 1)
-				tmp = tmp->next;
-			else
-				break ;
-		}
-		else
-			break ;
-	}
+	basic.type = 8;
+	basic.status = tmp->info->status;
+	str = NULL;
+	if (tmp->info->type == 0)
+		str = ft_strdup(tmp->word);
 	add_command(commands, str, &basic);
 	return (tmp);
 }
+
+// t_tokenlist	*join_spaces(t_tokenlist *info, t_parselist	**commands, int location)
+// {
+// 	t_tokenlist	*tmp;
+// 	char		*str;
+// 	t_info		basic;
+
+// 	basic.position = location;
+// 	basic.type = 9;
+// 	basic.status = 1;
+// 	tmp = info;
+// 	str = ft_strdup(" ");
+// 	while (tmp)
+// 	{
+// 		if (tmp && tmp->info->type == 9 && tmp->info->status == 1)
+// 		{
+// 			tmp = tmp->next;
+// 			if (tmp && tmp->info->type == 9 && tmp->info->status == 1)
+// 				tmp = tmp->next;
+// 			else
+// 				break ;
+// 		}
+// 		else
+// 			break ;
+// 	}
+// 	add_command(commands, str, &basic);
+// 	return (tmp);
+// }
 
 t_tokenlist	*join_words(t_tokenlist *info, t_parselist **commands, int location)
 {
@@ -176,12 +182,13 @@ t_tokenlist	*join_words(t_tokenlist *info, t_parselist **commands, int location)
 	str = ft_strdup("");
 	while (tmp)
 	{
-		if (tmp && (tmp->info->type == 2 || tmp->info->type == 0 \
-			|| tmp->info->type == 3 || tmp->info->type == 8 \
-			|| tmp->info->status == 2 || tmp->info->status == 3) \
-			&& tmp->info->type != 1 && tmp->info->type != 4 \
-			&& tmp->info->type != 5 && tmp->info->type != 6 \
-			&& tmp->info->type != 7 && tmp->info->type != 8)
+		if (tmp->info->status == -1)
+			tmp = tmp->next;
+		else if (tmp && \
+			tmp->info->type == 0 || \
+			(tmp->info->type != 4 && tmp->info->type != 1 && \
+			tmp->info->type != 5 && tmp->info->type != 6 && \
+			tmp->info->type != 7 && tmp->info->type != 8))
 		{
 			str = ft_strjoin(str, tmp->word);
 			tmp = tmp->next;
