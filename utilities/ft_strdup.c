@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structure_tools.c                                  :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/02 11:47:26 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/14 23:32:39 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/03 18:21:05 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	free_list(t_token **info)
+char	*ft_strdup(const char *s1)
 {
-	t_token	*tmp;
+	size_t	i;
+	size_t	len;
+	char	*str;
 
-	while (*info)
+	i = 0;
+	if (!s1)
+		return (ft_strdup(""));
+	len = ft_strlen(s1);
+	str = (char *)malloc((len + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		tmp = *info;
-		*info = (*info)->next;
-		free(tmp->value);
-		free(tmp);
+		str[i] = s1[i];
+		i++;
 	}
-}
-
-void	free_listx(t_parselist **info)
-{
-	t_parselist	*tmp;
-
-	while (*info)
-	{
-		tmp = *info;
-		*info = (*info)->next;
-		free(tmp->command);
-		free(tmp);
-	}
+	str[i] = '\0';
+	return (str);
 }

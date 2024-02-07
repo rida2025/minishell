@@ -1,29 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/04 20:00:26 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/18 12:34:16 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/02 14:37:40 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-char	*ret_val(t_env *env_list, char *var)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	t_env	*tmp;
+	char	*str;
+	size_t	i;
+	size_t	j;
 
-	tmp = env_list;
-	if (!var)
+	if (s1 == NULL || s2 == NULL)
 		return (NULL);
-	while (tmp)
+	i = ft_strlen(s1);
+	j = ft_strlen(s2);
+	str = (char *)malloc((i + j) * sizeof(char) + 1);
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i] != '\0')
 	{
-		if (ft_strcmp(tmp->key, var) == 0)
-			return (ft_strdup(tmp->value));
-		tmp = tmp->next;
+		str[i] = s1[i];
+		i++;
 	}
-	return (NULL);
+	while (s2[j] != '\0')
+	{
+		str[i + j] = s2[j];
+		j++;
+	}
+	str[i + j] = '\0';
+	return (str);
 }

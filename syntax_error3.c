@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   syntax_error3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 23:18:07 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/14 23:18:22 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/29 16:32:10 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/07 22:47:03 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	unsigned char	*ptr1;
-	unsigned char	*ptr2;
 
-	ptr1 = (unsigned char *)s1;
-	ptr2 = (unsigned char *)s2;
-	if (n == 0)
-		return (0);
-	while (*ptr1 && *ptr2 && *ptr1 == *ptr2 && n > 1)
-	{
-		ptr1++;
-		ptr2++;
-		n--;
-	}
-	return (*ptr1 - *ptr2);
+int	redirection_error3(char *str)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(" ambiguous redirect\n", 2);
+	exit_status_fun(258);
+	return (1);
 }
+
+int	redirection_error4(void)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+	exit_status_fun(258);
+	return (1);
+}
+

@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 23:32:39 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 21:42:47 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/24 15:45:24 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/02 14:37:34 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;
 	size_t	len;
-	char	*str;
 
 	i = 0;
-	len = ft_strlen(s1);
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (str == NULL)
+	len = ft_strlen(s);
+	if (s == NULL)
 		return (NULL);
-	while (s1[i] != '\0')
+	while (i <= len)
 	{
-		str[i] = s1[i];
+		if (s[i] == (char)c)
+			return ((char *)&(s[i]));
 		i++;
 	}
-	str[i] = '\0';
-	return (str);
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 13:35:43 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/24 18:49:18 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/01/30 10:56:19 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,18 @@ int	dcheck_s_c(char *str)
 
 char	*get_word(char **str)
 {
-	int		i;
+	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	while (*str && (*str)[i])
 	{
 		if (check_space((*str)[i]) || check_s_c((*str)[i]) \
 			|| dcheck_s_c(&(*str)[i]))
 		{
 			if (dcheck_s_c((*str)))
-				i = dcheck_s_c(&(*str)[i]);
+				i = 2;
 			if (i == 0)
 				i = 1;
 			return (ft_strndup(*str, i));

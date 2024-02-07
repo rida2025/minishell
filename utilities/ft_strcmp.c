@@ -6,11 +6,11 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 23:18:30 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/14 23:20:29 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:37:36 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

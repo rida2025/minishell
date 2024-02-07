@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 05:16:16 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 05:16:26 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/02/01 11:12:30 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/02 14:37:26 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-size_t	ft_strlen(const char *s)
+void	ft_putstr_fd(char *str, int fd)
 {
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	while (*str)
+		write(fd, &*str++, 1);
 }

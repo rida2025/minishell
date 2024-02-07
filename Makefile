@@ -2,25 +2,34 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 OTHERFLAGS = -lreadline
 
 FILES = main.c \
-		ft_strncmp.c \
-		ft_strcmp.c \
-		ft_strdup.c \
-		ft_strndup.c \
-		insert_data.c \
+		utilities/ft_putstr_fd.c \
+		utilities/ft_strncmp.c \
+		utilities/ft_strcmp.c \
+		utilities/ft_strdup.c \
+		utilities/ft_strndup.c \
+		utilities/ft_strlen.c \
+		utilities/ft_strjoin.c \
+		utilities/ft_strchr.c \
+		utilities/ft_substr.c \
+		utilities/ft_isdigit.c \
 		get_words.c \
 		structure_tools.c \
-		ft_strlen.c \
 		parsing.c \
-		ft_strjoin.c \
-		ft_strchr.c \
 		get_env.c \
-		ft_substr.c \
-		reda_hammer.c \
-		check_syntax_error.c
+		syntax_error1.c \
+		syntax_error2.c \
+		syntax_error3.c \
+		syntax_error.c \
+		tokenizing.c \
+		tokenizing_2.c \
+		tokenizing_3.c \
+		token_helper.c \
+		check_expand.c
+
 
 OBJ = $(FILES:.c=.o)
 

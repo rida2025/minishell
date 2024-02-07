@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 15:45:24 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/24 15:45:38 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/02/04 18:26:44 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/04 18:26:51 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-char	*ft_strchr(const char *s, int c)
+int	ft_isdigit(int c)
 {
-	size_t	i;
-	size_t	len;
-
-	i = 0;
-	len = ft_strlen(s);
-	if (s == NULL)
-		return (NULL);
-	while (i <= len)
-	{
-		if (s[i] == (char)c)
-			return ((char *)&(s[i]));
-		i++;
-	}
-	return (NULL);
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
 }

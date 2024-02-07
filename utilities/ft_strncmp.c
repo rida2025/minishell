@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structure_tools.c                                  :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/02 11:47:26 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/01/14 23:18:07 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/02 14:37:45 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	free_list(t_token **info)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	t_token	*tmp;
+	unsigned char	*ptr1;
+	unsigned char	*ptr2;
 
-	while (*info)
+	ptr1 = (unsigned char *)s1;
+	ptr2 = (unsigned char *)s2;
+	if (n == 0)
+		return (0);
+	while (*ptr1 && *ptr2 && *ptr1 == *ptr2 && n > 1)
 	{
-		tmp = *info;
-		*info = (*info)->next;
-		free(tmp->value);
-		free(tmp);
+		ptr1++;
+		ptr2++;
+		n--;
 	}
-}
-
-void	free_listx(t_parselist **info)
-{
-	t_parselist	*tmp;
-
-	while (*info)
-	{
-		tmp = *info;
-		*info = (*info)->next;
-		free(tmp->command);
-		free(tmp);
-	}
+	return (*ptr1 - *ptr2);
 }

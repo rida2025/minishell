@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strndup.c                                       :+:      :+:    :+:   */
+/*   check_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/14 23:33:01 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 18:45:50 by mel-jira         ###   ########.fr       */
+/*   Created: 2024/02/07 21:03:04 by mel-jira          #+#    #+#             */
+/*   Updated: 2024/02/07 22:23:55 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strndup(const char *s1, int size)
+int check_expand(char *str, t_env *env)
 {
-	size_t	i;
-	size_t	len;
-	char	*str;
+	char	*new_str;
 
-	i = 0;
-	len = ft_strlen(s1);
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (str == NULL)
-		return (NULL);
-	while (s1[i] != '\0' && size > 0)
+	new_str = NULL;
+	if (ft_strchr(EXPANDO, str[1]))
+		return (1);
+	else
 	{
-		str[i] = s1[i];
-		i++;
-		size--;
+		new_str = ret_val(env, str);
+		if (!new_str)
+			return (1);
 	}
-	str[i] = '\0';
-	return (str);
+	return (0);
 }
