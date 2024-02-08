@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:22:55 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/07 20:53:21 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:46:15 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,28 @@ int	exit_status_fun(int exit_status)
 	return (value);
 }
 
-int	pipe_error1()
+int	pipe_error1(void)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `||'\n", 2);
 	exit_status_fun(258);
 	return (1);
 }
 
-int	pipe_error2()
+int	pipe_error2(void)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
 	exit_status_fun(258);
 	return (1);
 }
 
-int	pipe_error3()
+int	pipe_error3(void)
 {
 	ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
 	exit_status_fun(258);
 	return (1);
 }
 
-int	redirection_error()
+int	redirection_error(void)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 	ft_putstr_fd("`newline'\n", 2);

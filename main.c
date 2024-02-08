@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/07 22:58:17 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:06:36 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,25 @@ void	print_tokenze(t_token **token)
 	tmp = *token;
 	while (tmp)
 	{
-		printf("value:[%s], key:[%d], status:[%d], heredoc:[%d]\n",
-			tmp->value, tmp->key, tmp->status, tmp->herdoc);
+		printf("value:[%s], key:[%d], status:[%d], expand:[%d]\n",
+			tmp->value, tmp->key, tmp->status, tmp->expand);
 		tmp = tmp->next;
 	}
-	printf("token where displayed\n");
+	printf("tokens where displayed just a moment ago!\n");
+}
+
+void	print_parsing(t_parselist **token)
+{
+	t_parselist	*tmp;
+
+	tmp = *token;
+	while (tmp)
+	{
+		printf("value:[%s], key:[%d]\n",
+			tmp->command, tmp->key);
+		tmp = tmp->next;
+	}
+	printf("parsing was displayed just a moment ago!\n");
 }
 
 void	remove_quotes(t_token **token)
@@ -204,15 +218,74 @@ void	do_magic(t_token **token)
 	}
 }
 
+t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
+{
+	while (tmp && (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
+			|| tmp->key == 9 || tmp->key == 10))
+	{
+		if (!str)
+			str = ft_strjoin("", tmp->value);
+		else if (tmp->key == 9)
+			str = ft_strjoin(str, " ");
+		else
+			str = ft_strjoin(str, tmp->value);
+		if (tmp)
+			tmp = tmp->next;
+	}
+	insert_node(parse, str, 0);
+	return (tmp);
+}
+
+void	parse_spaces(t_parselist **parse)
+{
+	t_parselist	*tmp;
+	char		*tmp2;
+
+	tmp = *parse;
+	tmp2 = NULL;
+	while (tmp)
+	{
+		tmp2 = ft_skip_spaces(tmp->command);
+		free(tmp->command);
+		tmp->command = tmp2;
+		tmp = tmp->next;
+	}
+}
+
+void	parse_tokens(t_token **token, t_parselist **parse)
+{
+	t_token	*tmp;
+	char	*str;
+
+	str = NULL;
+	tmp = *token;
+	while (tmp)
+	{
+		if (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
+			|| tmp->key == 9)
+		{
+			tmp = parse_helper1(tmp, parse, str);
+		}
+		else
+		{
+			str = NULL;
+			insert_node(parse, ft_strdup(tmp->value), tmp->key);
+			if (tmp)
+				tmp = tmp->next;
+		}
+	}
+	parse_spaces(parse);
+}
+
 void	do_rest(t_token **token, t_parselist **parse, t_var *var)
 {
-	(void)parse;
 	do_magic(token);
 	remove_quotes(token);
 	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
 	expand_variables(token, var->env);
 	print_tokenze(token);
-	// parse_tokens(token, parse);
+	parse_tokens(token, parse);
+	print_parsing(parse);
 	//it need to take parse and cmd
 	// create_execution(parse, var->cmd);
 	// //check if the cmd is not null and pass it to execution and start executing
@@ -225,7 +298,8 @@ int	check_pipes_front(t_token *token)
 	token = token->next;
 	while (token && token->key == 9)
 		token = token->next;
-	if (!token || token->key != 0 || token->status != 0 || token->key != 8)
+	if (!token || token->status != 0 ||
+		(token->key != 8 && token->key != 0 && token->key != 10))
 		return (pipe_error3(), 1);
 	return (0);
 }
@@ -235,7 +309,8 @@ int	check_pipes_back(t_token *token)
 	token = token->previous;
 	while (token && token->key == 9)
 		token = token->previous;
-	if (!token || token->key != 0 || token->status != 0 || token->key != 8)
+	if (!token || token->status != 0 ||
+		(token->key != 0 && token->key != 8 && token->key != 10))
 		return (pipe_error2(), 1);
 	return (0);
 }
@@ -253,10 +328,12 @@ int	check_pipes(t_token *token)
 
 int	check_redirection_front(t_token *token, t_var *var)
 {
+	t_token	*tmp;
+
+	tmp = token;
 	token = token->next;
 	while (token && token->key == 9)
 		token = token->next;
-	printf("str[%s], key[%d]\n", token->value, token->key);
 	if (token && (token->key == 0 || token->key == 2 || token->key == 3
 			|| token->key == 8 || token->key == 10))
 	{
@@ -265,7 +342,7 @@ int	check_redirection_front(t_token *token, t_var *var)
 			if (ft_strlen(token->value) == 2)
 				return (redirection_error2(), 1);
 		}
-		if (token->key == 8)
+		if (token->key == 8 && tmp->key != 7)
 		{
 			if (check_expand(token->value, var->env))
 				return (redirection_error3(token->value), 1);
@@ -326,7 +403,6 @@ int	check_tokenizing(t_token **token, t_var *var)
 
 int	minishell(t_token **token, t_parselist **parse, t_var *var)
 {
-	(void)parse;
 	while (1)
 	{
 		var->input = readline("minishell: ");
@@ -345,10 +421,11 @@ int	minishell(t_token **token, t_parselist **parse, t_var *var)
 		{
 			free(var->input);
 			free_list(token);
-			return (0);
+			continue ;
 		}
 		do_rest(token, parse, var);
 		free_list(token);
+		free_listx(parse);
 		free(var->input);
 		// system("leaks minishell");
 	}
@@ -390,5 +467,5 @@ int	main(int argc, char **argv, char **envp)
 	minishell(&token, &parse, &var);
 	//this will free the env and export
 	free_everything(&token, &parse);
-	return (0);
+	return (exit_status_fun(0));
 }

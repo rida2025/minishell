@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:25:04 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/07 22:20:44 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:49:11 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	syntax_error(void)
 {
-	ft_putstr_fd("minishell: syntax error\n", 2);
 	exit_status_fun(258);
 }
 
@@ -70,7 +69,7 @@ int	check_s_dqoute(char *str)
 	return (0);
 }
 
-int	redirection_error2()
+int	redirection_error2(void)
 {
 	ft_putstr_fd("minishell: No such file or directory\n", 2);
 	exit_status_fun(258);

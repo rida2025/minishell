@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/07 22:15:32 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:31:26 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ status:
 2 = inside sqoutes
 */
 
-//echo "Start" > output.txt | (cat input.txt | grep "pattern" >> output.txt < input.txt sort | awk '{print $2}' > sorted_output.txt) | echo "Done!"
 
 
 typedef struct s_info
@@ -59,7 +58,7 @@ typedef struct s_token
 {
 	int					key;
 	int					status;
-	int					herdoc;
+	int					expand;
 	char				*value;
 	struct s_token		*next;
 	struct s_token		*previous;
@@ -149,7 +148,7 @@ void	insert_variable(t_token **token, char *input, t_info *var, int len);
 void	insert_whitespaces(char *input, t_token **token, t_info *var, int len);
 void	insert_space(t_token **info, char *input, t_info *var, int len);
 void	tokenize(t_token **token, char *input);
-void	insert_token(t_token **info, int token, char *word, int is_heredoc);
+void	insert_token(t_token **info, int token, char *word);
 int		quotes_size(char *str, int *i, char c, int *expand);
 int		get_size(char *input, int *i, int *expand);
 int		get_size2(char *input, int *i);
@@ -159,9 +158,10 @@ int		check_space(char c);
 int		check_s_c(char c);
 
 //parsing function
-void	add_command(t_parselist **commands, char *cmd, t_info *infox);
-void	parser(t_token *infox, t_parselist **commands);
-t_info	*add_information(t_info *infox);
+void	parse_tokens(t_token **token, t_parselist **parse);
+void	insert_node(t_parselist **parse, char *value, int type);
+t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
+void	parse_spaces(t_parselist **parse);
 
 //built in
 t_env	*get_env(char **envp);
