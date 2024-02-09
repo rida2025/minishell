@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:46:17 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/08 16:09:37 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/09 19:39:24 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	insert_pipe(t_token **info, char *input, t_info *var, int len)
 {
 	if (input[var->i] && input[var->i] == '|')
 	{
-		while (input[var->i + len] && !check_space(input[var->i + len]))
+		while (input[var->i + len] && input[var->i + len] == '|')
 			len++;
 		if (len > 0)
 			insert_token(info, 1, ft_substr(input, var->i, len));
@@ -92,7 +92,8 @@ void	insert_pipe(t_token **info, char *input, t_info *var, int len)
 		len = 0;
 		while (input[var->i + len] && check_space(input[var->i + len]))
 			len++;
-		insert_token(info, 9, ft_substr(input, var->i, len));
+		if (len > 0)
+			insert_token(info, 9, ft_substr(input, var->i, len));
 		var->i = var->i + len;
 		var->flag = 1;
 	}

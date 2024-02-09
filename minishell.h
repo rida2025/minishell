@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 18:51:52 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:00:41 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int		check_pipes(t_token *token);
 int		check_pipes_front(t_token *token);
 int		check_pipes_back(t_token *token);
 int		pipe_error1(void);
-int		pipe_error2(void);
+int		pipe_error2(char *str);
 int		pipe_error3(void);
 int		redirection_error(void);
 int		redirection_error2(void);

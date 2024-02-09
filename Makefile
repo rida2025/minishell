@@ -25,7 +25,6 @@ FILES = main.c \
 		syntax_error1.c \
 		syntax_error2.c \
 		syntax_error3.c \
-		syntax_error.c \
 		tokenizing.c \
 		tokenizing_2.c \
 		tokenizing_3.c \

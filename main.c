@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 18:49:01 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:25:11 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,23 +349,36 @@ void	do_rest(t_token **token, t_parselist **parse, t_var *var)
 
 int	check_pipes_front(t_token *token)
 {
+	t_token	*save;
+
+	save = token;
 	token = token->next;
 	while (token && token->key == 9)
 		token = token->next;
 	if (!token || token->status != 0 ||
 		(token->key != 8 && token->key != 0 && token->key != 10))
-		return (pipe_error3(), 1);
+	{
+		if (!token)
+			return (pipe_error3(), 1);
+		else
+			return (pipe_error2(save->value), 1);
+	}
 	return (0);
 }
 
 int	check_pipes_back(t_token *token)
 {
+	t_token	*save;
+
+	save = token;
 	token = token->previous;
-	while (token && token->key == 9)
+	if (token && token->key == 9)
 		token = token->previous;
-	if (!token || token->status != 0 ||
-		(token->key != 0 && token->key != 8 && token->key != 10))
-		return (pipe_error2(), 1);
+	if (!token || token->status != 0
+		|| (token->key != 0 && token->key != 8 && token->key != 10))
+	{
+		return (pipe_error2(save->value), 1);
+	}
 	return (0);
 }
 
@@ -373,9 +386,9 @@ int	check_pipes(t_token *token)
 {
 	if (ft_strlen(token->value) > 1)
 		return (pipe_error1(), 1);
-	if (check_pipes_front(token))
-		return (1);
 	if (check_pipes_back(token))
+		return (1);
+	if (check_pipes_front(token))
 		return (1);
 	return (0);
 }
