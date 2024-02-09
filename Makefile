@@ -16,6 +16,8 @@ FILES = main.c \
 		utilities/ft_strchr.c \
 		utilities/ft_substr.c \
 		utilities/ft_isdigit.c \
+		utilities/ft_itoa.c \
+		utilities/ft_strlcpy.c \
 		get_words.c \
 		structure_tools.c \
 		parsing.c \

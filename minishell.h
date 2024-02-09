@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/08 19:31:26 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:51:52 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 void	ft_putstr_fd(char *str, int fd);
 int		ft_isdigit(int c);
+char	*ft_itoa(int n);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -152,6 +154,11 @@ void	insert_token(t_token **info, int token, char *word);
 int		quotes_size(char *str, int *i, char c, int *expand);
 int		get_size(char *input, int *i, int *expand);
 int		get_size2(char *input, int *i);
+
+//expanding functions
+void	expand_variables(t_token **token, t_env *env, char *str);
+void	reset_expand(t_token *token);
+char	*normal_expanding(t_env *env, char *str, int i);
 
 //parsing tools
 int		check_space(char c);
@@ -183,10 +190,12 @@ int		redirection_error2(void);
 int		redirection_error3(char *str);
 void	syntax_error(void);
 int		exit_status_fun(int exit_status);
-int 	check_expand(char *str, t_env *env);
+int		check_expand(char *str, t_env *env);
 int		check_redirection(t_token *token, t_var *var);
 int		help_checking(t_token *token, t_var *var);
 int		redirection_error4(void);
+int		check_heredoc_expand(char *str, t_env *env);
+int		there_is_heredoc(t_token *token);
 
 //exit status
 int		exit_status_fun(int exit_status);

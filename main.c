@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/08 19:06:36 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:49:01 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,12 @@ char	*bring_me_expand(char *str, int *i, t_env *env)
 
 	new_str = NULL;
 	if (str[*i + 1] && (ft_strchr(EXP, str[*i + 1]) || ft_isdigit(str[*i + 1])))
-		new_str = skipandexpand(str, i, env);
+	{
+		if (str[*i + 1] == '?' && ft_strlen(&str[*i]) == 2)
+			new_str = ft_itoa(exit_status_fun(0));
+		else
+			new_str = skipandexpand(str, i, env);
+	}
 	else
 		new_str = get_variable(str, i);
 	return (new_str);
@@ -149,17 +154,13 @@ char	*new_advance_expander(char *str, t_env *env)
 	return (new_str);
 }
 
-char	*normal_expanding(t_env *env, char *str)
+char	*normal_expanding(t_env *env, char *str, int i)
 {
 	char	*new_str;
-	int		i;
-	int		len;
 	char	*tmp;
 
 	new_str = NULL;
 	tmp = NULL;
-	i = 1;
-	len = 0;
 	if (ft_strlen(str) == 1)
 		return (ft_strdup(str));
 	if (str[i] && ft_isdigit(str[i]))
@@ -168,7 +169,12 @@ char	*normal_expanding(t_env *env, char *str)
 		return (new_str);
 	}
 	else if (str[i] && ft_strchr(EXP, str[i]))
-		new_str = ret_val(env, &str[1]);
+	{
+		if (ft_strlen(str) == 2 && str[i] == '?')
+			new_str = ft_itoa(exit_status_fun(0));
+		else
+			new_str = ret_val(env, &str[1]);
+	}
 	else
 		new_str = bringme_new_str(str, &i);
 	if (!new_str)
@@ -176,20 +182,39 @@ char	*normal_expanding(t_env *env, char *str)
 	return (new_str);
 }
 
-void	expand_variables(t_token **token, t_env *env)
+int	there_is_heredoc(t_token *token)
+{
+	if (token->previous)
+	{
+		token = token->previous;
+		if (token->key == 9)
+			token = token->previous;
+		if (token->key == 7)
+			return (1);	
+	}
+	return (0);
+}
+
+void	expand_variables(t_token **token, t_env *env, char *str)
 {
 	t_token	*tmp;
-	char	*str;
 
-	str = NULL;
 	tmp = *token;
 	while (tmp)
 	{
-		if (tmp->value[0] && ((tmp->key == 8 && tmp->status != 2)
-			|| (tmp->key == 2 && tmp->status != 2)))
+		if (tmp->value[0]
+			&& ((tmp->key == 8 && tmp->status != 2)
+				|| (tmp->key == 2 && tmp->status != 2)))
 		{
 			if (tmp->key == 8 && tmp->status != 2)
-				str = normal_expanding(env, tmp->value);
+			{
+				if (there_is_heredoc(tmp))
+				{
+					tmp = tmp->next;
+					continue ;
+				}
+				str = normal_expanding(env, tmp->value, 1);
+			}
 			else if (tmp->key == 2 && tmp->status != 2)
 				str = new_advance_expander(tmp->value, env);
 			free(tmp->value);
@@ -277,12 +302,41 @@ void	parse_tokens(t_token **token, t_parselist **parse)
 	parse_spaces(parse);
 }
 
+void	reset_expand(t_token *token)
+{
+	t_token	*remember;
+
+	remember = token;
+	if (token->next)
+	{
+		if (token->next && token->next->status != 0)
+			remember->expand = 0;
+		if (token->next->next && token->next->next->status != 0)
+			remember->expand = 0;
+	}
+}
+
+void	set_expanding(t_token **token)
+{
+	t_token	*tmp;
+
+	tmp = *token;
+	while (tmp)
+	{
+		if (tmp->key == 7)
+			reset_expand(tmp);
+		tmp = tmp->next;
+	}
+}
+
 void	do_rest(t_token **token, t_parselist **parse, t_var *var)
 {
+	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
 	do_magic(token);
 	remove_quotes(token);
-	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
-	expand_variables(token, var->env);
+	//set expand to 0 if there was a quotes after heredoc
+	set_expanding(token);
+	expand_variables(token, var->env, NULL);
 	print_tokenze(token);
 	parse_tokens(token, parse);
 	print_parsing(parse);
@@ -326,6 +380,26 @@ int	check_pipes(t_token *token)
 	return (0);
 }
 
+int	help_check_redirection(t_var *var, t_token *token, t_token **tmp)
+{
+	if (token->status != 0)
+	{
+		if (ft_strlen(token->value) == 2)
+			return (redirection_error2(), 1);
+	}
+	if (token->key == 8 && (*tmp)->key != 7)
+	{
+		if (check_expand(token->value, var->env))
+			return (redirection_error3(token->value), 1);
+	}
+	if (token->key == 8 && (*tmp)->key == 7)
+	{
+		if (check_heredoc_expand(token->value, var->env))
+			return (redirection_error3(token->value), 1);
+	}
+	return (0);
+}
+
 int	check_redirection_front(t_token *token, t_var *var)
 {
 	t_token	*tmp;
@@ -337,16 +411,8 @@ int	check_redirection_front(t_token *token, t_var *var)
 	if (token && (token->key == 0 || token->key == 2 || token->key == 3
 			|| token->key == 8 || token->key == 10))
 	{
-		if (token->status != 0)
-		{
-			if (ft_strlen(token->value) == 2)
-				return (redirection_error2(), 1);
-		}
-		if (token->key == 8 && tmp->key != 7)
-		{
-			if (check_expand(token->value, var->env))
-				return (redirection_error3(token->value), 1);
-		}
+		if (help_check_redirection(var, token, &tmp))
+			return (1);
 	}
 	else
 		return (redirection_error(), 1);
