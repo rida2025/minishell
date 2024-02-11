@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/04 20:00:26 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:06:41 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,11 @@ char	*ret_val(t_env *env_list, char *var)
 		tmp = tmp->next;
 	}
 	return (NULL);
+}
+
+int	check_space(char c)
+{
+	if ((c >= 9 && c <= 13) || c == ' ')
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:46:17 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 19:39:24 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:58:23 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,30 +106,27 @@ void	tokenize(t_token **token, char *input)
 
 	var.i = 0;
 	var.flag = 1;
-	//skip spaces
 	input = ft_skip_spaces(input);
-	//while input is not null and not empty
 	while (input && input[var.i])
 	{
-		//look for word and insert it in token list
+		// printf("before word flag=[%d]\n", var.flag);
 		insert_word(token, input, &var, 0);
-		//look for options of the word the start with - and insert in token list
+		// printf("before quote flag=[%d]\n", var.flag);
 		handle_options(token, input, &var, 0);
-		//look for pipe and insert it in token list
+		// printf("before pipe flag=[%d]\n", var.flag);
 		insert_pipe(token, input, &var, 0);
-		//look for pipe and insert it in token list
+		// printf("before quote flag=[%d]\n", var.flag);
 		insert_quote(token, input, &var, 0);
-		//look for right redirection and insert it in token list
+		// printf("before rightr flag=[%d]\n", var.flag);
 		insert_righr(token, input, &var, 0);
-		//look for left redirection and insert it in token list
+		// printf("before leftr flag=[%d]\n", var.flag);
 		insert_leftr(token, input, &var, 0);
-		//look for append and insert it in token list
+		// printf("before append flag=[%d]\n", var.flag);
 		insert_append(token, input, &var, 0);
-		//look for heredoc and insert it in token list
+		// printf("before heredoc flag=[%d]\n", var.flag);
 		insert_heredoc(token, input, &var, 0);
-		//look for variable and insert it in token list
+		// printf("before variable flag=[%d]\n", var.flag);
 		insert_variable(token, input, &var, 1);
 	}
 	free(input);
 }
-//29 - 11 = 18

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 20:25:11 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:14:24 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ void	print_parsing(t_parselist **token)
 		tmp = tmp->next;
 	}
 	printf("parsing was displayed just a moment ago!\n");
+}
+
+void	print_redirections(t_redirections **redirection)
+{
+	t_redirections	*tmp;
+
+	tmp = *redirection;
+	while (tmp)
+	{
+		printf("value:[%s], key:[%d]\n",
+			tmp->value, tmp->key);
+		tmp = tmp->next;
+	}
+	printf("redirections where displayed just a moment ago!\n");
+}
+
+void	print_commands(t_commands **commands)
+{
+	t_commands	*tmp;
+
+	tmp = *commands;
+	while (tmp)
+	{
+		printf("value:[%s], key:[%d]]\n", tmp->cmd, tmp->key);
+		tmp = tmp->next;
+	}
+	printf("commands where displayed just a moment ago!\n");
 }
 
 void	remove_quotes(t_token **token)
@@ -246,7 +273,7 @@ void	do_magic(t_token **token)
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 {
 	while (tmp && (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
-			|| tmp->key == 9 || tmp->key == 10))
+			|| tmp->key == 9 || tmp->key == 10) && tmp->value)
 	{
 		if (!str)
 			str = ft_strjoin("", tmp->value);
@@ -258,6 +285,22 @@ t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 			tmp = tmp->next;
 	}
 	insert_node(parse, str, 0);
+	return (tmp);
+}
+
+t_token	*parse_helper2(t_token *tmp, t_parselist **parse, char *str)
+{
+	int	type;
+
+	type = tmp->key;
+	tmp = tmp->next;
+	if (tmp->key == 9)
+		tmp = tmp->next;
+	str = ft_strdup(tmp->value);
+	tmp = tmp->next;
+	if (tmp->key == 9)
+		tmp = tmp->next;
+	insert_node(parse, str, type);
 	return (tmp);
 }
 
@@ -288,9 +331,10 @@ void	parse_tokens(t_token **token, t_parselist **parse)
 	{
 		if (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
 			|| tmp->key == 9)
-		{
 			tmp = parse_helper1(tmp, parse, str);
-		}
+		else if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
+			|| tmp->key == 7)
+			tmp = parse_helper2(tmp, parse, str);
 		else
 		{
 			str = NULL;
@@ -299,7 +343,7 @@ void	parse_tokens(t_token **token, t_parselist **parse)
 				tmp = tmp->next;
 		}
 	}
-	parse_spaces(parse);
+	//parse_spaces(parse);
 }
 
 void	reset_expand(t_token *token)
@@ -329,22 +373,84 @@ void	set_expanding(t_token **token)
 	}
 }
 
+void	name_redirections(t_token **token, t_redirections **redirection)
+{
+	t_token	*tmp;
+	int		valuex;
+
+	tmp = *token;
+	valuex = 0;
+	while (tmp)
+	{
+		if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
+			|| tmp->key == 7 || tmp->key == 1)
+		{
+			valuex = tmp->key;
+			tmp = tmp->next;
+			if (tmp && tmp->key == 9)
+				tmp = tmp->next;
+			if (tmp)
+			{
+				tmp->key = -1;
+				put_node(redirection, ft_strdup(tmp->value), valuex);
+			}
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+}
+
+
+void	get_commands(t_token **token, t_commands **commands)
+{
+	t_token	*tmp;
+	int		value;
+	char	*str;
+
+	tmp = *token;
+	value = 0;
+	str = NULL;
+	while (tmp)
+	{
+		if (tmp->key == 0 || (tmp->status != 0 && tmp->key != -1)
+			|| tmp->key == 8 || tmp->key == 1 || tmp->key == 10)
+		{
+			value = tmp->key;
+			str = ft_strdup(tmp->value);
+			put_nodex(commands, str, value);
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+}
+
 void	do_rest(t_token **token, t_parselist **parse, t_var *var)
 {
+	t_redirections	*redirection;
+	t_commands		*commands;
+
+	(void)parse;
+	redirection = NULL;
+	commands = NULL;
 	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
 	do_magic(token);
 	remove_quotes(token);
 	//set expand to 0 if there was a quotes after heredoc
 	set_expanding(token);
 	expand_variables(token, var->env, NULL);
+	name_redirections(token, &redirection);
+	get_commands(token, &commands);
 	print_tokenze(token);
-	parse_tokens(token, parse);
-	print_parsing(parse);
+	print_redirections(&redirection);
+	print_commands(&commands);
+	// parse_tokens(token, parse);
+	// print_parsing(parse);
 	//it need to take parse and cmd
-	// create_execution(parse, var->cmd);
+	//create_execution(parse, &var->cmd);
+	// printf("insertion of execution was done\n");
 	// //check if the cmd is not null and pass it to execution and start executing
-	// execution(var->cmd);
-	// free_execution(var->cmd);
+	//execution(var->cmd);
+	//free_execution(&var->cmd);
 }
 
 int	check_pipes_front(t_token *token)
@@ -358,10 +464,12 @@ int	check_pipes_front(t_token *token)
 	if (!token || token->status != 0 ||
 		(token->key != 8 && token->key != 0 && token->key != 10))
 	{
+		if (token->status != 0 && ft_strlen(token->value) > 2)
+			return (0);
 		if (!token)
-			return (pipe_error3(), 1);
+			return (pipe_error2(), 1);
 		else
-			return (pipe_error2(save->value), 1);
+			return (pipe_error1(save->value), 1);
 	}
 	return (0);
 }
@@ -377,7 +485,9 @@ int	check_pipes_back(t_token *token)
 	if (!token || token->status != 0
 		|| (token->key != 0 && token->key != 8 && token->key != 10))
 	{
-		return (pipe_error2(save->value), 1);
+		if (token->status != 0 && ft_strlen(token->value) > 2)
+			return (0);
+		return (pipe_error1(save->value), 1);
 	}
 	return (0);
 }
@@ -385,7 +495,7 @@ int	check_pipes_back(t_token *token)
 int	check_pipes(t_token *token)
 {
 	if (ft_strlen(token->value) > 1)
-		return (pipe_error1(), 1);
+		return (pipe_error1(token->value), 1);
 	if (check_pipes_back(token))
 		return (1);
 	if (check_pipes_front(token))
@@ -402,12 +512,8 @@ int	help_check_redirection(t_var *var, t_token *token, t_token **tmp)
 	}
 	if (token->key == 8 && (*tmp)->key != 7)
 	{
-		if (check_expand(token->value, var->env))
-			return (redirection_error3(token->value), 1);
-	}
-	if (token->key == 8 && (*tmp)->key == 7)
-	{
-		if (check_heredoc_expand(token->value, var->env))
+		if (check_expand(token->value, var->env)
+			|| check_ambiguous(token->value, var->env))
 			return (redirection_error3(token->value), 1);
 	}
 	return (0);

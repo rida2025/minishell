@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 21:03:04 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 14:42:54 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:31:22 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	count_words(char *str)
 	return (words);
 }
 
-int check_heredoc_expand(char *str, t_env *env)
+int check_ambiguous(char *str, t_env *env)
 {
 	char	*new_str;
 

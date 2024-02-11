@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 18:48:43 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/08 16:07:34 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/10 16:04:38 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,46 +40,3 @@ void	insert_token(t_token **info, int token, char *word)
 		tmp->next = new_node;
 	}
 }
-
-int	quotes_size(char *str, int *i, char c, int *expand)
-{
-	int	j;
-
-	j = 1;
-	while (str[(*i) + j] && str[(*i) + j] != c)
-	{
-		if (str[(*i) + j] == '$')
-			*expand = 1;
-		j++;
-	}
-	return (++j);
-}
-
-int	get_size(char *input, int *i, int *expand)
-{
-	int	len;
-
-	len = 0;
-	if (input[(*i) + len] == '$')
-		*expand = 1;
-	while (input[(*i) + len] && !check_space(input[(*i) + len])
-		&& input[(*i) + len] != '>' && input[(*i) + len] != '<'
-		&& input[(*i) + len] != '|' && input[(*i) + len] != '\''
-		&& input[(*i) + len] != '\"')
-		len++;
-	return (len);
-}
-
-int	get_size2(char *input, int *i)
-{
-	int	len;
-
-	len = 0;
-	while (input[(*i) + len] && !check_space(input[(*i) + len])
-		&& input[(*i) + len] != '>' && input[(*i) + len] != '<'
-		&& input[(*i) + len] != '|' && input[(*i) + len] != '\''
-		&& input[(*i) + len] != '\"')
-		len++;
-	return (len);
-}
-

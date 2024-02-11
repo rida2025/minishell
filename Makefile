@@ -18,7 +18,7 @@ FILES = main.c \
 		utilities/ft_isdigit.c \
 		utilities/ft_itoa.c \
 		utilities/ft_strlcpy.c \
-		get_words.c \
+		utilities/ft_split.c \
 		structure_tools.c \
 		parsing.c \
 		get_env.c \
@@ -29,8 +29,9 @@ FILES = main.c \
 		tokenizing_2.c \
 		tokenizing_3.c \
 		token_helper.c \
-		check_expand.c
-
+		check_expand.c \
+		execution.c \
+		structure_helper.c
 
 OBJ = $(FILES:.c=.o)
 

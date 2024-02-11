@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 20:00:41 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:06:23 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ type:
 8 = $ variable
 9 =  is_space 
 10 = options
+-1 already token
 
 status:
 0 = normal
@@ -68,9 +69,24 @@ typedef struct s_parselist
 {
 	int					key;
 	char				*command;
+	int					expand;
 	struct s_parselist	*next;
 	struct s_parselist	*previous;
 }	t_parselist;
+
+typedef struct s_redirections
+{
+	char					*value;
+	int						key;
+	struct s_redirections	*next;
+}	t_redirections;
+
+typedef struct s_commands
+{
+	char					*cmd;
+	int						key;
+	struct s_commands	*next;
+}	t_commands;
 
 typedef struct s_env
 {
@@ -92,35 +108,35 @@ typedef struct s_all
 	t_exp	exp;
 }	t_all;
 
-typedef struct s_executelist
+typedef struct s_red
 {
-	char					*cmd;
-	char					**allcmd;
-	int						fdout;
-	int						fdin;
-	char					*fdoutname;
-	char					*fdinname;
-	int						heredoc;
-	char					*fdheredname;
-	struct s_executelist	*next;
-}	t_executelist;
+	char			*name;
+	int				type;
+	int				expand;
+	struct s_red	*next;
+}	t_red;
+
+typedef struct s_main_exec
+{
+	char				**allcmd;
+	int					fd[2];
+	t_red				*red;
+	struct s_main_exec	*next;
+}	t_main_exec;
 
 typedef struct s_var
 {
 	int				expand;
 	char			*input;
 	t_env			*env;
-	t_executelist	*cmd;
+	t_main_exec		*cmd;
 }	t_var;
 
-void	create_info(t_token **info, int argc, char **argv, char **envp);
 //void	execute_input(t_token *info);
 void	free_list(t_token **info);
 void	free_listx(t_parselist **info);
 
 //structure tools
-char	*get_word(char **str);
-void	add_node(t_token **info, int token, char *word, int heredoc);
 
 //utilits
 int		ft_strcmp(const char *s1, const char *s2);
@@ -135,6 +151,7 @@ void	ft_putstr_fd(char *str, int fd);
 int		ft_isdigit(int c);
 char	*ft_itoa(int n);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char	**ft_split(char const *s, char c);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -148,12 +165,9 @@ void	insert_append(t_token **token, char *input, t_info *var, int len);
 void	insert_heredoc(t_token **token, char *input, t_info *var, int len);
 void	insert_variable(t_token **token, char *input, t_info *var, int len);
 void	insert_whitespaces(char *input, t_token **token, t_info *var, int len);
-void	insert_space(t_token **info, char *input, t_info *var, int len);
 void	tokenize(t_token **token, char *input);
 void	insert_token(t_token **info, int token, char *word);
-int		quotes_size(char *str, int *i, char c, int *expand);
-int		get_size(char *input, int *i, int *expand);
-int		get_size2(char *input, int *i);
+void	put_node(t_redirections **redirection, char *str, int type);
 
 //expanding functions
 void	expand_variables(t_token **token, t_env *env, char *str);
@@ -162,29 +176,29 @@ char	*normal_expanding(t_env *env, char *str, int i);
 
 //parsing tools
 int		check_space(char c);
-int		check_s_c(char c);
 
 //parsing function
 void	parse_tokens(t_token **token, t_parselist **parse);
 void	insert_node(t_parselist **parse, char *value, int type);
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
+t_token	*parse_helper2(t_token *tmp, t_parselist **parse, char *str);
 void	parse_spaces(t_parselist **parse);
+void	put_node(t_redirections **redirection, char *str, int type);
+void	put_nodex(t_commands **redirection, char *str, int type);
 
 //built in
 t_env	*get_env(char **envp);
 char	*ret_val(t_env *env_list, char *var);
 
 //syntax error functions
-int		check_syntax_error(char *str);
 int		check_s_dqoute(char *str);
 int		check_redirection(t_token *token, t_var *var);
 int		check_redirection_front(t_token *token, t_var *var);
 int		check_pipes(t_token *token);
 int		check_pipes_front(t_token *token);
 int		check_pipes_back(t_token *token);
-int		pipe_error1(void);
-int		pipe_error2(char *str);
-int		pipe_error3(void);
+int		pipe_error1(char *str);
+int		pipe_error2(void);
 int		redirection_error(void);
 int		redirection_error2(void);
 int		redirection_error3(char *str);
@@ -194,8 +208,15 @@ int		check_expand(char *str, t_env *env);
 int		check_redirection(t_token *token, t_var *var);
 int		help_checking(t_token *token, t_var *var);
 int		redirection_error4(void);
-int		check_heredoc_expand(char *str, t_env *env);
+int		check_ambiguous(char *str, t_env *env);
 int		there_is_heredoc(t_token *token);
+
+//execution functions
+void	create_execution(t_parselist **parse, t_main_exec **execution);
+void	add_node(t_main_exec **execution);
+// void	add_child_node(t_main_exec **execute, char *command, int key, int exp);
+// void	add_files_node(t_main_exec **execute, char *name, int key, int expando);
+// void	free_execution(t_main_exec **info);
 
 //exit status
 int		exit_status_fun(int exit_status);
