@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 12:15:16 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:42:59 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,6 @@ typedef struct s_parselist
 	struct s_parselist	*previous;
 }	t_parselist;
 
-typedef struct s_redirections
-{
-	char					*value;
-	int						key;
-	struct s_redirections	*next;
-}	t_redirect;
-
-typedef struct s_commands
-{
-	char					*cmd;
-	int						key;
-	struct s_commands		*next;
-}	t_cmd;
-
 typedef struct s_env
 {
 	char			*key;
@@ -107,6 +93,21 @@ typedef struct s_all
 	t_env	env;
 	t_exp	exp;
 }	t_all;
+
+typedef struct s_commands
+{
+	char					*cmd;
+	int						key;
+	struct s_commands		*next;
+}	t_cmd;
+
+typedef struct s_redirections
+{
+	char					*value;
+	int						key;
+	int						expand;
+	struct s_redirections	*next;
+}	t_redirect;
 
 typedef struct s_red
 {
@@ -167,7 +168,6 @@ void	insert_variable(t_token **token, char *input, t_info *var, int len);
 void	insert_whitespaces(char *input, t_token **token, t_info *var, int len);
 void	tokenize(t_token **token, char *input);
 void	insert_token(t_token **info, int token, char *word);
-void	put_node(t_redirect **redirection, char *str, int type);
 
 //expanding functions
 void	remove_dollar(t_token **token);
@@ -181,7 +181,7 @@ int		check_space(char c);
 //parsing function
 void	name_redirections(t_token **token, t_redirect **redirection);
 void	get_commands(t_token **token, t_cmd **commands);
-void	put_node(t_redirect **redirection, char *str, int type);
+void	put_node(t_redirect **redirection, char *str, int type, int expando);
 void	put_nodex(t_cmd **redirection, char *str, int type);
 
 //built in
@@ -210,8 +210,12 @@ int		check_ambiguous(char *str, t_env *env);
 int		there_is_heredoc(t_token *token);
 
 //execution functions
-void	create_execution(t_redirect **red, t_cmd **cmd, t_main_exec **exec);
-void	add_node(t_main_exec **execution, char **strs, t_red **redirection);
+void		create_execution(t_redirect **red, t_cmd **cmd, t_main_exec **exec);
+void		add_node(t_main_exec **execution, char **strs, t_red **redirection);
+int			get_size(t_cmd *cmd);
+t_redirect	*create_redirection_list(t_redirect *redirect, t_red **red);
+void		add_red_node(t_red **redirection, char *str, int key, int expando);
+t_cmd		*create_commands_strs(t_cmd *cmds, char ***strs, int size);
 // void	add_child_node(t_main_exec **execute, char *command, int key, int exp);
 // void	add_files_node(t_main_exec **execute, char *name, int key, int expando);
 // void	free_execution(t_main_exec **info);

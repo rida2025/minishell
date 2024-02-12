@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 15:50:01 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/12 20:50:59 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	add_red_node(t_red **redirection, char *str, int key, int expando)
 	t_red	*new_node;
 
 	tmp = *redirection;
+	//printf("str=[%s], key=[%d], expando=[%d]\n", str, key, expando);
 	new_node = malloc(sizeof(t_redirect));
 	new_node->name = str;
 	new_node->type = key;
@@ -33,27 +34,31 @@ void	add_red_node(t_red **redirection, char *str, int key, int expando)
 	}
 }
 
-t_red	*create_redirection_list(t_redirect *redirection, t_red	*red)
+t_redirect	*create_redirection_list(t_redirect *redirect, t_red **red)
 {
-	while (redirection)
+	t_red	*new_node;
+
+	new_node = NULL;
+	if (redirect && redirect->key == 1)
+		redirect = redirect->next;
+	while (redirect && redirect->key != 1)
 	{
-		if (redirection->key == 1)
-			break ;
-		add_red_node();
-		redirection = redirection->next;
+		add_red_node(&new_node, ft_strdup(redirect->value),
+			redirect->key, redirect->expand);
+		redirect = redirect->next;
 	}
-	return (red);
+	*red = new_node;
+	return (redirect);
 }
 
-t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs)
+t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size)
 {
 	int		i;
-	int		size;
 
 	i = 0;
-	strs = NULL;
-	size = get_size(cmds);
-	while (i < size)
+	if (cmds && cmds->key == 1)
+		cmds = cmds->next;
+	while (cmds && i < size)
 	{
 		(*strs)[i] = ft_strdup(cmds->cmd);
 		i++;
@@ -87,7 +92,7 @@ void	add_node(t_main_exec **execution, char **strs, t_red **redirection)
 	}
 }
 
-void	put_node(t_redirect **redirection, char *str, int type)
+void	put_node(t_redirect **redirection, char *str, int type, int expando)
 {
 	t_redirect	*tmp;
 	t_redirect	*new_node;
@@ -96,6 +101,7 @@ void	put_node(t_redirect **redirection, char *str, int type)
 	new_node = malloc(sizeof(t_redirect));
 	new_node->value = str;
 	new_node->key = type;
+	new_node->expand = expando;
 	new_node->next = NULL;
 	if (!*redirection)
 		*redirection = new_node;

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 13:20:55 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/12 21:04:04 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,56 @@ void	print_parsing(t_parselist **token)
 	printf("parsing was displayed just a moment ago!\n");
 }
 
-void	print_redirections(t_redirect **redirection)
+void	print_redirections(t_redirect *redirection)
 {
 	t_redirect	*tmp;
 
-	tmp = *redirection;
+	tmp = redirection;
 	while (tmp)
 	{
-		printf("value:[%s], key:[%d]\n",
-			tmp->value, tmp->key);
+		printf("value:[%s], key:[%d], expand=[%d]\n",
+			tmp->value, tmp->key, tmp->expand);
 		tmp = tmp->next;
 	}
 	printf("redirections where displayed just a moment ago!\n");
 }
 
-void	print_commands(t_cmd **commands)
+void	print_commands(t_cmd *commands)
 {
 	t_cmd	*tmp;
 
-	tmp = *commands;
+	tmp = commands;
 	while (tmp)
 	{
 		printf("value:[%s], key:[%d]]\n", tmp->cmd, tmp->key);
 		tmp = tmp->next;
 	}
 	printf("commands where displayed just a moment ago!\n");
+}
+
+void	print_execution(t_main_exec **execution)
+{
+	t_main_exec	*tmp;
+	int			i;
+
+	tmp = *execution;
+	i = 0;
+	while (tmp)
+	{
+		while (tmp->allcmd[i])
+		{
+			printf("command:[%s]\n", tmp->allcmd[i]);
+			i++;
+		}
+		while (tmp->red)
+		{
+			printf("filename:[%s], type=[%d], expand=[%d]\n",
+				tmp->red->name, tmp->red->type, tmp->red->expand);
+			tmp->red = tmp->red->next;
+		}
+		tmp = tmp->next;
+	}
+	printf("execution where displayed just a moment ago!\n");
 }
 
 void	remove_quotes(t_token **token)
@@ -293,6 +318,8 @@ void	reset_expand(t_token *token)
 	remember = token;
 	if (token->next)
 	{
+		if (token->next && token->next->key == 9)
+			token = token->next;
 		if (token->next && token->next->status != 0)
 			remember->expand = 0;
 		if (token->next->next && token->next->next->status != 0)
@@ -329,10 +356,11 @@ void	do_rest(t_token **token, t_var *var)
 	name_redirections(token, &redirection);
 	get_commands(token, &commands);
 	print_tokenze(token);
-	print_redirections(&redirection);
-	print_commands(&commands);
+	print_redirections(redirection);
+	print_commands(commands);
 	//it need to take parse and cmd
-	create_execution(redirection, commands, &var->cmd);
+	create_execution(&redirection, &commands, &var->cmd);
+	print_execution(&var->cmd);
 	// printf("insertion of execution was done\n");
 	// //check if the cmd is not null and pass it to execution and start executing
 	//execution(var->cmd);
@@ -472,7 +500,7 @@ int	check_tokenizing(t_token **token, t_var *var)
 	return (0);
 }
 
-int	minishell(t_token **token, t_parselist **parse, t_var *var)
+int	minishell(t_token **token, t_var *var)
 {
 	while (1)
 	{
@@ -494,49 +522,47 @@ int	minishell(t_token **token, t_parselist **parse, t_var *var)
 			free_list(token);
 			continue ;
 		}
-		do_rest(token, parse, var);
+		do_rest(token, var);
 		free_list(token);
-		free_listx(parse);
+		//free_listx(parse);
 		free(var->input);
 		// system("leaks minishell");
 	}
 	return (0);
 }
 
-void	init_the_minishell(t_token **token, t_parselist **cmd, t_all *all, t_var *var)
+void	init_the_minishell(t_token **token, t_all *all, t_var *var)
 {
 	(void)token;
-	(void)cmd;
 	(void)all;
 	(void)var;
 	//init everything u need later
 }
 
-void	free_everything(t_token **token, t_parselist **cmd)
+void	free_everything(t_token **token)
 {
 	(void)token;
-	(void)cmd;
 	//free everything
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_token		*token;
-	t_parselist	*parse;
+	//t_parselist	*parse;
 	t_all		all;
 	t_var		var;
 
 	(void)envp;
 	(void)argv;
 	(void)argc;
-	init_the_minishell(&token, &parse, &all, &var);
+	init_the_minishell(&token, &all, &var);
 	// handle env and export
 	//check if minishell was
 	//fix it later
 	var.env = get_env(envp);
 	//read the line and token it and parse it and check for syntax error
-	minishell(&token, &parse, &var);
+	minishell(&token, &var);
 	//this will free the env and export
-	free_everything(&token, &parse);
+	free_everything(&token);
 	return (exit_status_fun(0));
 }
