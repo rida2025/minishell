@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/11 21:14:24 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:20:55 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	print_parsing(t_parselist **token)
 	printf("parsing was displayed just a moment ago!\n");
 }
 
-void	print_redirections(t_redirections **redirection)
+void	print_redirections(t_redirect **redirection)
 {
-	t_redirections	*tmp;
+	t_redirect	*tmp;
 
 	tmp = *redirection;
 	while (tmp)
@@ -54,9 +54,9 @@ void	print_redirections(t_redirections **redirection)
 	printf("redirections where displayed just a moment ago!\n");
 }
 
-void	print_commands(t_commands **commands)
+void	print_commands(t_cmd **commands)
 {
-	t_commands	*tmp;
+	t_cmd	*tmp;
 
 	tmp = *commands;
 	while (tmp)
@@ -251,7 +251,7 @@ void	expand_variables(t_token **token, t_env *env, char *str)
 	}
 }
 
-void	do_magic(t_token **token)
+void	remove_dollar(t_token **token)
 {
 	t_token	*tmp;
 
@@ -270,40 +270,6 @@ void	do_magic(t_token **token)
 	}
 }
 
-t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
-{
-	while (tmp && (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
-			|| tmp->key == 9 || tmp->key == 10) && tmp->value)
-	{
-		if (!str)
-			str = ft_strjoin("", tmp->value);
-		else if (tmp->key == 9)
-			str = ft_strjoin(str, " ");
-		else
-			str = ft_strjoin(str, tmp->value);
-		if (tmp)
-			tmp = tmp->next;
-	}
-	insert_node(parse, str, 0);
-	return (tmp);
-}
-
-t_token	*parse_helper2(t_token *tmp, t_parselist **parse, char *str)
-{
-	int	type;
-
-	type = tmp->key;
-	tmp = tmp->next;
-	if (tmp->key == 9)
-		tmp = tmp->next;
-	str = ft_strdup(tmp->value);
-	tmp = tmp->next;
-	if (tmp->key == 9)
-		tmp = tmp->next;
-	insert_node(parse, str, type);
-	return (tmp);
-}
-
 void	parse_spaces(t_parselist **parse)
 {
 	t_parselist	*tmp;
@@ -318,32 +284,6 @@ void	parse_spaces(t_parselist **parse)
 		tmp->command = tmp2;
 		tmp = tmp->next;
 	}
-}
-
-void	parse_tokens(t_token **token, t_parselist **parse)
-{
-	t_token	*tmp;
-	char	*str;
-
-	str = NULL;
-	tmp = *token;
-	while (tmp)
-	{
-		if (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
-			|| tmp->key == 9)
-			tmp = parse_helper1(tmp, parse, str);
-		else if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-			|| tmp->key == 7)
-			tmp = parse_helper2(tmp, parse, str);
-		else
-		{
-			str = NULL;
-			insert_node(parse, ft_strdup(tmp->value), tmp->key);
-			if (tmp)
-				tmp = tmp->next;
-		}
-	}
-	//parse_spaces(parse);
 }
 
 void	reset_expand(t_token *token)
@@ -373,67 +313,15 @@ void	set_expanding(t_token **token)
 	}
 }
 
-void	name_redirections(t_token **token, t_redirections **redirection)
+void	do_rest(t_token **token, t_var *var)
 {
-	t_token	*tmp;
-	int		valuex;
+	t_redirect	*redirection;
+	t_cmd		*commands;
 
-	tmp = *token;
-	valuex = 0;
-	while (tmp)
-	{
-		if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-			|| tmp->key == 7 || tmp->key == 1)
-		{
-			valuex = tmp->key;
-			tmp = tmp->next;
-			if (tmp && tmp->key == 9)
-				tmp = tmp->next;
-			if (tmp)
-			{
-				tmp->key = -1;
-				put_node(redirection, ft_strdup(tmp->value), valuex);
-			}
-		}
-		if (tmp)
-			tmp = tmp->next;
-	}
-}
-
-
-void	get_commands(t_token **token, t_commands **commands)
-{
-	t_token	*tmp;
-	int		value;
-	char	*str;
-
-	tmp = *token;
-	value = 0;
-	str = NULL;
-	while (tmp)
-	{
-		if (tmp->key == 0 || (tmp->status != 0 && tmp->key != -1)
-			|| tmp->key == 8 || tmp->key == 1 || tmp->key == 10)
-		{
-			value = tmp->key;
-			str = ft_strdup(tmp->value);
-			put_nodex(commands, str, value);
-		}
-		if (tmp)
-			tmp = tmp->next;
-	}
-}
-
-void	do_rest(t_token **token, t_parselist **parse, t_var *var)
-{
-	t_redirections	*redirection;
-	t_commands		*commands;
-
-	(void)parse;
 	redirection = NULL;
 	commands = NULL;
 	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
-	do_magic(token);
+	remove_dollar(token);
 	remove_quotes(token);
 	//set expand to 0 if there was a quotes after heredoc
 	set_expanding(token);
@@ -443,10 +331,8 @@ void	do_rest(t_token **token, t_parselist **parse, t_var *var)
 	print_tokenze(token);
 	print_redirections(&redirection);
 	print_commands(&commands);
-	// parse_tokens(token, parse);
-	// print_parsing(parse);
 	//it need to take parse and cmd
-	//create_execution(parse, &var->cmd);
+	create_execution(redirection, commands, &var->cmd);
 	// printf("insertion of execution was done\n");
 	// //check if the cmd is not null and pass it to execution and start executing
 	//execution(var->cmd);
@@ -461,8 +347,8 @@ int	check_pipes_front(t_token *token)
 	token = token->next;
 	while (token && token->key == 9)
 		token = token->next;
-	if (!token || token->status != 0 ||
-		(token->key != 8 && token->key != 0 && token->key != 10))
+	if (!token || token->status != 0
+		|| (token->key != 8 && token->key != 0 && token->key != 10))
 	{
 		if (token->status != 0 && ft_strlen(token->value) > 2)
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/11 21:06:23 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/12 12:15:16 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,14 @@ typedef struct s_redirections
 	char					*value;
 	int						key;
 	struct s_redirections	*next;
-}	t_redirections;
+}	t_redirect;
 
 typedef struct s_commands
 {
 	char					*cmd;
 	int						key;
-	struct s_commands	*next;
-}	t_commands;
+	struct s_commands		*next;
+}	t_cmd;
 
 typedef struct s_env
 {
@@ -167,9 +167,10 @@ void	insert_variable(t_token **token, char *input, t_info *var, int len);
 void	insert_whitespaces(char *input, t_token **token, t_info *var, int len);
 void	tokenize(t_token **token, char *input);
 void	insert_token(t_token **info, int token, char *word);
-void	put_node(t_redirections **redirection, char *str, int type);
+void	put_node(t_redirect **redirection, char *str, int type);
 
 //expanding functions
+void	remove_dollar(t_token **token);
 void	expand_variables(t_token **token, t_env *env, char *str);
 void	reset_expand(t_token *token);
 char	*normal_expanding(t_env *env, char *str, int i);
@@ -178,13 +179,10 @@ char	*normal_expanding(t_env *env, char *str, int i);
 int		check_space(char c);
 
 //parsing function
-void	parse_tokens(t_token **token, t_parselist **parse);
-void	insert_node(t_parselist **parse, char *value, int type);
-t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
-t_token	*parse_helper2(t_token *tmp, t_parselist **parse, char *str);
-void	parse_spaces(t_parselist **parse);
-void	put_node(t_redirections **redirection, char *str, int type);
-void	put_nodex(t_commands **redirection, char *str, int type);
+void	name_redirections(t_token **token, t_redirect **redirection);
+void	get_commands(t_token **token, t_cmd **commands);
+void	put_node(t_redirect **redirection, char *str, int type);
+void	put_nodex(t_cmd **redirection, char *str, int type);
 
 //built in
 t_env	*get_env(char **envp);
@@ -212,8 +210,8 @@ int		check_ambiguous(char *str, t_env *env);
 int		there_is_heredoc(t_token *token);
 
 //execution functions
-void	create_execution(t_parselist **parse, t_main_exec **execution);
-void	add_node(t_main_exec **execution);
+void	create_execution(t_redirect **red, t_cmd **cmd, t_main_exec **exec);
+void	add_node(t_main_exec **execution, char **strs, t_red **redirection);
 // void	add_child_node(t_main_exec **execute, char *command, int key, int exp);
 // void	add_files_node(t_main_exec **execute, char *name, int key, int expando);
 // void	free_execution(t_main_exec **info);
