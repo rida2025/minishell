@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:46:17 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/11 20:58:23 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 14:34:35 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	insert_word(t_token **info, char *input, t_info *var, int len)
 			len++;
 		if (len > 0 && var->flag)
 		{
+			printf("i=%d, len=%d", var->i, len);
 			insert_token(info, 0, ft_substr(input, var->i, len));
 			var->flag = 0;
 		}

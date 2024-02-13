@@ -20,18 +20,24 @@ FILES = main.c \
 		utilities/ft_strlcpy.c \
 		utilities/ft_split.c \
 		structure_tools.c \
-		parsing.c \
-		get_env.c \
-		syntax_error1.c \
-		syntax_error2.c \
-		syntax_error3.c \
 		tokenizing.c \
 		tokenizing_2.c \
 		tokenizing_3.c \
+		parsing.c \
+		parsing_tools.c \
+		get_env.c \
+		syntax_error.c \
+		syntax_error1.c \
+		syntax_error2.c \
+		syntax_error3.c \
+		expanding1.c \
+		expanding2.c \
+		expanding3.c \
 		token_helper.c \
 		check_expand.c \
 		execution.c \
-		structure_helper.c
+		structure_helper.c \
+		printdata.c
 
 OBJ = $(FILES:.c=.o)
 

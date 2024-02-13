@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 19:46:42 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:04:47 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ void	name_redirections(t_token **token, t_redirect **redirection)
 	expando = 0;
 	while (tmp)
 	{
-		if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-			|| tmp->key == 7 || tmp->key == 1)
+		if (tmp->key == 1)
+			put_node(redirection, ft_strdup(tmp->value), 1, 1);
+		else if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
+			|| tmp->key == 7)
 		{
 			valuex = tmp->key;
 			expando = tmp->expand;

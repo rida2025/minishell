@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 20:50:59 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 15:13:54 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	add_red_node(t_red **redirection, char *str, int key, int expando)
 	t_red	*new_node;
 
 	tmp = *redirection;
-	//printf("str=[%s], key=[%d], expando=[%d]\n", str, key, expando);
 	new_node = malloc(sizeof(t_redirect));
 	new_node->name = str;
 	new_node->type = key;
@@ -64,6 +63,7 @@ t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size)
 		i++;
 		cmds = cmds->next;
 	}
+	(*strs)[i] = NULL;
 	return (cmds);
 }
 
@@ -86,7 +86,7 @@ void	add_node(t_main_exec **execution, char **strs, t_red **redirection)
 		*execution = new_node;
 	else
 	{
-		while (tmp->next)
+		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_node;
 	}
@@ -107,7 +107,7 @@ void	put_node(t_redirect **redirection, char *str, int type, int expando)
 		*redirection = new_node;
 	else
 	{
-		while (tmp->next)
+		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_node;
 	}
@@ -127,7 +127,7 @@ void	put_nodex(t_cmd **redirection, char *str, int type)
 		*redirection = new_node;
 	else
 	{
-		while (tmp->next)
+		while (tmp && tmp->next)
 			tmp = tmp->next;
 		tmp->next = new_node;
 	}

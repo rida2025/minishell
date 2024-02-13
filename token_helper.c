@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 18:48:43 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/10 16:04:38 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 14:41:02 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	insert_token(t_token **info, int token, char *word)
 		*info = new_node;
 	else
 	{
-		while (tmp->next)
+		while (tmp && tmp->next)
 			tmp = tmp->next;
 		new_node->previous = tmp;
 		tmp->next = new_node;

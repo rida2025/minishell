@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 19:53:48 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/11 20:56:24 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:12:25 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	free_files(t_red **file)
 {
 	t_red		*tmp;
 
+	tmp = NULL;
 	while (*file)
 	{
 		tmp = *file;
@@ -61,32 +62,45 @@ void	free_files(t_red **file)
 	}
 }
 
-// void	free_nodes(t_executelist **nodes)
-// {
-// 	t_executelist		*tmp;
+void	free_redirections(t_redirect **file)
+{
+	t_redirect		*tmp;
 
-// 	while (*nodes)
-// 	{
-// 		tmp = *nodes;
-// 		if (tmp->red)
-// 			free_files(&tmp->red);
-// 		*nodes = (*nodes)->next;
-// 		free_strings(tmp->allcmd);
-// 		free(tmp);
-// 	}
-// }
+	while (*file)
+	{
+		tmp = *file;
+		*file = (*file)->next;
+		free(tmp->value);
+		tmp->value = NULL;
+		free(tmp);
+	}
+}
 
-// void	free_execution(t_main_exec **info)
-// {
-// 	t_main_exec		*tmp;
+void	free_execution(t_main_exec **cmd)
+{
+	t_main_exec		*tmp;
+	t_red			*tmp2;
 
-// 	while (*info)
-// 	{
-// 		tmp = *info;
-// 		if (tmp->node)
-// 			free_nodes(&tmp->node);
-// 		*info = (*info)->next;
-// 		free(tmp->node);
-// 		free(tmp);
-// 	}
-// }
+	while (*cmd)
+	{
+		tmp = *cmd;
+		*cmd = (*cmd)->next;
+		free_strings(tmp->allcmd);
+		tmp2 = tmp->red;
+		free_files(&tmp2);
+		free(tmp);
+	}
+}
+
+void	free_commands(t_cmd **cmds)
+{
+	t_cmd		*tmp;
+
+	while (*cmds)
+	{
+		tmp = *cmds;
+		*cmds = (*cmds)->next;
+		free(tmp->cmd);
+		free(tmp);
+	}
+}

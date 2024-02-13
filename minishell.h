@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 20:42:59 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 13:59:41 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,13 @@ typedef struct s_var
 	t_main_exec		*cmd;
 }	t_var;
 
-//void	execute_input(t_token *info);
+//free functions
 void	free_list(t_token **info);
 void	free_listx(t_parselist **info);
+void	free_files(t_red **file);
+void	free_redirections(t_redirect **file);
+void	free_commands(t_cmd **cmds);
+void	free_execution(t_main_exec **cmd);
 
 //structure tools
 
@@ -172,11 +176,21 @@ void	insert_token(t_token **info, int token, char *word);
 //expanding functions
 void	remove_dollar(t_token **token);
 void	expand_variables(t_token **token, t_env *env, char *str);
+int		there_is_heredoc(t_token *token);
 void	reset_expand(t_token *token);
 char	*normal_expanding(t_env *env, char *str, int i);
+char	*new_advance_expander(char *str, t_env *env);
+char	*ret_val(t_env *env_list, char *var);
+char	*bringme_new_str(char *str, int *i);
+void	set_expanding(t_token **token);
+char	*bring_me_expand(char *str, int *i, t_env *env);
+char	*get_variable(char *str, int *i);
+char	*skipandexpand(char *str, int *i, t_env *env);
 
 //parsing tools
 int		check_space(char c);
+void	remove_quotes(t_token **token);
+void	parse_spaces(t_parselist **parse);
 
 //parsing function
 void	name_redirections(t_token **token, t_redirect **redirection);
@@ -186,12 +200,13 @@ void	put_nodex(t_cmd **redirection, char *str, int type);
 
 //built in
 t_env	*get_env(char **envp);
-char	*ret_val(t_env *env_list, char *var);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
+int		check_tokenizing(t_token **token, t_var *var);
 int		check_redirection(t_token *token, t_var *var);
 int		check_redirection_front(t_token *token, t_var *var);
+int		help_check_redirection(t_var *var, t_token *token, t_token **tmp);
 int		check_pipes(t_token *token);
 int		check_pipes_front(t_token *token);
 int		check_pipes_back(t_token *token);
@@ -222,5 +237,12 @@ t_cmd		*create_commands_strs(t_cmd *cmds, char ***strs, int size);
 
 //exit status
 int		exit_status_fun(int exit_status);
+
+//printing structures data
+void	print_tokenze(t_token **token);
+void	print_parsing(t_parselist **token);
+void	print_redirections(t_redirect *redirection);
+void	print_commands(t_cmd *commands);
+void	print_execution(t_main_exec **execution);
 
 #endif
