@@ -6,12 +6,27 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 18:25:16 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/14 20:14:53 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void sigint_handler(int signum) {
+	if (signum == 2)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		exit_status_fun(1);
+	}
+	else if (signum == 3)
+	{
+		rl_replace_line("", 0);
+		return ;
+	}
+}
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 {
 	int	old;
@@ -86,13 +101,22 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	free_execution(&var->cmd);
 }
 
+void	handup_call(void)
+{
+	write(1, "exit\n", 5);
+	exit(exit_status_fun(0));
+}
+
 int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 {
 	while (1)
 	{
+		rl_catch_signals = 0;
+		signal(SIGQUIT, sigint_handler);
+		signal(SIGINT, sigint_handler);
 		var->input = readline("minishell: ");
 		if (!var->input)
-			break ;
+			handup_call();
 		add_history(var->input);
 		if (check_s_dqoute(var->input))
 		{
@@ -124,16 +148,7 @@ void	init_the_var(t_var *var)
 	var->cmd = NULL;
 }
 
-void sigint_handler(int signum) {
-	if (signum == 2)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		exit_status_fun(1);
-	}
-}
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -146,8 +161,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	init_the_var(&var);
 	var.env = get_env(envp);
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
 	minishell(&token, &var, &parse);
 	return (exit_status_fun(0));
 }
