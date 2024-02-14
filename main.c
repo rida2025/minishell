@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 16:15:30 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:25:16 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,22 +124,30 @@ void	init_the_var(t_var *var)
 	var->cmd = NULL;
 }
 
+void sigint_handler(int signum) {
+	if (signum == 2)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		exit_status_fun(1);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_token		*token;
 	t_parselist	*parse;
-	//t_all		all;
 	t_var		var;
 
 	(void)envp;
 	(void)argv;
 	(void)argc;
 	init_the_var(&var);
-	// handle env and export
-	//check if minishell was
-	//fix it later
 	var.env = get_env(envp);
-	//read the line and token it and parse it and check for syntax error
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
 	minishell(&token, &var, &parse);
 	return (exit_status_fun(0));
 }

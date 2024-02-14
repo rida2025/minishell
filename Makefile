@@ -45,10 +45,10 @@ OBJ = $(FILES:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(COMPILER) $(FLAGS) $(OTHERFLAGS) $(OBJ) -o $(NAME)
+	$(COMPILER) $(FLAGS) $(OTHERFLAGS) -lreadline  -L  /goinfre/mel-jira/homebrew/opt/readline/lib  $(OBJ) -o $(NAME)
 
 %.o: %.c minishell.h
-	$(COMPILER) $(FLAGS) -c $< -o $@
+	$(COMPILER) $(FLAGS) -I  /goinfre/mel-jira/homebrew/opt/readline/include -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 16:12:04 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:38:06 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 # include <stdlib.h>
 # include <string.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <unistd.h>
+# include <signal.h>
 
 //none valid symbols after $ sign so don't expand
 # define NONE_VALID "$\"'+-./:;<=>@[\\]^`{|}~%#&()*,"

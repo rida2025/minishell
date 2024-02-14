@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:22:55 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/10 18:29:31 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/14 17:34:02 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ int	redirection_error(void)
 	exit_status_fun(258);
 	return (1);
 }
-
