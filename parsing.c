@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 18:04:47 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:14:19 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ int	check_space(char c)
 	return (0);
 }
 
-void	name_redirections(t_token **token, t_redirect **redirection)
+void	name_redirections(t_parselist **parse, t_redirect **redirection)
 {
-	t_token	*tmp;
-	int		valuex;
-	int		expando;
+	t_parselist	*tmp;
+	int			valuex;
+	int			expando;
 
-	tmp = *token;
+	tmp = *parse;
 	valuex = 0;
 	expando = 0;
 	while (tmp)
 	{
 		if (tmp->key == 1)
-			put_node(redirection, ft_strdup(tmp->value), 1, 1);
+			put_node(redirection, ft_strdup(tmp->command), 1, 1);
 		else if (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
 			|| tmp->key == 7)
 		{
@@ -59,7 +59,7 @@ void	name_redirections(t_token **token, t_redirect **redirection)
 			if (tmp)
 			{
 				tmp->key = -1;
-				put_node(redirection, ft_strdup(tmp->value), valuex, expando);
+				put_node(redirection, ft_strdup(tmp->command), valuex, expando);
 			}
 		}
 		if (tmp)
@@ -67,22 +67,23 @@ void	name_redirections(t_token **token, t_redirect **redirection)
 	}
 }
 
-void	get_commands(t_token **token, t_cmd **commands)
+void	get_commands(t_parselist **parse, t_cmd **commands)
 {
-	t_token	*tmp;
-	int		value;
-	char	*str;
+	t_parselist	*tmp;
+	int			value;
+	char		*str;
 
-	tmp = *token;
+	tmp = *parse;
 	value = 0;
 	str = NULL;
 	while (tmp)
 	{
-		if (tmp->key == 0 || (tmp->status != 0 && tmp->key != -1)
+		if (tmp->key == 0
+			|| ((tmp->key == 2 || tmp->key == 3) && tmp->key != -1)
 			|| tmp->key == 8 || tmp->key == 1 || tmp->key == 10)
 		{
 			value = tmp->key;
-			str = ft_strdup(tmp->value);
+			str = ft_strdup(tmp->command);
 			put_nodex(commands, str, value);
 		}
 		if (tmp)

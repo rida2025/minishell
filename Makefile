@@ -20,6 +20,7 @@ FILES = main.c \
 		utilities/ft_strlcpy.c \
 		utilities/ft_split.c \
 		structure_tools.c \
+		structure_tools2.c \
 		tokenizing.c \
 		tokenizing_2.c \
 		tokenizing_3.c \

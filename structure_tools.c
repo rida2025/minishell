@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 15:13:54 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/13 20:39:42 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,26 +102,6 @@ void	put_node(t_redirect **redirection, char *str, int type, int expando)
 	new_node->value = str;
 	new_node->key = type;
 	new_node->expand = expando;
-	new_node->next = NULL;
-	if (!*redirection)
-		*redirection = new_node;
-	else
-	{
-		while (tmp && tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_node;
-	}
-}
-
-void	put_nodex(t_cmd **redirection, char *str, int type)
-{
-	t_cmd	*tmp;
-	t_cmd	*new_node;
-
-	tmp = *redirection;
-	new_node = malloc(sizeof(t_cmd));
-	new_node->cmd = str;
-	new_node->key = type;
 	new_node->next = NULL;
 	if (!*redirection)
 		*redirection = new_node;

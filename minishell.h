@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 13:59:41 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:12:04 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(const char *s1);
 char	*ft_strndup(const char *s1, int size);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoinx(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
@@ -193,10 +194,13 @@ void	remove_quotes(t_token **token);
 void	parse_spaces(t_parselist **parse);
 
 //parsing function
-void	name_redirections(t_token **token, t_redirect **redirection);
-void	get_commands(t_token **token, t_cmd **commands);
+void	name_redirections(t_parselist **parse, t_redirect **redirection);
+void	get_commands(t_parselist **parse, t_cmd **commands);
 void	put_node(t_redirect **redirection, char *str, int type, int expando);
 void	put_nodex(t_cmd **redirection, char *str, int type);
+void	insert_node(t_parselist **parse, char *value, int type, int expando);
+void	parse_tokens(t_token **token, t_parselist **parse);
+t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
 
 //built in
 t_env	*get_env(char **envp);
