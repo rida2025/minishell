@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printdata.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:45:10 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 18:13:19 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 01:57:23 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	print_commands(t_cmd *commands)
 	printf("commands where displayed just a moment ago!\n\n");
 }
 
-void	print_execution(t_main_exec **execution)
+void	print_execution(t_ex **execution)
 {
-	t_main_exec	*tmp;
+	t_ex	*tmp;
 	t_red		*redirection;
 	int			i;
 
@@ -78,9 +78,9 @@ void	print_execution(t_main_exec **execution)
 	i = 0;
 	while (tmp)
 	{
-		while (tmp->allcmd && tmp->allcmd[i])
+		while (tmp->cmd && tmp->cmd[i])
 		{
-			printf("command:[%s]\n", tmp->allcmd[i]);
+			printf("command:[%s]\n", tmp->cmd[i]);
 			i++;
 		}
 		redirection = tmp->red;

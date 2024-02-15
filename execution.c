@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 15:12:18 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/12 20:50:51 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 01:56:28 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	get_size(t_cmd *cmd)
 	return (i);
 }
 
-void	create_execution(t_redirect **red, t_cmd **cmd, t_main_exec **exec)
+void	create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec)
 {
 	t_redirect		*tmp1;
 	t_cmd			*tmp2;

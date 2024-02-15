@@ -19,6 +19,23 @@ FILES = main.c \
 		utilities/ft_itoa.c \
 		utilities/ft_strlcpy.c \
 		utilities/ft_split.c \
+		utilities/ft_lstsize.c \
+		utilities/ft_putchar_fd.c \
+		utilities/ft_strcat.c \
+		utilities/ft_strcpy.c \
+		utilities/ft_strrcmp.c \
+		execution/builtins/ft_cd.c \
+		execution/builtins/ft_echo.c \
+		execution/builtins/ft_env.c \
+		execution/builtins/ft_export.c \
+		execution/builtins/ft_pwd.c \
+		execution/builtins/ft_unset.c \
+		execution/add_to_list.c \
+		execution/check_bult.c \
+		execution/find_path.c \
+		execution/list_to_tab.c \
+		execution/pars_args.c \
+		execution/redirections.c \
 		structure_tools.c \
 		structure_tools2.c \
 		tokenizing.c \
@@ -45,10 +62,10 @@ OBJ = $(FILES:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(COMPILER) $(FLAGS) $(OTHERFLAGS) -lreadline  -L  /goinfre/mel-jira/homebrew/opt/readline/lib  $(OBJ) -o $(NAME)
+	$(COMPILER) $(FLAGS) $(OTHERFLAGS) -lreadline  -L  /Users/sacharai/.brew/opt/readline/lib  $(OBJ) -o $(NAME)
 
 %.o: %.c minishell.h
-	$(COMPILER) $(FLAGS) -I  /goinfre/mel-jira/homebrew/opt/readline/include -c $< -o $@
+	$(COMPILER) $(FLAGS) -I  /Users/sacharai/.brew/opt/readline/include -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)

@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:32:54 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/14 21:19:24 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/15 05:04:35 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void open_herdocs(t_ex *t)
     }
 }
 
-void redirections(t)
+void redirections(t_ex *t)
 {
     t_ex *iterate;
     iterate = t;
@@ -119,7 +119,7 @@ void redirections(t)
                 {
                     //perror
                     return ;
-                }              
+                }
             }
             else //>
             {
@@ -137,17 +137,6 @@ void redirections(t)
 
         iterate = iterate->next;
     }
-}
-void redirect(t_ex *t, char **env, t_env *env_list)
-{
-
-    //first step is to handle heredoc 
-    // we need to iterate over our linked list to open the herdcs
-    open_herdocs(t);
-    redirections(t);
-    execution(t, env, env_list);
-    //builtins
-    //normal cmds
 }
 
 
@@ -202,14 +191,13 @@ void	execution(t_ex *t, char **env, t_env *env_list)
     int		fd[2];
     char	*path;
     int		i;
-    int		red[2];
+   // int		red[2];
     char	*full_path;
 
 	it = t;
 	i = 0;
 	while (it)
 	{
-
 		if (it->next)
 		{
 			if (i == 0)
@@ -243,13 +231,11 @@ void	execution(t_ex *t, char **env, t_env *env_list)
 			{
 				dup2(it->fd[0], 0);
 				close(it->fd[0]);
-
 			}
 			if ((it->fd[1] != -1) && (it->fd[1] != 1))
 			{
 				dup2(it->fd[1], 1);
 				close(it->fd[1]);
-
 			}
 			//dup
 			if (is_builtin(it))
@@ -266,4 +252,17 @@ void	execution(t_ex *t, char **env, t_env *env_list)
 		i++;
 		it = it->next;
 	}
+}
+
+void redirect(t_ex *t, t_env *env_list)
+{
+    char	**env;
+    //first step is to handle heredoc 
+    // we need to iterate over our linked list to open the herdcs
+    env = list_to_tab(env_list);
+    open_herdocs(t);
+    redirections(t);
+    execution(t, env, env_list);
+    //builtins
+    //normal cmds
 }

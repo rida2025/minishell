@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure_helper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 19:53:48 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 18:12:25 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 01:57:50 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,16 @@ void	free_redirections(t_redirect **file)
 	}
 }
 
-void	free_execution(t_main_exec **cmd)
+void	free_execution(t_ex **cmd)
 {
-	t_main_exec		*tmp;
+	t_ex		*tmp;
 	t_red			*tmp2;
 
 	while (*cmd)
 	{
 		tmp = *cmd;
 		*cmd = (*cmd)->next;
-		free_strings(tmp->allcmd);
+		free_strings(tmp->cmd);
 		tmp2 = tmp->red;
 		free_files(&tmp2);
 		free(tmp);

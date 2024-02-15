@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 20:14:53 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 02:12:45 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	// printf("insertion of execution was done\n");
 	// //check if the cmd is not null and pass it to execution and start executing
 	//execution(var->cmd);
+	redirect(var->cmd, var->env);
 	free_listx(parse);
 	free_redirections(&redirection);
 	free_commands(&commands);

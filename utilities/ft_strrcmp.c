@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_strrcmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 01:47:47 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 02:34:45 by sacharai         ###   ########.fr       */
+/*   Created: 2024/02/15 02:31:21 by sacharai          #+#    #+#             */
+/*   Updated: 2024/02/15 02:31:54 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../minishell.h"
 
-void	ft_pwd(void)
+int	ft_strrcmp(const char *s1, const char *s2)
 {
-	char	buffer[4096];
+	size_t	i;
 
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
+	i = 0;
+	if (!s1 && !s2)
+		return (0);
+	if (!s1 || !s2)
+		return (1);
+	while (s1[i] && s2[i])
 	{
-		ft_putstr_fd(buffer, 1);
-		return ;
+		if (s1[i] != s2[i])
+			return (1);
+		i++;
 	}
-	else
-		perror("getcwd");
+	if (s1[i] != s2[i])
+		return (1);
+	return (0);
 }

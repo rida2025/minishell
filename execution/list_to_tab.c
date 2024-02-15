@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/12 04:55:47 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/14 23:04:35 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	*ft_malloc(size_t len)
 		exit(1);
 	return (ptr);
 }
-
 
 char	**list_to_tab(t_env *env_list)
 {

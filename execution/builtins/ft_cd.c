@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:29:14 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/14 21:15:18 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/15 02:04:44 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,4 @@ void	ft_cd(char **cmd, t_env *env_list)
 			tmp->value = ft_strdup(buffer);
 		}
 	}
-}
-
-int main(int ac, char **av, char **envp)
-{
-	t_env *env_list = get_env(envp);
-	ft_cd(av, env_list);
-	char buffer[4000];
-	getcwd(buffer,3999);
-	puts(buffer);
 }

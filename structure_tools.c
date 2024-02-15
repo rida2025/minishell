@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 20:39:42 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 01:56:49 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size)
 	return (cmds);
 }
 
-void	add_node(t_main_exec **execution, char **strs, t_red **redirection)
+void	add_node(t_ex **execution, char **strs, t_red **redirection)
 {
-	t_main_exec	*tmp;
-	t_main_exec	*new_node;
+	t_ex	*tmp;
+	t_ex	*new_node;
 
 	tmp = *execution;
-	new_node = malloc(sizeof(t_main_exec));
-	new_node->allcmd = strs;
+	new_node = malloc(sizeof(t_ex));
+	new_node->cmd = strs;
 	new_node->fd[0] = -1;
 	new_node->fd[1] = -1;
 	if (!*redirection)

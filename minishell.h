@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 18:38:06 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 02:34:42 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <signal.h>
+# include <fcntl.h>
 
 //none valid symbols after $ sign so don't expand
 # define NONE_VALID "$\"'+-./:;<=>@[\\]^`{|}~%#&()*,"
@@ -119,20 +120,20 @@ typedef struct s_red
 	struct s_red	*next;
 }	t_red;
 
-typedef struct s_main_exec
+typedef struct s_ex
 {
-	char				**allcmd;
+	char				**cmd;
 	int					fd[2];
 	t_red				*red;
-	struct s_main_exec	*next;
-}	t_main_exec;
+	struct s_ex			*next;
+}	t_ex;
 
 typedef struct s_var
 {
 	int				expand;
 	char			*input;
 	t_env			*env;
-	t_main_exec		*cmd;
+	t_ex			*cmd;
 }	t_var;
 
 //free functions
@@ -141,13 +142,14 @@ void	free_listx(t_parselist **info);
 void	free_files(t_red **file);
 void	free_redirections(t_redirect **file);
 void	free_commands(t_cmd **cmds);
-void	free_execution(t_main_exec **cmd);
+void	free_execution(t_ex **cmd);
 
 //structure tools
 
 //utilits
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strrcmp(const char *s1, const char *s2);
 char	*ft_strdup(const char *s1);
 char	*ft_strndup(const char *s1, int size);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -156,10 +158,14 @@ size_t	ft_strlen(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 void	ft_putstr_fd(char *str, int fd);
+void	ft_putchar_fd(char c, int fd);
 int		ft_isdigit(int c);
 char	*ft_itoa(int n);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+int		ft_lstsize(t_ex *lst);
+char	*ft_strcat(char *dest, char *src);
 char	**ft_split(char const *s, char c);
+char	*ft_strcpy(char *dest, char *src);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -204,8 +210,27 @@ void	insert_node(t_parselist **parse, char *value, int type, int expando);
 void	parse_tokens(t_token **token, t_parselist **parse);
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
 
-//built in
+//built in + exec
 t_env	*get_env(char **envp);
+t_env	*add_to_list(char *cmd, int flag, t_env *exp_list);
+int		pars_args(char *cmd);
+char	*find_path(char *full_paths, char *cmd);
+char	*check_env_path(char **argenv);
+int		is_builtin(t_ex *cmds);
+int		exec_builtin(char **cmds, t_env *env_list);
+void	insert_env_node(t_env **head, char *key, char *value);
+int		get_index(char *str, char c);
+int		is_alnum(char c);
+int		is_alpha(char c);
+int		print_error(char *name, char *cmd, char *str, char *message);
+void	redirect(t_ex *t, t_env *env_list);
+char	**list_to_tab(t_env *env_list);
+void	ft_env(t_env *env_list);
+void	ft_export(t_env *exp_list, char **allcmd);
+void		ft_pwd(void);
+void	ft_cd(char **cmd, t_env *env_list);
+int		ft_echo(char **args);
+void	ft_unset(t_env *env_list, char **cmd);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
@@ -231,8 +256,8 @@ int		check_ambiguous(char *str, t_env *env);
 int		there_is_heredoc(t_token *token);
 
 //execution functions
-void		create_execution(t_redirect **red, t_cmd **cmd, t_main_exec **exec);
-void		add_node(t_main_exec **execution, char **strs, t_red **redirection);
+void		create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec);
+void		add_node(t_ex **execution, char **strs, t_red **redirection);
 int			get_size(t_cmd *cmd);
 t_redirect	*create_redirection_list(t_redirect *redirect, t_red **red);
 void		add_red_node(t_red **redirection, char *str, int key, int expando);
@@ -249,6 +274,6 @@ void	print_tokenze(t_token **token);
 void	print_parsing(t_parselist **token);
 void	print_redirections(t_redirect *redirection);
 void	print_commands(t_cmd *commands);
-void	print_execution(t_main_exec **execution);
+void	print_execution(t_ex **execution);
 
 #endif

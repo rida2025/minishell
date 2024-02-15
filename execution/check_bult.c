@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   check_bult.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 15:02:03 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/14 20:24:44 by sacharai         ###   ########.fr       */
+/*   Created: 2024/02/14 23:02:17 by sacharai          #+#    #+#             */
+/*   Updated: 2024/02/15 02:28:53 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ int	exec_builtin(char **cmds, t_env *env_list)
 		return (ft_export(env_list, cmds), 0);
 	else if (!ft_strcmp(cmds[0], "pwd"))
 		return (ft_pwd(), 0);
-	else if (!ft_strcmp(cmds[0], "exit"))
-		return (ft_exit(cmds), 0);
+	// else if (!ft_strcmp(cmds[0], "exit"))
+	// 	return (ft_exit(cmds), 0);
 	else if (!ft_strcmp(cmds[0], "unset"))
 		return (ft_unset(env_list, cmds), 0);
 	else if (!ft_strcmp(cmds[0], "cd"))
-		return (ft_cd(cmds), 0);
+		return (ft_cd(cmds, env_list), 0);
 	else
 		return (1);
 }
