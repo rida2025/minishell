@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:32:54 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 22:35:06 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:08:35 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ char *expandHerdoc(t_env *env_list, char *str)
                 {
                     hold = tmp3;
                     tmp3 =ft_strjoin("$", tmp3);
-                    free(hold);
                 }
                 else{
                     hold = tmp3;
                     tmp3 = ret_val(env_list, tmp3);
-                    free(hold);
                 }
         }
         else
@@ -87,10 +85,6 @@ char *expandHerdoc(t_env *env_list, char *str)
             result = ft_strjoin(result, tmp1);
             result = ft_strjoin(result, tmp3);
         }
-        free(tmp1);
-        free(tmp2);
-        if(tmp3 != NULL)
-            free(tmp3);
         if(str_hold == NULL)
             break;
     }
@@ -115,7 +109,6 @@ int heredoc(t_env *env_list, char *name , int flag)
             str = expandHerdoc(env_list, str);
 		write(fd[1], str, ft_strlen(str));
 		write(fd[1], "\n", 1);
-		free(str);
 	}
     return (close(fd[1]),fd[0]);
 }
@@ -353,14 +346,4 @@ void redirect(t_ex *t, t_env *env_list)
     open_herdocs(env_list, t);
     redirections(t);
     execution(t, env, env_list);
-    if(env)
-    {
-        while(*env)
-        {
-            free(*env);
-            env++;
-        }
-    }
-    //builtins
-    //normal cmds
 }
