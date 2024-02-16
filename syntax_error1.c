@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:22:55 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 17:34:02 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:05:27 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@ int	exit_status_fun(int exit_status)
 {
 	static int	value;
 
-	if (exit_status)
+	if (exit_status != -500)
+	{
+		puts("NEW EXIT VALUE");
+		printf("exit_status=[%d]\n", exit_status);
 		value = exit_status;
+	}
 	return (value);
 }
 

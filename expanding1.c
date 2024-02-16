@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:35:59 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:43:47 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:07:37 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*normal_expanding(t_env *env, char *str, int i)
 	else if (str[i] && ft_strchr(EXP, str[i]))
 	{
 		if (ft_strlen(str) == 2 && str[i] == '?')
-			new_str = ft_itoa(exit_status_fun(0));
+			new_str = ft_itoa(exit_status_fun(-500));
 		else
 			new_str = ret_val(env, &str[1]);
 	}

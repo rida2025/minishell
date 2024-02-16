@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 03:08:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 20:46:15 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:09:34 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,12 @@ void	ft_exit(char **cmd)
 		exit_error1();
 	else if (check_numeric(cmd[1]))
 		exit_error2(cmd[1]);
-	exit_status_fun((unsigned char)ft_atoi(cmd[1]));
+	if (ft_cmd_size(cmd) > 1)
+	{
+		exit_status_fun((unsigned char)ft_atoi(cmd[1]));
+	}
+	else
+	{
+		exit_status_fun(0);
+	}
 }

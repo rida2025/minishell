@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 20:49:25 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:59:53 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,5 +167,5 @@ int	main(int argc, char **argv, char **envp)
 	init_the_var(&var);
 	var.env = get_env(envp);
 	minishell(&token, &var, &parse);
-	return (exit_status_fun(0));
+	return (exit_status_fun(-500));
 }
