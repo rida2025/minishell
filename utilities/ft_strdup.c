@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 23:32:39 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 23:57:01 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/03 18:21:05 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strdup(const char *s1)
 		return (ft_strdup(""));
 	len = ft_strlen(s1);
 	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
+	if (str == NULL)
 		return (NULL);
 	while (s1[i] != '\0')
 	{

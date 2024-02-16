@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_to_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 09:58:20 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:05:55 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ char	**list_to_tab(t_env *env_list)
 	current = env_list;
 	while (current != NULL)
 	{
-		tab[i] = (char *)ft_malloc((ft_strlen(current->key)
-					+ ft_strlen(current->value + 2) * sizeof(char)));
-		ft_strcpy(tab[i], current->key);
-		tab[i][ft_strlen(current->key)] = '=';
-		ft_strcpy(tab[i++] + ft_strlen(current->key) + 1, current->value);
+		if(current->value)
+		{
+			tab[i] = (char *)ft_malloc(((ft_strlen(current->key) + ft_strlen(current->value) + 2) * sizeof(char)));
+			ft_strcpy(tab[i], current->key);
+			tab[i][ft_strlen(current->key)] = '=';
+			ft_strcpy(tab[i++] + ft_strlen(current->key) + 1, current->value);
+		}
 		current = current->next;
 	}
+	
 	return (tab[i] = NULL, tab);
 }

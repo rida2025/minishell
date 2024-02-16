@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:30:33 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:15:26 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ status:
 2 = inside sqoutes
 */
 
+
+
 typedef struct s_info
 {
 	int		i;
@@ -79,6 +81,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int				n_av;
 	struct s_env	*next;
 }	t_env;
 
@@ -141,7 +144,6 @@ void	free_files(t_red **file);
 void	free_redirections(t_redirect **file);
 void	free_commands(t_cmd **cmds);
 void	free_execution(t_ex **cmd);
-void	free_env(t_env **envs);
 
 //structure tools
 
@@ -165,7 +167,6 @@ char	*ft_strcat(char *dest, char *src);
 char	**ft_split(char const *s, char c);
 char	*ft_strcpy(char *dest, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-int		ft_atoi(const char *str);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -212,6 +213,7 @@ t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
 
 //built in + exec
 t_env	*get_env(char **envp);
+t_env	*get_env_help(void);
 t_env	*add_to_list(char *cmd, int flag, t_env *exp_list);
 int		pars_args(char *cmd);
 char	*find_path(char *full_paths, char *cmd);
@@ -231,7 +233,6 @@ void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
 int		ft_echo(char **args);
 void	ft_unset(t_env **env_list, char **cmd);
-void	ft_exit(char **cmd);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
@@ -275,6 +276,6 @@ void	print_tokenze(t_token **token);
 void	print_parsing(t_parselist **token);
 void	print_redirections(t_redirect *redirection);
 void	print_commands(t_cmd *commands);
-void	print_execution(t_ex *tmp);
+void	print_execution(t_ex *execution);
 
 #endif

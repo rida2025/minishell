@@ -6,18 +6,19 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 02:09:19 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 10:18:26 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	err_cmd(char *cmd)
+static void	err_cmd(char *cmd)
 {
 	write(2, "minishell: ", 12);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": command not found ", 21);
 	write(2, "\n", 1);
+	exit(1);
 }
 
 char	*my_strcpy(char *dest, char *src)
@@ -79,7 +80,6 @@ char	*find_path(char *full_paths, char *cmd)
 		if (fd == -1)
 		{
 			err_cmd(cmd);
-			exit(1);
 		}
 		return (free(path), joined);
 	}

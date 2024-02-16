@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:07:31 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 23:49:58 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:21:27 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_export(t_env *exp_list, char **allcmd)
 	int		i;
 	int		flag;
 
-	printf("qweqweq%s %sqweqweqwe\n",allcmd[0],allcmd[1]);
 	if (allcmd[1])
 	{
 		i = 1;
@@ -28,14 +27,12 @@ void	ft_export(t_env *exp_list, char **allcmd)
 			if (flag != -1)
 			{
 				exp_list = add_to_list(allcmd[i], flag, exp_list);
-				printf("+++++%s\n", (exp_list)->key);
 			}
 			i++;
 		}
 	}
 	else
 	{
-		printf("eqweqwe\n");
 		while ((exp_list))
 		{
 			if ((exp_list)->value)
@@ -45,7 +42,6 @@ void	ft_export(t_env *exp_list, char **allcmd)
 				printf("declare -x %s\n", (exp_list)->key);
 			(exp_list) = (exp_list)->next;
 		}
-		
 	}
 }
 

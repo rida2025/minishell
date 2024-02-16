@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:31:22 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:07:34 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sigint_handler(int signum)
-{
+void sigint_handler(int signum) {
 	if (signum == 2)
 	{
 		printf("\n");
@@ -28,22 +27,15 @@ void	sigint_handler(int signum)
 		return ;
 	}
 }
-
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 {
-	t_token	*remember;
-	int		flag;
+	int	old;
 
-	remember = NULL;
-	flag = 0;
+	old = 0;
 	while (tmp && (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
 			|| tmp->key == 10))
 	{
-		if (!flag)
-		{
-			remember = tmp;
-			flag = 1;
-		}
+		old = tmp->key;
 		if (!str)
 			str = ft_strjoinx(ft_strdup(""), tmp->value);
 		else
@@ -51,7 +43,7 @@ t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 		if (tmp)
 			tmp = tmp->next;
 	}
-	insert_node(parse, str, remember->key, remember->expand);
+	insert_node(parse, str, old, 1);
 	return (tmp);
 }
 
@@ -70,7 +62,7 @@ void	parse_tokens(t_token **token, t_parselist **parse)
 		else
 		{
 			str = NULL;
-			insert_node(parse, ft_strdup(tmp->value), tmp->key, tmp->expand);
+			insert_node(parse, ft_strdup(tmp->value), tmp->key, 1);
 			if (tmp)
 				tmp = tmp->next;
 		}
@@ -84,29 +76,34 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 
 	redirection = NULL;
 	commands = NULL;
+	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
 	remove_dollar(token);
 	remove_quotes(token);
+	//set expand to 0 if there was a quotes after heredoc
 	set_expanding(token);
-	// print_tokenze(token);
 	expand_variables(token, var->env, NULL);
 	// print_tokenze(token);
 	parse_tokens(token, parse);
+	
 	// print_parsing(parse);
 	name_redirections(parse, &redirection);
-	// print_redirections(redirection);
 	get_commands(parse, &commands);
+	// print_parsing(parse);
+	// print_redirections(redirection);
 	// print_commands(commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	// print_execution(var->cmd);
+	// print_execution(&var->cmd);
+	// printf("insertion of execution was done\n");
+	// //check if the cmd is not null and pass it to execution and start executing
+	//execution(var->cmd);
 	redirect(var->cmd, var->env);
 	free_listx(parse);
-	// free_env(&var->env);
 	free_redirections(&redirection);
 	free_commands(&commands);
 	free_execution(&var->cmd);
 }
 
-void	hangup_call(void)
+void	handup_call(void)
 {
 	write(1, "exit\n", 5);
 	exit(exit_status_fun(0));
@@ -114,14 +111,14 @@ void	hangup_call(void)
 
 int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 {
+	// (void)parse;
 	while (1)
 	{
 		rl_catch_signals = 0;
-		var->input = readline("minishell: ");
+		var->input = readline("minishell-1.0$ ");
+		//printf("test: %s\n", var->input);
 		if (!var->input)
-			hangup_call();
-		if (ft_strcmp(var->input, ""))
-			add_history(var->input);
+			handup_call();
 		if (check_s_dqoute(var->input))
 		{
 			free(var->input);
@@ -129,7 +126,7 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 			continue ;
 		}
 		tokenize(token, var->input);
-		//print_tokenze(token);
+		// print_tokenze(token);
 		if (check_tokenizing(token, var))
 		{
 			free(var->input);
@@ -137,9 +134,10 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 			continue ;
 		}
 		do_rest(token, var, parse);
+		add_history(var->input);
 		free_list(token);
 		free(var->input);
-		//system("leaks minishell");
+		 //system("leaks minishell");
 	}
 	return (0);
 }
@@ -166,6 +164,8 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, sigint_handler);
 	init_the_var(&var);
 	var.env = get_env(envp);
+	if (var.env == NULL)
+		var.env = get_env_help();
 	minishell(&token, &var, &parse);
 	return (exit_status_fun(0));
 }
