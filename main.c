@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 23:26:21 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:37:40 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 		var->input = readline("minishell-1.0$ ");
 		//printf("test: %s\n", var->input);
 		if (!var->input)
-			handup_call();
+			hangup_call();
 		if (ft_strcmp(var->input, ""))
 			add_history(var->input);
 		if (check_s_dqoute(var->input))
