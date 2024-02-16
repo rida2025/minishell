@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 12:46:17 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 09:12:34 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:10:23 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	insert_pipe(t_token **info, char *input, t_info *var, int len)
 		var->flag = 1;
 	}
 }
-
 
 void	tokenize(t_token **token, char *input)
 {

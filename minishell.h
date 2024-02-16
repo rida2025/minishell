@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:30:33 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:28:08 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_strcpy(char *dest, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_atoi(const char *str);
+void	free_strings(char **strs);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -204,11 +205,14 @@ void	parse_spaces(t_parselist **parse);
 //parsing function
 void	name_redirections(t_parselist **parse, t_redirect **redirection);
 void	get_commands(t_parselist **parse, t_cmd **commands);
+void	help_getcommand(t_parselist *tmp, t_cmd **commands, int *flag);
 void	put_node(t_redirect **redirection, char *str, int type, int expando);
 void	put_nodex(t_cmd **redirection, char *str, int type);
 void	insert_node(t_parselist **parse, char *value, int type, int expando);
 void	parse_tokens(t_token **token, t_parselist **parse);
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
+int		redirection_amount(t_parselist *parse);
+int		words_amout(t_parselist *parse);
 
 //built in + exec
 t_env	*get_env(char **envp);

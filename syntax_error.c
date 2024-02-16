@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:57:19 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 05:23:57 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 06:03:48 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	check_pipes_back(t_token *token)
 	token = token->previous;
 	if (token && token->key == 9)
 		token = token->previous;
-	if (!token || token->key == 1)
+	if (!token || token->key == 1 || token->key == 4 || token->key == 5
+		|| token->key == 6 || token->key == 7)
 	{
 		if (token && token->status != 0 && ft_strlen(token->value) > 2)
 			return (0);
