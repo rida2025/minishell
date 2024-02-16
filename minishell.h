@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 21:44:21 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:19:07 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,14 @@ status:
 2 = inside sqoutes
 */
 
+/*------- garb_clctr --------*/
+typedef struct s_grb
+{
+	void			*ptr;
+	struct s_grb	*next;
+}	t_grb;
+/*---------------------------*/
+
 typedef struct s_info
 {
 	int		i;
@@ -79,6 +87,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int				n_av;
 	struct s_env	*next;
 }	t_env;
 
@@ -132,6 +141,7 @@ typedef struct s_var
 	char			*input;
 	t_env			*env;
 	t_ex			*cmd;
+	t_grb			*garb;
 }	t_var;
 
 //free functions
@@ -141,8 +151,6 @@ void	free_files(t_red **file);
 void	free_redirections(t_redirect **file);
 void	free_commands(t_cmd **cmds);
 void	free_execution(t_ex **cmd);
-void	free_env(t_env **envs);
-void	free_rest(t_token **token, t_var *var);
 
 //signals
 void	sigint_handler(int signum);
@@ -219,6 +227,7 @@ int		words_amout(t_parselist *parse);
 
 //built in + exec
 t_env	*get_env(char **envp);
+t_env	*get_env_help(void);
 t_env	*add_to_list(char *cmd, int flag, t_env *exp_list);
 int		pars_args(char *cmd);
 char	*find_path(char *full_paths, char *cmd);
@@ -238,7 +247,6 @@ void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
 int		ft_echo(char **args);
 void	ft_unset(t_env **env_list, char **cmd);
-void	ft_exit(char **cmd);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
@@ -282,6 +290,11 @@ void	print_tokenze(t_token **token);
 void	print_parsing(t_parselist **token);
 void	print_redirections(t_redirect *redirection);
 void	print_commands(t_cmd *commands);
-void	print_execution(t_ex *tmp);
+void	print_execution(t_ex *execution);
+
+t_grb	**ft_collector(void);
+t_grb	*ft_lstnew_clctr(void *lst);
+void	ft_lstadd_back_clctr(t_grb **lst, t_grb *new);
+void	*ft_malloc(size_t len);
 
 #endif

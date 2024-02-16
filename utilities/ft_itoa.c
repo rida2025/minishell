@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 18:40:42 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/09 18:50:36 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:23:02 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ static	char	*min_int(void)
 {
 	char	*ret;
 
-	ret = malloc(12);
-	if (ret == NULL)
-		return (NULL);
+	ret = ft_malloc(12);
 	ft_strlcpy(ret, "-2147483648", 12);
 	return (ret);
 }
@@ -73,9 +71,7 @@ char	*ft_itoa(int n)
 	len = ft_nbrlen(n);
 	if (n == -2147483648)
 		return (min_int());
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (str == NULL)
-		return (NULL);
+	str = (char *)ft_malloc((len + 1) * sizeof(char));
 	str = ft_nbrcpy(str, n, len);
 	return (str);
 }

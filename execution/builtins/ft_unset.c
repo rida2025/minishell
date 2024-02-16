@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 04:05:41 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 22:44:17 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 10:50:28 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,29 @@ t_env *remove_node(t_env **env_list ,char *cmd)
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->key, cmd))
-			break;
+			break ;
 		befor_node = tmp;
 		tmp = tmp->next;
 	}
-	if(!tmp)
+	if (!tmp)
 		return (*env_list);
-	if(befor_node)
+	if (befor_node)
 		befor_node->next = tmp->next;
 	else
 		(*env_list) = (*env_list)->next;
 	free(tmp->key);
-	if(tmp->value)
+	if (tmp->value)
 		free(tmp->value);
 	free(tmp);
 	return (*env_list);
-	
 }
 
 
 void	ft_unset(t_env **env_list, char **cmd)
 {
-	int i;
-	int flag;
-	
+	int	i;
+	int	flag;
+
 	if (cmd[1])
 	{
 		i = 1;

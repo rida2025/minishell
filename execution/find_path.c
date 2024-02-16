@@ -6,18 +6,19 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 02:09:19 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:30:08 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	err_cmd(char *cmd)
+static void	err_cmd(char *cmd)
 {
 	write(2, "minishell: ", 12);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": command not found ", 21);
 	write(2, "\n", 1);
+	exit(1);
 }
 
 char	*my_strcpy(char *dest, char *src)
@@ -41,9 +42,7 @@ char	*search(char **path, char *cmd, int *fd, int *c)
 	char	*joined;
 	char	*filepath;
 
-	filepath = malloc(ft_strlen(path[*c]) + ft_strlen(cmd) + 2);
-	if (filepath == NULL)
-		return (perror(""), free(path), NULL);
+	filepath = ft_malloc(ft_strlen(path[*c]) + ft_strlen(cmd) + 2);
 	my_strcpy(filepath, path[*c]);
 	joined = ft_strjoin(filepath, cmd);
 	*fd = open(joined, O_RDONLY);
@@ -79,7 +78,6 @@ char	*find_path(char *full_paths, char *cmd)
 		if (fd == -1)
 		{
 			err_cmd(cmd);
-			exit(1);
 		}
 		return (free(path), joined);
 	}

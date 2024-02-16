@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:29:14 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 00:49:57 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:21:11 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	ft_cd(char **cmd, t_env *env_list)
 {
 	t_env *tmp;
 	char buffer[4000];
+
 	if(cmd[1] == NULL)
 	{
 		if(chdir(search_key(env_list,"HOME")) != -1)
@@ -51,14 +52,12 @@ void	ft_cd(char **cmd, t_env *env_list)
 		}else
 			write(2,"minishell: cd: HOME not set\n", 29);
 	}
-	
 	getcwd(buffer,3999);
 	if(chdir(cmd[1]) != -1)
 	{
 		tmp = get_node(env_list,"OLDPWD");
 		if(tmp)
 		{
-			//free(tmp->value);
 			tmp->value = ft_strdup(buffer);
 		}
 		else
@@ -75,12 +74,3 @@ void	ft_cd(char **cmd, t_env *env_list)
 	// 	print_error("minishell", "cd", cmd[1], "No such file or directory");
 	// }
 }
-
-// int main(int ac, char **av, char **envp)
-// {
-// 	char buffer[4000];
-// 	t_env *env = get_env(envp);
-	
-// 	ft_cd(av, env);
-// 	printf("%s\n", getcwd(buffer,3999));
-// }

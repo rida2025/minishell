@@ -6,63 +6,114 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:32:54 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 23:04:11 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:27:17 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../minishell.h"
-
-
-char	*generate_name(void)
+int check_one_of(char *str)
 {
-	static int		i;
-	char			*str;
-
-	if (i == 0)
-		i = 554;
-	str = ft_itoa(i);
-	// if (-2147483648)
-	// 	exit(1); 
-	while (access(str, F_OK) == 0 && i > 0)
-	{
-		free(str);
-		i++;
-		str = ft_itoa(i);
-		if (!str)
-			exit(1);
-	}
-	if (i < 0)
-		return (free(str), NULL);
-	return (str);
+    int i;
+    char *tmp =" \'\"$";
+    int j = 0;
+    i = 0;
+    while (str[i])
+    {
+       j = 0;
+       while (tmp[j])
+       {
+           if(str[i] == tmp[j])
+           {
+               return (tmp[j]);
+           }
+           j++;
+       }
+        i++;
+    }
+    return 0;
 }
-int heredoc(char *name)
+char *expandHerdoc(t_env *env_list, char *str)
 {
-    char *str;
+    char *str_hold = str;
+    char *tmp1 = NULL;
+    char *tmp2 =NULL;
+    char *tmp3 =NULL;
+    char *hold = NULL;
+    char *result = "";
+    int cases = 0;
+    // char *tmp4 = NULL;
+    
+    while(str_hold && ft_strchr(str_hold, '$'))
+    {
+        tmp1 = ft_substr(str_hold, 0, get_index(str_hold, '$'));
+        tmp2 = ft_substr(str_hold, get_index(str_hold, '$')+1, ft_strlen(str_hold) - get_index(str_hold, '$'));
+        cases = check_one_of(tmp2);
+        if(cases != 0)
+        {
+                tmp3 = ft_substr(tmp2, 0, get_index(tmp2, cases));
+                str_hold = ft_substr(tmp2, get_index(tmp2, cases), ft_strlen(tmp2) - get_index(tmp2, cases));
+                if(tmp3[0] == '\'' || tmp3[0] == '\"')
+                {
+                    hold = tmp3;
+                    tmp3 =ft_strjoin("$", tmp3);
+                }
+                else{
+                    hold = tmp3;
+                    tmp3 = ret_val(env_list, tmp3);
+                }
+        }
+        else
+        {
+            tmp3 = ft_strdup(tmp2);
+            if(tmp3[0] == '\'' || tmp3[0] == '\"')
+                tmp3 =ft_strjoin("$", tmp3);
+            else{
+                tmp3 = ret_val(env_list, tmp3);
+            }
+            str_hold = NULL;
+        }
+        if(tmp1 == NULL)
+            tmp1 = ft_strdup("");
+        if(tmp3 == NULL)
+            tmp3 = ft_strdup("");
+        if(result == NULL)
+            result = ft_strjoin(tmp1, tmp3);
+        else
+        {
+            hold = result;
+            result = ft_strjoin(result, tmp1);
+            result = ft_strjoin(result, tmp3);
+        }
+        if(str_hold == NULL)
+            break;
+    }
+    if(str_hold != NULL)
+        result = ft_strjoin(result, str_hold);
+    return (result);
+}
+
+int heredoc(t_env *env_list, char *name , int flag)
+{
     int fd[2];
-    str = generate_name();
-    if (!str)
-		exit(1);//rare case
-   fd[0] = open (str, O_RDWR | O_CREAT);
-   fd[1] = open (str, O_RDWR | O_CREAT);
-   
-    unlink(str);
-    free(str);
+    char *str;
+    
+    pipe(fd);
+    
 	while (1)
 	{
 		str = readline("> ");
 		if (!str || !ft_strrcmp(name, str))
 			break ;
-		// if (type == TYPE_HERE_DOC)
-		// 	str = expand_heredoc_line(str);
-		write(fd[0], str, ft_strlen(str));
-		write(fd[0], "\n", 1);
-		free(str);
+		if(flag == 1)
+            str = expandHerdoc(env_list, str);
+		write(fd[1], str, ft_strlen(str));
+		write(fd[1], "\n", 1);
 	}
-    return (close(fd[0]),fd[1]);
+    return (close(fd[1]),fd[0]);
 }
 
-void open_herdocs(t_ex *t)
+void open_herdocs(t_env *env_list, t_ex *t)
 {
 
     t_ex *iterate;
@@ -75,7 +126,7 @@ void open_herdocs(t_ex *t)
         {
             if (a->type == 7)
             {
-                a->type = heredoc(a->name) - 1500000;
+                iterate->fd[0] = heredoc(env_list, a->name,a->expand);
             }
               a = a->next;
         }
@@ -95,11 +146,8 @@ void redirections(t_ex *t)
         {
             if (a->type == 7) //heredoc
             {
-                if (iterate->fd[0] != -1)
-                    close(iterate->fd[0]);
-                iterate->fd[0] = a->type + 1500000;
             }
-            else if (a->type == 5) //<
+             if (a->type == 5) //<
             {
                 if (iterate->fd[0] != -1)
                     close(iterate->fd[0]);
@@ -150,50 +198,6 @@ void redirections(t_ex *t)
 }
 
 
-// char	**path(void)
-// {
-// 	const char	*path;
-// 	char		**paths;
-
-// 	path = ft_getenv("PATH");
-// 	if (!path)
-// 		path = gl.default_env[1];
-// 	if (!path && !*gl.default_env[1])
-// 		return (0);
-// 	paths = ft_split(path + 5, ':');
-// 	if (!paths)
-// 		ft_error(1, "malloc ");
-// 	return (paths);
-// }
-
-// char	*cmd_path(char **paths, char *cmd, char *tmp, char *str)
-// {
-// 	int		i;
-
-// 	i = -1;
-// 	if (!paths && cmd && cmd[0] == '/')
-// 		return (cmd);
-// 	if (!paths || !cmd || (ft_strchr(cmd, '/') && access(cmd, F_OK)))
-// 		return (0);
-// 	if ((ft_strchr(cmd, '/') && !access(cmd, F_OK)))
-// 		return (cmd);
-// 	while (paths[++i])
-// 	{
-// 		tmp = ft_strjoin(paths[i], "/");
-// 		if (!tmp)
-// 			return (0);
-// 		str = ft_strjoin(tmp, cmd);
-// 		free(tmp);
-// 		tmp = 0;
-// 		if (!str)
-// 			return (0);
-// 		if (!access(str, F_OK))
-// 			return (str);
-// 		free(str);
-// 	}
-// 	return (0);
-// }
-
 void	execution(t_ex *t, char **env, t_env *env_list)
 {
     t_ex	*it;
@@ -201,7 +205,6 @@ void	execution(t_ex *t, char **env, t_env *env_list)
     int		fd[2];
     char	*path;
     int		i;
-   // int		red[2];
     char	*full_path;
 
     fd[0] = -1;
@@ -209,8 +212,15 @@ void	execution(t_ex *t, char **env, t_env *env_list)
 	it = t;
 	i = 0;
     int tmp = -1;
+    t_ex *tmp_it;
+    tmp_it = it;
 	while (it)
 	{
+        if(it->cmd[0] == NULL)
+        {
+            it = it->next;
+            continue ;
+        }
 		if (it->next)
 		{
 			if (i == 0)
@@ -323,6 +333,7 @@ void	execution(t_ex *t, char **env, t_env *env_list)
      close(fd[0]);
     while (waitpid(-1, 0, 0) != -1)
         ;
+        
 }
 
 void redirect(t_ex *t, t_env *env_list)
@@ -330,10 +341,9 @@ void redirect(t_ex *t, t_env *env_list)
     char	**env;
     //first step is to handle heredoc 
     // we need to iterate over our linked list to open the herdcs
+    
     env = list_to_tab(env_list);
-    open_herdocs(t);
+    open_herdocs(env_list, t);
     redirections(t);
     execution(t, env, env_list);
-    //builtins
-    //normal cmds
 }

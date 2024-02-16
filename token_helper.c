@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 18:48:43 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 14:41:02 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:29:42 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	insert_token(t_token **info, int token, char *word)
 	t_token	*new_node;
 
 	tmp = *info;
-	new_node = malloc(sizeof(t_token));
-	if (!new_node)
-		return ;
+	new_node = ft_malloc(sizeof(t_token));
 	new_node->key = token;
 	new_node->value = word;
 	new_node->expand = 1;
