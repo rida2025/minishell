@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 03:08:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 11:28:43 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:46:15 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_numeric(char *exit)
 	int	i;
 
 	i = 0;
-	while (exit[i])
+	while (exit && exit[i])
 	{
 		while (exit[i] && check_space(exit[i]))
 			i++;
