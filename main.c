@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:14:56 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:31:22 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	get_commands(parse, &commands);
 	// print_commands(commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	print_execution(var->cmd);
-	// redirect(var->cmd, var->env);
+	// print_execution(var->cmd);
+	redirect(var->cmd, var->env);
 	free_listx(parse);
 	// free_env(&var->env);
 	free_redirections(&redirection);

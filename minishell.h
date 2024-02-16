@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 00:00:49 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:30:33 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ void	ft_export(t_env *exp_list, char **allcmd);
 void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
 int		ft_echo(char **args);
-void	ft_unset(t_env *env_list, char **cmd);
+void	ft_unset(t_env **env_list, char **cmd);
 void	ft_exit(char **cmd);
 
 //syntax error functions

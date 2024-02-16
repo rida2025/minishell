@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 05:03:53 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 02:09:19 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void	err_cmd(char *cmd)
 {
-	write(2, " command not found: ", 21);
+	write(2, "minishell: ", 12);
 	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found ", 21);
 	write(2, "\n", 1);
 }
 
@@ -76,7 +77,10 @@ char	*find_path(char *full_paths, char *cmd)
 		while (c++ < i - 1 && fd == -1)
 			joined = search(path, cmd, &fd, &c);
 		if (fd == -1)
+		{
 			err_cmd(cmd);
+			exit(1);
+		}
 		return (free(path), joined);
 	}
 	return (NULL);

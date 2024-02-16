@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:57:19 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:12:57 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 05:23:57 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ int	check_pipes_front(t_token *token)
 	token = token->next;
 	while (token && token->key == 9)
 		token = token->next;
-	if (!token || token->key == 1 || token->key == 4 || token->key == 5
-		|| token->key == 6 || token->key == 7)
+	if (!token || token->key == 1)
 	{
-		if (token->status != 0 && ft_strlen(token->value) > 2)
+		if (token && token->status != 0 && ft_strlen(token->value) > 2)
 			return (0);
 		if (!token)
 			return (pipe_error2(), 1);
@@ -40,10 +39,9 @@ int	check_pipes_back(t_token *token)
 	token = token->previous;
 	if (token && token->key == 9)
 		token = token->previous;
-	if (!token || token->key == 1 || token->key == 4 || token->key == 5
-		|| token->key == 6 || token->key == 7)
+	if (!token || token->key == 1)
 	{
-		if (token->status != 0 && ft_strlen(token->value) > 2)
+		if (token && token->status != 0 && ft_strlen(token->value) > 2)
 			return (0);
 		return (pipe_error1(save->value), 1);
 	}
@@ -63,11 +61,6 @@ int	check_pipes(t_token *token)
 
 int	help_check_redirection(t_var *var, t_token *token, t_token **tmp)
 {
-	// if (token->status != 0)
-	// {
-	// 	if (ft_strlen(token->value) == 2)
-	// 		return (redirection_error2(), 1);
-	// }
 	if (token->key == 8 && (*tmp)->key != 7)
 	{
 		if (check_expand(token->value, var->env)

@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 04:05:41 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/14 20:23:31 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/15 22:44:17 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int pars_args_unset(char *cmd)
 	return check_chr_unset(cmd);
 }
 
-t_env *remove_node(t_env *env_list ,char *cmd)
+t_env *remove_node(t_env **env_list ,char *cmd)
 {
 	t_env *tmp;
 	t_env *befor_node;
 
-	tmp = env_list;
+	tmp = (*env_list);
 	befor_node = NULL;
 	while (tmp)
 	{
@@ -54,21 +54,21 @@ t_env *remove_node(t_env *env_list ,char *cmd)
 		tmp = tmp->next;
 	}
 	if(!tmp)
-		return env_list;
+		return (*env_list);
 	if(befor_node)
 		befor_node->next = tmp->next;
 	else
-		env_list = env_list->next;
+		(*env_list) = (*env_list)->next;
 	free(tmp->key);
 	if(tmp->value)
 		free(tmp->value);
 	free(tmp);
-	return env_list;
+	return (*env_list);
 	
 }
 
 
-void	ft_unset(t_env *env_list, char **cmd)
+void	ft_unset(t_env **env_list, char **cmd)
 {
 	int i;
 	int flag;
@@ -81,7 +81,7 @@ void	ft_unset(t_env *env_list, char **cmd)
 			flag = 0;
 			flag = pars_args_unset(cmd[i]);
 			if (flag != -1)
-				env_list = remove_node(env_list,cmd[i]);
+				(*env_list) = remove_node((env_list),cmd[i]);
 			i++;
 		}
 	}

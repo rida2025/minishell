@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:29:14 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 02:04:44 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 00:49:57 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_cd(char **cmd, t_env *env_list)
 		tmp = get_node(env_list,"OLDPWD");
 		if(tmp)
 		{
-			free(tmp->value);
+			//free(tmp->value);
 			tmp->value = ft_strdup(buffer);
 		}
 		else
@@ -67,8 +67,20 @@ void	ft_cd(char **cmd, t_env *env_list)
 		if(tmp)
 		{
 			getcwd(buffer,3999);
-			free(tmp->value);
 			tmp->value = ft_strdup(buffer);
 		}
 	}
+	// else
+	// {
+	// 	print_error("minishell", "cd", cmd[1], "No such file or directory");
+	// }
 }
+
+// int main(int ac, char **av, char **envp)
+// {
+// 	char buffer[4000];
+// 	t_env *env = get_env(envp);
+	
+// 	ft_cd(av, env);
+// 	printf("%s\n", getcwd(buffer,3999));
+// }

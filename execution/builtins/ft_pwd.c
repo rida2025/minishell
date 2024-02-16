@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 01:47:47 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 02:34:45 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:13:02 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_pwd(void)
 	if (getcwd(buffer, sizeof(buffer)) != NULL)
 	{
 		ft_putstr_fd(buffer, 1);
+		ft_putstr_fd("\n", 1);
 		return ;
 	}
 	else

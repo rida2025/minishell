@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 23:02:17 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 11:26:43 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 05:31:53 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_builtin(t_ex *cmds)
 {
+	if (!cmds || !cmds->cmd[0])
+		exit (1);
 	if (!ft_strcmp(cmds->cmd[0], "export"))
 		return (1);
 	else if (!ft_strcmp(cmds->cmd[0], "echo"))
@@ -45,7 +47,7 @@ int	exec_builtin(char **cmds, t_env *env_list)
 	else if (!ft_strcmp(cmds[0], "exit"))
 		return (ft_exit(cmds), 0);
 	else if (!ft_strcmp(cmds[0], "unset"))
-		return (ft_unset(env_list, cmds), 0);
+		return (ft_unset(&env_list, cmds), 0);
 	else if (!ft_strcmp(cmds[0], "cd"))
 		return (ft_cd(cmds, env_list), 0);
 	else
