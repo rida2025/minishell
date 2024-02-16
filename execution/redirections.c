@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:32:54 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 04:23:44 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:04:11 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int heredoc(char *name)
 		str = readline("> ");
 		if (!str || !ft_strrcmp(name, str))
 			break ;
-		printf("HEEEEEEEEEE\n");
 		// if (type == TYPE_HERE_DOC)
 		// 	str = expand_heredoc_line(str);
 		write(fd[0], str, ft_strlen(str));
