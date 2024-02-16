@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:32:54 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 05:04:35 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:23:45 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*generate_name(void)
 		i++;
 		str = ft_itoa(i);
 		if (!str)
-				exit(1); //failed allocation;
+			exit(1); //failed allocation;
 	}
 	if (i < 0)
 		return (free(str), NULL);
@@ -252,6 +252,7 @@ void	execution(t_ex *t, char **env, t_env *env_list)
 		i++;
 		it = it->next;
 	}
+
 }
 
 void redirect(t_ex *t, t_env *env_list)

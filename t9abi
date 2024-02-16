@@ -1,0 +1,8 @@
+ls |>''<|''
+$USER" $HOME">lll<<  ''
+
+ls '   >' < ''<
+
+ls ''> $HOME // expand = leaks
+
+//when env -i ./minishell should be create default enverenmet

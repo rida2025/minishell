@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:09:30 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/14 15:27:21 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:56:52 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,16 @@ void	reset_expand(t_token *token)
 		token = token->next;
 		if (token->next && token->key == 9)
 			token = token->next;
-		while (token->next && token->next->key != 9)
+		while (token && token->key != 1 && token->key != 4
+			&& token->key != 5 && token->key != 6 && token->key != 7
+			&& token->key != 9)
 		{
-			token = token->next;
-			if (token->next && token->next->status != 0)
+			if (token && token->status != 0)
 				remember->expand = 0;
+			if (token->next)
+				token = token->next;
+			else
+				break ;
 		}
 	}
 }

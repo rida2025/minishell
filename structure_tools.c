@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 01:56:49 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 01:50:26 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,14 @@ t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size)
 		cmds = cmds->next;
 	while (cmds && i < size)
 	{
-		(*strs)[i] = ft_strdup(cmds->cmd);
+		if (!cmds->cmd)
+		{
+			(*strs)[i] = NULL;
+		}
+		else
+		{
+			(*strs)[i] = ft_strdup(cmds->cmd);
+		}
 		i++;
 		cmds = cmds->next;
 	}

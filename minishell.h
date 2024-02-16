@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 02:34:42 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 00:00:49 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ status:
 1 = inside dquotes
 2 = inside sqoutes
 */
-
-
 
 typedef struct s_info
 {
@@ -143,6 +141,7 @@ void	free_files(t_red **file);
 void	free_redirections(t_redirect **file);
 void	free_commands(t_cmd **cmds);
 void	free_execution(t_ex **cmd);
+void	free_env(t_env **envs);
 
 //structure tools
 
@@ -166,6 +165,7 @@ char	*ft_strcat(char *dest, char *src);
 char	**ft_split(char const *s, char c);
 char	*ft_strcpy(char *dest, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+int		ft_atoi(const char *str);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -227,10 +227,11 @@ void	redirect(t_ex *t, t_env *env_list);
 char	**list_to_tab(t_env *env_list);
 void	ft_env(t_env *env_list);
 void	ft_export(t_env *exp_list, char **allcmd);
-void		ft_pwd(void);
+void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
 int		ft_echo(char **args);
 void	ft_unset(t_env *env_list, char **cmd);
+void	ft_exit(char **cmd);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
@@ -274,6 +275,6 @@ void	print_tokenze(t_token **token);
 void	print_parsing(t_parselist **token);
 void	print_redirections(t_redirect *redirection);
 void	print_commands(t_cmd *commands);
-void	print_execution(t_ex **execution);
+void	print_execution(t_ex *tmp);
 
 #endif

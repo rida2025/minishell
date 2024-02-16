@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 02:12:45 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 00:29:22 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,22 @@ void sigint_handler(int signum) {
 		return ;
 	}
 }
+
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 {
-	int	old;
+	t_token	*remember;
+	int		flag;
 
-	old = 0;
+	remember = NULL;
+	flag = 0;
 	while (tmp && (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
 			|| tmp->key == 10))
 	{
-		old = tmp->key;
+		if (!flag)
+		{
+			remember = tmp;
+			flag = 1;
+		}
 		if (!str)
 			str = ft_strjoinx(ft_strdup(""), tmp->value);
 		else
@@ -43,7 +50,7 @@ t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
 		if (tmp)
 			tmp = tmp->next;
 	}
-	insert_node(parse, str, old, 1);
+	insert_node(parse, str, remember->key, remember->expand);
 	return (tmp);
 }
 
@@ -62,7 +69,7 @@ void	parse_tokens(t_token **token, t_parselist **parse)
 		else
 		{
 			str = NULL;
-			insert_node(parse, ft_strdup(tmp->value), tmp->key, 1);
+			insert_node(parse, ft_strdup(tmp->value), tmp->key, tmp->expand);
 			if (tmp)
 				tmp = tmp->next;
 		}
@@ -76,33 +83,29 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 
 	redirection = NULL;
 	commands = NULL;
-	//in do magic i handle variable expanding where cases like $"" or $'' or $"x" or $'x'
 	remove_dollar(token);
 	remove_quotes(token);
-	//set expand to 0 if there was a quotes after heredoc
 	set_expanding(token);
+	print_tokenze(token);
 	expand_variables(token, var->env, NULL);
 	print_tokenze(token);
 	parse_tokens(token, parse);
 	print_parsing(parse);
 	name_redirections(parse, &redirection);
-	get_commands(parse, &commands);
-	print_parsing(parse);
 	print_redirections(redirection);
+	get_commands(parse, &commands);
 	print_commands(commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	print_execution(&var->cmd);
-	// printf("insertion of execution was done\n");
-	// //check if the cmd is not null and pass it to execution and start executing
-	//execution(var->cmd);
-	redirect(var->cmd, var->env);
+	// redirect(var->cmd, var->env);
+	print_execution(var->cmd);
 	free_listx(parse);
+	// free_env(&var->env);
 	free_redirections(&redirection);
 	free_commands(&commands);
 	free_execution(&var->cmd);
 }
 
-void	handup_call(void)
+void	hangup_call(void)
 {
 	write(1, "exit\n", 5);
 	exit(exit_status_fun(0));
@@ -113,11 +116,9 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 	while (1)
 	{
 		rl_catch_signals = 0;
-		signal(SIGQUIT, sigint_handler);
-		signal(SIGINT, sigint_handler);
 		var->input = readline("minishell: ");
 		if (!var->input)
-			handup_call();
+			hangup_call();
 		add_history(var->input);
 		if (check_s_dqoute(var->input))
 		{
@@ -126,7 +127,7 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 			continue ;
 		}
 		tokenize(token, var->input);
-		print_tokenze(token);
+		//print_tokenze(token);
 		if (check_tokenizing(token, var))
 		{
 			free(var->input);
@@ -149,17 +150,18 @@ void	init_the_var(t_var *var)
 	var->cmd = NULL;
 }
 
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_token		*token;
 	t_parselist	*parse;
 	t_var		var;
 
-	(void)envp;
 	(void)argv;
 	(void)argc;
+	token = NULL;
+	parse = NULL;
+	signal(SIGQUIT, sigint_handler);
+	signal(SIGINT, sigint_handler);
 	init_the_var(&var);
 	var.env = get_env(envp);
 	minishell(&token, &var, &parse);

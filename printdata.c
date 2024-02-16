@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printdata.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:45:10 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 01:57:23 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 01:49:53 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	print_parsing(t_parselist **token)
 	tmp = *token;
 	while (tmp)
 	{
-		printf("value:[%s], key:[%d]\n",
-			tmp->command, tmp->key);
+		printf("value:[%s], key:[%d], expand[%d]\n",
+			tmp->command, tmp->key, tmp->expand);
 		tmp = tmp->next;
 	}
 	printf("parsing was displayed just a moment ago!\n\n");
@@ -67,24 +67,22 @@ void	print_commands(t_cmd *commands)
 	printf("commands where displayed just a moment ago!\n\n");
 }
 
-void	print_execution(t_ex **execution)
+void	print_execution(t_ex *tmp)
 {
-	t_ex	*tmp;
 	t_red		*redirection;
 	int			i;
 
-	tmp = *execution;
 	redirection = NULL;
-	i = 0;
 	while (tmp)
 	{
+		i = 0;
 		while (tmp->cmd && tmp->cmd[i])
 		{
 			printf("command:[%s]\n", tmp->cmd[i]);
 			i++;
 		}
 		redirection = tmp->red;
-		while (redirection)
+		while (redirection && redirection->name)
 		{
 			printf("filename:[%s], type=[%d], expand=[%d]\n",
 				redirection->name, redirection->type, redirection->expand);

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:35:59 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 14:10:37 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 01:49:04 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,14 @@ void	expand_variables(t_token **token, t_env *env, char *str)
 				str = normal_expanding(env, tmp->value, 1);
 			}
 			else if (tmp->key == 2 && tmp->status != 2)
+			{
+				if (there_is_heredoc(tmp))
+				{
+					tmp = tmp->next;
+					continue ;
+				}
 				str = new_advance_expander(tmp->value, env);
+			}
 			free(tmp->value);
 			tmp->value = str;
 		}
@@ -106,6 +113,7 @@ char	*normal_expanding(t_env *env, char *str, int i)
 			new_str = ft_itoa(exit_status_fun(0));
 		else
 			new_str = ret_val(env, &str[1]);
+		printf("normal_expanding>>>>%p\n", &new_str);
 	}
 	else
 		new_str = bringme_new_str(str, &i);

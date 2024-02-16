@@ -3,7 +3,7 @@ NAME = minishell
 COMPILER = cc
 
 FLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
-OTHERFLAGS = -lreadline
+OTHERFLAGS = -lreadline  -L  /Users/mel-jira/homebrew/opt/readline/lib
 
 FILES = main.c \
 		utilities/ft_putstr_fd.c \
@@ -24,8 +24,10 @@ FILES = main.c \
 		utilities/ft_strcat.c \
 		utilities/ft_strcpy.c \
 		utilities/ft_strrcmp.c \
+		utilities/ft_atoi.c \
 		execution/builtins/ft_cd.c \
 		execution/builtins/ft_echo.c \
+		execution/builtins/ft_exit.c \
 		execution/builtins/ft_env.c \
 		execution/builtins/ft_export.c \
 		execution/builtins/ft_pwd.c \
@@ -62,10 +64,10 @@ OBJ = $(FILES:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(COMPILER) $(FLAGS) $(OTHERFLAGS) -lreadline  -L  /Users/sacharai/.brew/opt/readline/lib  $(OBJ) -o $(NAME)
+	$(COMPILER) $(FLAGS) $(OTHERFLAGS) $(OBJ) -o $(NAME)
 
 %.o: %.c minishell.h
-	$(COMPILER) $(FLAGS) -I  /Users/sacharai/.brew/opt/readline/include -c $< -o $@
+	$(COMPILER) $(FLAGS) -I /Users/mel-jira/homebrew/opt/readline/include -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)

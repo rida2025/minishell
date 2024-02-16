@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 15:12:18 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 01:56:28 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 01:50:17 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec)
 		tmp1 = create_redirection_list(tmp1, &tmp3);
 		add_node(exec, strs, &tmp3);
 		tmp3 = NULL;
+		strs = NULL;
 	}
 }

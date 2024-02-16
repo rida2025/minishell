@@ -6,13 +6,13 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 21:03:04 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/10 15:31:22 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 01:56:06 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_expand(char *str, t_env *env)
+int	check_expand(char *str, t_env *env)
 {
 	char	*new_str;
 
@@ -27,7 +27,7 @@ int check_expand(char *str, t_env *env)
 		if (!new_str)
 			return (1);
 	}
-	return (0);
+	return (free(new_str), 0);
 }
 
 int	count_words(char *str)
@@ -66,5 +66,5 @@ int check_ambiguous(char *str, t_env *env)
 		if (count_words(new_str) > 1 || count_words(new_str) == 0)
 			return (1);
 	}
-	return (0);
+	return (free(new_str), 0);
 }
