@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 20:28:08 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:44:21 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,11 @@ void	free_redirections(t_redirect **file);
 void	free_commands(t_cmd **cmds);
 void	free_execution(t_ex **cmd);
 void	free_env(t_env **envs);
+void	free_rest(t_token **token, t_var *var);
 
-//structure tools
+//signals
+void	sigint_handler(int signum);
+void	hangup_call(void);
 
 //utilits
 int		ft_strcmp(const char *s1, const char *s2);
@@ -185,7 +188,7 @@ void	insert_token(t_token **info, int token, char *word);
 
 //expanding functions
 void	remove_dollar(t_token **token);
-void	expand_variables(t_token **token, t_env *env, char *str);
+void	expand_variables(t_token **token, t_env *env, char *str, int index);
 int		there_is_heredoc(t_token *token);
 void	reset_expand(t_token *token);
 char	*normal_expanding(t_env *env, char *str, int i);

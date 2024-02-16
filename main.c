@@ -6,76 +6,11 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 20:59:53 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:44:46 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sigint_handler(int signum)
-{
-	if (signum == 2)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		exit_status_fun(1);
-	}
-	else if (signum == 3)
-	{
-		rl_replace_line("", 0);
-		return ;
-	}
-}
-
-t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str)
-{
-	t_token	*remember;
-	int		flag;
-
-	remember = NULL;
-	flag = 0;
-	while (tmp && (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
-			|| tmp->key == 10))
-	{
-		if (!flag)
-		{
-			remember = tmp;
-			flag = 1;
-		}
-		if (!str)
-			str = ft_strjoinx(ft_strdup(""), tmp->value);
-		else
-			str = ft_strjoinx(str, tmp->value);
-		if (tmp)
-			tmp = tmp->next;
-	}
-	insert_node(parse, str, remember->key, remember->expand);
-	return (tmp);
-}
-
-void	parse_tokens(t_token **token, t_parselist **parse)
-{
-	t_token	*tmp;
-	char	*str;
-
-	str = NULL;
-	tmp = *token;
-	while (tmp)
-	{
-		if (tmp->key == 0 || tmp->status != 0 || tmp->key == 8
-			|| tmp->key == 10)
-			tmp = parse_helper1(tmp, parse, str);
-		else
-		{
-			str = NULL;
-			insert_node(parse, ft_strdup(tmp->value), tmp->key, tmp->expand);
-			if (tmp)
-				tmp = tmp->next;
-		}
-	}
-}
 
 void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 {
@@ -87,29 +22,22 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	remove_dollar(token);
 	remove_quotes(token);
 	set_expanding(token);
-	// print_tokenze(token);
-	expand_variables(token, var->env, NULL);
-	// print_tokenze(token);
+	expand_variables(token, var->env, NULL, 0);
 	parse_tokens(token, parse);
-	// print_parsing(parse);
 	name_redirections(parse, &redirection);
-	// print_redirections(redirection);
 	get_commands(parse, &commands);
-	// print_commands(commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	// print_execution(var->cmd);
 	redirect(var->cmd, var->env);
 	free_listx(parse);
-	// free_env(&var->env);
 	free_redirections(&redirection);
 	free_commands(&commands);
 	free_execution(&var->cmd);
 }
 
-void	hangup_call(void)
+void	free_rest(t_token **token, t_var *var)
 {
-	write(1, "exit\n", 5);
-	exit(exit_status_fun(0));
+	free_list(token);
+	free(var->input);
 }
 
 int	minishell(t_token **token, t_var *var, t_parselist	**parse)
@@ -129,7 +57,6 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 			continue ;
 		}
 		tokenize(token, var->input);
-		//print_tokenze(token);
 		if (check_tokenizing(token, var))
 		{
 			free(var->input);
@@ -137,9 +64,7 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 			continue ;
 		}
 		do_rest(token, var, parse);
-		free_list(token);
-		free(var->input);
-		//system("leaks minishell");
+		free_rest(token, var);
 	}
 	return (0);
 }

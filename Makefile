@@ -45,6 +45,7 @@ FILES = main.c \
 		tokenizing_3.c \
 		parsing.c \
 		parsing2.c \
+		parsing3.c \
 		parsing_tools.c \
 		get_env.c \
 		syntax_error.c \
@@ -59,6 +60,7 @@ FILES = main.c \
 		execution.c \
 		structure_helper.c \
 		structure_helper2.c \
+		signals.c \
 		printdata.c
 
 OBJ = $(FILES:.c=.o)
