@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 01:48:35 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:00:39 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ char	*ret_val(t_env *env_list, char *var)
 	{
 		if (ft_strcmp(tmp->key, var) == 0)
 		{
-			printf("1ret_val>>>>%p\n", &(tmp->value));
 			char * ss = ft_strdup(tmp->value);
-			printf("2ret_val>>>>%p\n", &ss);
 			return (ss);
 		}
 		tmp = tmp->next;

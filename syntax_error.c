@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:57:19 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 16:23:33 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:12:57 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ int	check_pipes_front(t_token *token)
 	token = token->next;
 	while (token && token->key == 9)
 		token = token->next;
-	if (!token || token->key == 1)
+	if (!token || token->key == 1 || token->key == 4 || token->key == 5
+		|| token->key == 6 || token->key == 7)
 	{
+		if (token->status != 0 && ft_strlen(token->value) > 2)
+			return (0);
 		if (!token)
 			return (pipe_error2(), 1);
-		else
-			return (pipe_error1(save->value), 1);
+		return (pipe_error1(save->value), 1);
 	}
 	return (0);
 }
@@ -38,7 +40,8 @@ int	check_pipes_back(t_token *token)
 	token = token->previous;
 	if (token && token->key == 9)
 		token = token->previous;
-	if (!token || token->key == 1)
+	if (!token || token->key == 1 || token->key == 4 || token->key == 5
+		|| token->key == 6 || token->key == 7)
 	{
 		if (token->status != 0 && ft_strlen(token->value) > 2)
 			return (0);
@@ -60,11 +63,11 @@ int	check_pipes(t_token *token)
 
 int	help_check_redirection(t_var *var, t_token *token, t_token **tmp)
 {
-	if (token->status != 0)
-	{
-		if (ft_strlen(token->value) == 2)
-			return (redirection_error2(), 1);
-	}
+	// if (token->status != 0)
+	// {
+	// 	if (ft_strlen(token->value) == 2)
+	// 		return (redirection_error2(), 1);
+	// }
 	if (token->key == 8 && (*tmp)->key != 7)
 	{
 		if (check_expand(token->value, var->env)
@@ -79,8 +82,10 @@ int	check_redirection_front(t_token *token, t_var *var)
 	t_token	*tmp;
 
 	tmp = token;
+	if (token->key == 7)
+		return (0);
 	token = token->next;
-	while (token && token->key == 9)
+	if (token && token->key == 9)
 		token = token->next;
 	if (token && (token->key == 0 || token->key == 2 || token->key == 3
 			|| token->key == 8 || token->key == 10))
@@ -107,10 +112,10 @@ int	help_checking(t_token *token, t_var *var)
 	tmp = token->next;
 	if (token->key == 7)
 	{
-		while (tmp && tmp->key == 9)
+		if (tmp && tmp->key == 9)
 			tmp = tmp->next;
 		if (tmp && (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-				|| tmp->key == 6 || tmp->key == 7 || tmp->key == 1))
+				|| tmp->key == 7 || tmp->key == 1))
 			return (redirection_error4(), 1);
 	}
 	if (check_redirection(token, var))

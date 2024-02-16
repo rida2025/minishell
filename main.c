@@ -6,13 +6,14 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 00:29:22 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:14:56 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void sigint_handler(int signum) {
+void	sigint_handler(int signum)
+{
 	if (signum == 2)
 	{
 		printf("\n");
@@ -86,18 +87,18 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	remove_dollar(token);
 	remove_quotes(token);
 	set_expanding(token);
-	print_tokenze(token);
+	// print_tokenze(token);
 	expand_variables(token, var->env, NULL);
-	print_tokenze(token);
+	// print_tokenze(token);
 	parse_tokens(token, parse);
-	print_parsing(parse);
+	// print_parsing(parse);
 	name_redirections(parse, &redirection);
-	print_redirections(redirection);
+	// print_redirections(redirection);
 	get_commands(parse, &commands);
-	print_commands(commands);
+	// print_commands(commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	// redirect(var->cmd, var->env);
 	print_execution(var->cmd);
+	// redirect(var->cmd, var->env);
 	free_listx(parse);
 	// free_env(&var->env);
 	free_redirections(&redirection);
@@ -119,7 +120,8 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 		var->input = readline("minishell: ");
 		if (!var->input)
 			hangup_call();
-		add_history(var->input);
+		if (ft_strcmp(var->input, ""))
+			add_history(var->input);
 		if (check_s_dqoute(var->input))
 		{
 			free(var->input);
@@ -137,7 +139,7 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 		do_rest(token, var, parse);
 		free_list(token);
 		free(var->input);
-		system("leaks minishell");
+		//system("leaks minishell");
 	}
 	return (0);
 }

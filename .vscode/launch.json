@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/goinfre/mel-jira/ms",
-      "program": "/goinfre/mel-jira/ms/build/Debug/outDebug"
+      "cwd": "/Users/mel-jira/Desktop/minishell_1",
+      "program": "/Users/mel-jira/Desktop/minishell_1/build/Debug/outDebug"
     }
   ]
 }
