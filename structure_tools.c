@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 01:50:26 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:29:17 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	add_red_node(t_red **redirection, char *str, int key, int expando)
 	t_red	*new_node;
 
 	tmp = *redirection;
-	new_node = malloc(sizeof(t_redirect));
+	new_node = ft_malloc(sizeof(t_redirect));
 	new_node->name = str;
 	new_node->type = key;
 	new_node->expand = expando;
@@ -80,7 +80,7 @@ void	add_node(t_ex **execution, char **strs, t_red **redirection)
 	t_ex	*new_node;
 
 	tmp = *execution;
-	new_node = malloc(sizeof(t_ex));
+	new_node = ft_malloc(sizeof(t_ex));
 	new_node->cmd = strs;
 	new_node->fd[0] = -1;
 	new_node->fd[1] = -1;
@@ -105,7 +105,7 @@ void	put_node(t_redirect **redirection, char *str, int type, int expando)
 	t_redirect	*new_node;
 
 	tmp = *redirection;
-	new_node = malloc(sizeof(t_redirect));
+	new_node = ft_malloc(sizeof(t_redirect));
 	new_node->value = str;
 	new_node->key = type;
 	new_node->expand = expando;

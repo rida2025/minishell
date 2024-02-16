@@ -2,7 +2,7 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror
 OTHERFLAGS = -lreadline
 
 FILES = main.c \
@@ -56,7 +56,8 @@ FILES = main.c \
 		check_expand.c \
 		execution.c \
 		structure_helper.c \
-		printdata.c
+		printdata.c \
+		garbg_clctr.c
 
 OBJ = $(FILES:.c=.o)
 

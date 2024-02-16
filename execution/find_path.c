@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 10:18:26 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:30:08 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ char	*search(char **path, char *cmd, int *fd, int *c)
 	char	*joined;
 	char	*filepath;
 
-	filepath = malloc(ft_strlen(path[*c]) + ft_strlen(cmd) + 2);
-	if (filepath == NULL)
-		return (perror(""), free(path), NULL);
+	filepath = ft_malloc(ft_strlen(path[*c]) + ft_strlen(cmd) + 2);
 	my_strcpy(filepath, path[*c]);
 	joined = ft_strjoin(filepath, cmd);
 	*fd = open(joined, O_RDONLY);

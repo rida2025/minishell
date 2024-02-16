@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 21:05:55 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:22:10 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	*ft_malloc(size_t len)
 	ptr = malloc(len);
 	if (!ptr)
 		exit(1);
+	ft_lstadd_back_clctr(ft_collector(), ft_lstnew_clctr(ptr));
 	return (ptr);
 }
 

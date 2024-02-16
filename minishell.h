@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 20:15:26 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:25:52 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,13 @@ status:
 2 = inside sqoutes
 */
 
-
+/*------- garb_clctr --------*/
+typedef struct s_grb
+{
+	void			*ptr;
+	struct s_grb	*next;
+}	t_grb;
+/*---------------------------*/
 
 typedef struct s_info
 {
@@ -135,6 +141,7 @@ typedef struct s_var
 	char			*input;
 	t_env			*env;
 	t_ex			*cmd;
+	t_grb			*garb;
 }	t_var;
 
 //free functions
@@ -277,5 +284,10 @@ void	print_parsing(t_parselist **token);
 void	print_redirections(t_redirect *redirection);
 void	print_commands(t_cmd *commands);
 void	print_execution(t_ex *execution);
+
+t_grb	**ft_collector(void);
+t_grb	*ft_lstnew_clctr(void *lst);
+void	ft_lstadd_back_clctr(t_grb **lst, t_grb *new);
+void	*ft_malloc(size_t len);
 
 #endif

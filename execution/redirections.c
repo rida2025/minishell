@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 14:32:54 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 21:08:11 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:35:06 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,50 +205,6 @@ void redirections(t_ex *t)
 }
 
 
-// char	**path(void)
-// {
-// 	const char	*path;
-// 	char		**paths;
-
-// 	path = ft_getenv("PATH");
-// 	if (!path)
-// 		path = gl.default_env[1];
-// 	if (!path && !*gl.default_env[1])
-// 		return (0);
-// 	paths = ft_split(path + 5, ':');
-// 	if (!paths)
-// 		ft_error(1, "malloc ");
-// 	return (paths);
-// }
-
-// char	*cmd_path(char **paths, char *cmd, char *tmp, char *str)
-// {
-// 	int		i;
-
-// 	i = -1;
-// 	if (!paths && cmd && cmd[0] == '/')
-// 		return (cmd);
-// 	if (!paths || !cmd || (ft_strchr(cmd, '/') && access(cmd, F_OK)))
-// 		return (0);
-// 	if ((ft_strchr(cmd, '/') && !access(cmd, F_OK)))
-// 		return (cmd);
-// 	while (paths[++i])
-// 	{
-// 		tmp = ft_strjoin(paths[i], "/");
-// 		if (!tmp)
-// 			return (0);
-// 		str = ft_strjoin(tmp, cmd);
-// 		free(tmp);
-// 		tmp = 0;
-// 		if (!str)
-// 			return (0);
-// 		if (!access(str, F_OK))
-// 			return (str);
-// 		free(str);
-// 	}
-// 	return (0);
-// }
-
 void	execution(t_ex *t, char **env, t_env *env_list)
 {
     t_ex	*it;
@@ -256,7 +212,6 @@ void	execution(t_ex *t, char **env, t_env *env_list)
     int		fd[2];
     char	*path;
     int		i;
-   // int		red[2];
     char	*full_path;
 
     fd[0] = -1;
@@ -266,12 +221,6 @@ void	execution(t_ex *t, char **env, t_env *env_list)
     int tmp = -1;
     t_ex *tmp_it;
     tmp_it = it;
-    //print the linked list values
-    // while(tmp_it)
-    // {
-    //     printf("CMD: %s\n", tmp_it->cmd[0]);
-    //     tmp_it = tmp_it->next;
-    // }
 	while (it)
 	{
         if(it->cmd[0] == NULL)
@@ -406,13 +355,11 @@ void redirect(t_ex *t, t_env *env_list)
     execution(t, env, env_list);
     if(env)
     {
-    while(*env)
-    {
-        free(*env);
-        env++;
-    }
-    // free(env);
-        
+        while(*env)
+        {
+            free(*env);
+            env++;
+        }
     }
     //builtins
     //normal cmds

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure_tools2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 20:39:16 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/13 20:48:28 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:29:32 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	put_nodex(t_cmd **redirection, char *str, int type)
 	t_cmd	*new_node;
 
 	tmp = *redirection;
-	new_node = malloc(sizeof(t_cmd));
+	new_node = ft_malloc(sizeof(t_cmd));
 	new_node->cmd = str;
 	new_node->key = type;
 	new_node->next = NULL;
@@ -38,7 +38,7 @@ void	insert_node(t_parselist **parse, char *value, int type, int expando)
 	t_parselist	*new_node;
 
 	tmp = *parse;
-	new_node = malloc(sizeof(t_parselist));
+	new_node = ft_malloc(sizeof(t_parselist));
 	new_node->command = value;
 	new_node->key = type;
 	new_node->expand = expando;

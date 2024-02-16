@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:40:37 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 14:20:54 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:29:58 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_env	*add_to_list(char *cmd , int flag, t_env *exp_list)
 		free(help);
 		if (tmp == NULL)
 		{
-			new = (t_env *)malloc(sizeof(t_env));
+			new = (t_env *)ft_malloc(sizeof(t_env));
 			new->key = ft_substr(cmd, 0, get_index(cmd, '+'));
 			new->value = ft_strdup(equal_sign + 2);
 			add_back(&exp_list,new);
@@ -84,7 +84,7 @@ t_env	*add_to_list(char *cmd , int flag, t_env *exp_list)
 		}
 		return ((exp_list));
 	}
-	new = (t_env *)malloc(sizeof(t_env));
+	new = (t_env *)ft_malloc(sizeof(t_env));
 	if (!ft_strchr(cmd, '='))
 	{
 		new->key = ft_strdup(cmd);
