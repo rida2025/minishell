@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 21:41:29 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 21:44:35 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/17 05:46:02 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,10 @@ void	hangup_call(void)
 {
 	write(1, "exit\n", 5);
 	exit(exit_status_fun(0));
+}
+
+void	restore_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
