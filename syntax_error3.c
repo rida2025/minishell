@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:32:10 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 21:34:43 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/17 00:15:33 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	help_checking(t_token *token, t_var *var)
 	{
 		if (tmp && tmp->key == 9)
 			tmp = tmp->next;
-		if (tmp && (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-				|| tmp->key == 7 || tmp->key == 1))
+		if ((tmp && (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
+					|| tmp->key == 7 || tmp->key == 1)) || !tmp)
 			return (redirection_error4(), 1);
 	}
 	if (check_redirection(token, var))

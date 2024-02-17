@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 03:08:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 23:27:54 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/17 01:45:22 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	exit_error1(void)
 	ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd("to many arguments\n", 2);
-	exit_status_fun(1);
+	exit_status_fun(255);
 }
 
 void	exit_error2(char *str)
@@ -60,19 +60,21 @@ int	check_numeric(char *exit)
 
 void	ft_exit(char **cmd)
 {
-	if (ft_cmd_size(cmd) > 2)
-		exit_error1();
-	else if (check_numeric(cmd[1]))
-		exit_error2(cmd[1]);
-	
-	if (ft_cmd_size(cmd) > 1)
+	if (ft_cmd_size(cmd) == 2)
 	{
-		
 		exit(exit_status_fun((unsigned char)ft_atoi(cmd[1])));
+	}
+	if (check_numeric(cmd[1]))
+	{
+		exit_error2(cmd[1]);
+		exit(exit_status_fun(255));
+	}
+	if (ft_cmd_size(cmd) > 2)
+	{
+		exit_error1();
 	}
 	else
 	{
-		
 		exit(exit_status_fun(0));
 	}
 }

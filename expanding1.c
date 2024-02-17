@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:35:59 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 21:35:06 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:56:05 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,12 @@ void	expand_variables(t_token **token, t_env *env, char *str, int index)
 
 int	there_is_heredoc(t_token *token)
 {
-	if (token->previous)
+	while (token->previous)
 	{
 		token = token->previous;
 		if (token->key == 9)
+			token = token->previous;
+		if (token->status != 0)
 			token = token->previous;
 		if (token->key == 7)
 			return (1);

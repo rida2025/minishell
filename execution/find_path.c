@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 22:30:08 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/17 05:43:12 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	err_cmd(char *cmd)
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": command not found ", 21);
 	write(2, "\n", 1);
+	exit_status_fun(127);
 	exit(1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:09:30 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/15 16:56:52 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/17 00:31:17 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*bring_me_expand(char *str, int *i, t_env *env)
 	if (str[*i + 1] && (ft_strchr(EXP, str[*i + 1]) || ft_isdigit(str[*i + 1])))
 	{
 		if (str[*i + 1] == '?' && ft_strlen(&str[*i]) == 2)
-			new_str = ft_itoa(exit_status_fun(0));
+			new_str = ft_itoa(exit_status_fun(-500));
 		else
 			new_str = skipandexpand(str, i, env);
 	}

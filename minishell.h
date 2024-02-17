@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 23:19:07 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/17 01:16:20 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ int		print_error(char *name, char *cmd, char *str, char *message);
 void	redirect(t_ex *t, t_env *env_list);
 char	**list_to_tab(t_env *env_list);
 void	ft_env(t_env *env_list);
+void	ft_exit(char **cmd);
 void	ft_export(t_env *exp_list, char **allcmd);
 void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
