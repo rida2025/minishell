@@ -1,0 +1,5 @@
+// fork another process if i expand >> $""
+
+
+// minishell-1.0$ <<
+//minishell: syntax error near unexpected token `<'

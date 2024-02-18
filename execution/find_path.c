@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/17 05:43:12 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:56:00 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*find_path(char *full_paths, char *cmd)
 	fd = -1;
 	if (cmd[i] == '/' || cmd[i] == '.')
 		return (cmd);
-	path = ft_split(full_paths, ':');
+	path = ft_split(full_paths, ":");
 	if (path)
 	{
 		while (path[i])

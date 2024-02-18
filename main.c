@@ -6,13 +6,11 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/18 15:12:35 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:44:40 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 {
@@ -32,7 +30,8 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	name_redirections(parse, &redirection);
 	get_commands(parse, &commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	redirect(var->cmd, var->env);
+	if (var->cmd && (var->cmd->red || var->cmd->cmd))
+		redirect(var->cmd, var->env);
 	free_listx(parse);
 	free_list(&token2);
 	free_redirections(&redirection);

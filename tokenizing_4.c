@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizin_4.c                                      :+:      :+:    :+:   */
+/*   tokenizing_4.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 15:11:59 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/18 15:12:17 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:57:45 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	extra_tokenizing(t_token *token, t_token **token2)
 	int		j;
 
 	i = 0;
-	strs = ft_split(token->value, ' ');
+	strs = ft_split(token->value, "\t\n\v\f\r ");
 	j = string_size(strs);
 	while (strs[i])
 	{

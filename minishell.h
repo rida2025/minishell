@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/18 15:16:22 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:58:32 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int		ft_isdigit(int c);
 char	*ft_itoa(int n);
 int		ft_lstsize(t_ex *lst);
 char	*ft_strcat(char *dest, char *src);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char *str, char *charset);
 char	*ft_strcpy(char *dest, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_atoi(const char *str);
