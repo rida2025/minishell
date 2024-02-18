@@ -3,49 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   structure_tools.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 15:29:35 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/01/15 22:15:04 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:29:17 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_node(t_tokenlist **info, char *nword, int nposition)
+void	add_red_node(t_red **redirection, char *str, int key, int expando)
 {
-	t_tokenlist	*new_node;
-	t_tokenlist	*tmp;
+	t_red	*tmp;
+	t_red	*new_node;
 
-	tmp = *info;
-	new_node = malloc(sizeof(t_tokenlist));
-	new_node->position = nposition;
-	new_node->word = nword;
-	new_node->type = 0;
-	new_node->status = 1;
+	tmp = *redirection;
+	new_node = ft_malloc(sizeof(t_redirect));
+	new_node->name = str;
+	new_node->type = key;
+	new_node->expand = expando;
 	new_node->next = NULL;
-	new_node->previous = NULL;
-	if (!*info)
-		*info = new_node;
+	if (!*redirection)
+		*redirection = new_node;
 	else
 	{
 		while (tmp->next)
 			tmp = tmp->next;
-		new_node->previous = tmp;
 		tmp->next = new_node;
 	}
 }
 
-void	free_list(t_tokenlist **info)
+t_redirect	*create_redirection_list(t_redirect *redirect, t_red **red)
 {
-	t_tokenlist	*tmp;
+	t_red	*new_node;
 
-	while (*info)
+	new_node = NULL;
+	if (redirect && redirect->key == 1)
+		redirect = redirect->next;
+	while (redirect && redirect->key != 1)
 	{
-		tmp = *info;
-		*info = (*info)->next;
-		free(tmp->word);
-		free(tmp);
+		add_red_node(&new_node, ft_strdup(redirect->value),
+			redirect->key, redirect->expand);
+		redirect = redirect->next;
 	}
-	//free(tmp);
+	*red = new_node;
+	return (redirect);
+}
+
+t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size)
+{
+	int		i;
+
+	i = 0;
+	if (cmds && cmds->key == 1)
+		cmds = cmds->next;
+	while (cmds && i < size)
+	{
+		if (!cmds->cmd)
+		{
+			(*strs)[i] = NULL;
+		}
+		else
+		{
+			(*strs)[i] = ft_strdup(cmds->cmd);
+		}
+		i++;
+		cmds = cmds->next;
+	}
+	(*strs)[i] = NULL;
+	return (cmds);
+}
+
+void	add_node(t_ex **execution, char **strs, t_red **redirection)
+{
+	t_ex	*tmp;
+	t_ex	*new_node;
+
+	tmp = *execution;
+	new_node = ft_malloc(sizeof(t_ex));
+	new_node->cmd = strs;
+	new_node->fd[0] = -1;
+	new_node->fd[1] = -1;
+	if (!*redirection)
+		new_node->red = NULL;
+	else
+		new_node->red = *redirection;
+	new_node->next = NULL;
+	if (!*execution)
+		*execution = new_node;
+	else
+	{
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_node;
+	}
+}
+
+void	put_node(t_redirect **redirection, char *str, int type, int expando)
+{
+	t_redirect	*tmp;
+	t_redirect	*new_node;
+
+	tmp = *redirection;
+	new_node = ft_malloc(sizeof(t_redirect));
+	new_node->value = str;
+	new_node->key = type;
+	new_node->expand = expando;
+	new_node->next = NULL;
+	if (!*redirection)
+		*redirection = new_node;
+	else
+	{
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_node;
+	}
 }
