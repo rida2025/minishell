@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:11 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/18 20:56:00 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 21:07:16 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	err_cmd(char *cmd)
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": command not found ", 21);
 	write(2, "\n", 1);
-	exit_status_fun(127);
 	exit(1);
 }
 

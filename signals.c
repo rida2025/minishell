@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 21:41:29 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/17 05:46:02 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 21:22:12 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	sigint_handler(int signum)
 {
+	if (signum == 2 && get_id == 5)
+		get_id = 2;
 	if (signum == 2)
 	{
 		printf("\n");

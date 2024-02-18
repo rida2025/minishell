@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 22:22:10 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:12:32 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,42 @@ void	*ft_malloc(size_t len)
 	return (ptr);
 }
 
-char	**list_to_tab(t_env *env_list)
+int	len_list(t_env *env_list)
 {
 	int		count;
 	t_env	*current;
-	char	**tab;
-	int		i;
 
 	count = 0;
-	i = 0;
 	current = env_list;
 	while (current != NULL)
 	{
 		count++;
 		current = current->next;
 	}
-	tab = (char **)ft_malloc((count + 1) * sizeof(char *));
+	return (count);
+}
+
+char	**list_to_tab(t_env *env_list)
+{
+	t_env	*current;
+	char	**tab;
+	int		i;
+
+	i = 0;
+	current = env_list;
+	tab = (char **)ft_malloc((len_list(env_list) + 1) * sizeof(char *));
 	current = env_list;
 	while (current != NULL)
 	{
-		if(current->value)
+		if (current->value)
 		{
-			tab[i] = (char *)ft_malloc(((ft_strlen(current->key) + ft_strlen(current->value) + 2) * sizeof(char)));
+			tab[i] = (char *)ft_malloc(((ft_strlen(current->key) + \
+					ft_strlen(current->value) + 2) * sizeof(char)));
 			ft_strcpy(tab[i], current->key);
 			tab[i][ft_strlen(current->key)] = '=';
 			ft_strcpy(tab[i++] + ft_strlen(current->key) + 1, current->value);
 		}
 		current = current->next;
 	}
-	
 	return (tab[i] = NULL, tab);
 }

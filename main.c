@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/18 20:44:40 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 21:57:01 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	name_redirections(parse, &redirection);
 	get_commands(parse, &commands);
 	create_execution(&redirection, &commands, &var->cmd);
-	if (var->cmd && (var->cmd->red || var->cmd->cmd))
+	if (var->cmd && (var->cmd->red || var->cmd->cmd[0]))
 		redirect(var->cmd, var->env);
 	free_listx(parse);
 	free_list(&token2);
@@ -47,8 +47,14 @@ void	free_rest(t_token **token, t_var *var)
 
 int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 {
+	int	f_dup;
+
+	f_dup = dup(STDIN_FILENO);
 	while (1)
 	{
+		if (ttyname(0) == NULL)
+			if (dup2(f_dup, STDIN_FILENO) == -1)
+				close(f_dup);
 		rl_catch_signals = 0;
 		var->input = readline("minishell-1.0$ ");
 		if (!var->input)

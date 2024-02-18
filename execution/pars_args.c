@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:46:28 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 05:04:14 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/17 06:02:17 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,24 +69,24 @@ int	check_chr(char *cmd)
 	i = 1;
 	while (cmd[i] && cmd[i] != '=')
 	{
-		if(cmd[i] =='+' && cmd[i+1] == '=')
-			return 2;
+		if (cmd[i] == '+' && cmd[i + 1] == '=')
+			return (2);
 		if (is_alnum(cmd[i]) == 0)
 		{
 			print_error("minishell", "export", cmd, "not a valid identifier");
-			return -1;
+			return (-1);
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-int pars_args(char *cmd)
+int	pars_args(char *cmd)
 {
-		if (is_alpha(cmd[0]) == 0)
-		{
-			print_error("minishell", "export", cmd, "not a valid identifier");
-			return -1;
-		}
-	return check_chr(cmd);
+	if (is_alpha(cmd[0]) == 0)
+	{
+		print_error("minishell", "export", cmd, "not a valid identifier");
+		return (-1);
+	}
+	return (check_chr(cmd));
 }

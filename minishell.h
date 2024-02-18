@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/18 20:58:32 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 21:24:39 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # define EXP "abcdefghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ?_"
 # define EXP2 "abcdefghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ_"
 # define EXPANDO "0123456789-_#?"
+
+
+int get_id;
 
 /*
 type:
@@ -253,6 +256,31 @@ void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
 int		ft_echo(char **args);
 void	ft_unset(t_env **env_list, char **cmd);
+int		heredoc(t_env *env_list, char *name, int flag);
+char	*expand_herdoc(t_env *env_list, char *str);
+char	*expand_help(char **tmp2, char **str, t_env **env_list);
+void	ft_ini(char **tmp1, char **tmp2, char **tmp3, char **result);
+int		check_one_of(char *str);
+void	execution(t_ex *it, char **env, t_env *env_list);
+void	exist_status_handling(void);
+void	init_exec(int *fd, int *tmp, int *i);
+void	forking(t_ex *it, int *fd, char **env, t_env *env_list);
+int		ft_last_cmd(int i);
+void	piping(t_ex *it, int *fd, int i, int *tmp);
+void	child_execution(t_ex *it, char **env, t_env *env_list);
+void	child_dup(int *fd, t_ex *it);
+void	dup_built(int *fd, t_ex *it, t_env *env_list, int *i);
+void	pipe_lastcmd(int *tmp, int *fd, t_ex *it);
+void	pipe_secondcmd(int *tmp, int *fd, t_ex *it);
+void	pipe_firstcmd(int *fd, t_ex	*it);
+void	exit_status(int status);
+void	redirections(t_ex *t);
+void	add_back(t_env **lst, t_env *ls);
+int		base_redirection(t_ex *iterate, t_red *a);
+int		opening(t_ex *iterate, t_red *a, int flag, int index);
+void	open_faild(char *name, t_ex *iterate, int fd);
+int		open_herdocs(t_env *env_list, t_ex *t);
+void	handles(int help);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
@@ -302,5 +330,6 @@ t_grb	**ft_collector(void);
 t_grb	*ft_lstnew_clctr(void *lst);
 void	ft_lstadd_back_clctr(t_grb **lst, t_grb *new);
 void	*ft_malloc(size_t len);
+
 
 #endif

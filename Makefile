@@ -37,6 +37,11 @@ FILES = main.c \
 		execution/find_path.c \
 		execution/list_to_tab.c \
 		execution/pars_args.c \
+		execution/red_help1.c \
+		execution/red_help2.c \
+		execution/red_help3.c \
+		execution/red_help4.c \
+		execution/red_help5.c \
 		execution/redirections.c \
 		structure_tools.c \
 		structure_tools2.c \
