@@ -1,3 +1,0 @@
-./minishell | pwd
-heredoc ctrl + d = segf
-heredoc inside pipes

@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/17 01:16:20 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:16:22 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,11 @@ void	insert_variable(t_token **token, char *input, t_info *var, int len);
 void	insert_whitespaces(char *input, t_token **token, t_info *var, int len);
 void	tokenize(t_token **token, char *input);
 void	insert_token(t_token **info, int token, char *word);
+void	insert_token2(t_token **info, int token, int ex, char *word);
+int		string_size(char **strs);
+void	extra_tokenizing(t_token *token, t_token **token2);
+void	just_insert_the_node(t_token *token, t_token **token2);
+void	tokenizing2(t_token **token, t_token **token2);
 
 //expanding functions
 void	remove_dollar(t_token **token);
@@ -273,12 +278,12 @@ int		check_ambiguous(char *str, t_env *env);
 int		there_is_heredoc(t_token *token);
 
 //execution functions
-void		create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec);
-void		add_node(t_ex **execution, char **strs, t_red **redirection);
-int			get_size(t_cmd *cmd);
+void	create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec);
+void	add_node(t_ex **execution, char **strs, t_red **redirection);
+int		get_size(t_cmd *cmd);
+void	add_red_node(t_red **redirection, char *str, int key, int expando);
+t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size);
 t_redirect	*create_redirection_list(t_redirect *redirect, t_red **red);
-void		add_red_node(t_red **redirection, char *str, int key, int expando);
-t_cmd		*create_commands_strs(t_cmd *cmds, char ***strs, int size);
 // void	add_child_node(t_main_exec **execute, char *command, int key, int exp);
 // void	add_files_node(t_main_exec **execute, char *name, int key, int expando);
 // void	free_execution(t_main_exec **info);

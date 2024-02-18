@@ -2,7 +2,7 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 OTHERFLAGS = -lreadline  -L  /Users/mel-jira/homebrew/opt/readline/lib
 
 FILES = main.c \
@@ -43,6 +43,7 @@ FILES = main.c \
 		tokenizing.c \
 		tokenizing_2.c \
 		tokenizing_3.c \
+		tokenizing_4.c \
 		parsing.c \
 		parsing2.c \
 		parsing3.c \

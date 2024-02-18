@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:35:59 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 23:56:05 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 12:28:59 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	remove_dollar(t_token **token)
 	}
 }
 
-void	do_magic(t_token *tmp, int *index)
+void	choose_type(t_token *tmp, int *index)
 {
 	if (tmp->key == 8 && tmp->status != 2)
 		*index = 1;
@@ -63,13 +63,12 @@ void	expand_variables(t_token **token, t_env *env, char *str, int index)
 			&& ((tmp->key == 8 && tmp->status != 2)
 				|| (tmp->key == 2 && tmp->status != 2)))
 		{
-			do_magic(tmp, &index);
+			choose_type(tmp, &index);
 			if (there_is_heredoc(tmp))
 			{
 				tmp = tmp->next;
 				continue ;
 			}
-			free(tmp->value);
 			if (index == 1)
 				str = normal_expanding(env, tmp->value, 1);
 			else if (index == 2)
@@ -85,11 +84,13 @@ int	there_is_heredoc(t_token *token)
 	while (token->previous)
 	{
 		token = token->previous;
-		if (token->key == 9)
+		if (token)
+			return (0);
+		if (token && token->key == 9)
 			token = token->previous;
-		if (token->status != 0)
+		if (token && token->status != 0)
 			token = token->previous;
-		if (token->key == 7)
+		if (token && token->key == 7)
 			return (1);
 	}
 	return (0);

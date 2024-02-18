@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 04:05:41 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 10:50:28 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:14:33 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,27 @@ int	check_chr_unset(char *cmd)
 		if (is_alnum(cmd[i]) == 0)
 		{
 			print_error("minishell", "unset", cmd, "not a valid identifier");
-			return -1;
+			return (-1);
 		}
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-int pars_args_unset(char *cmd)
+int	pars_args_unset(char *cmd)
 {
-		if (is_alpha(cmd[0]) == 0)
-		{
-			print_error("minishell", "unset", cmd, "not a valid identifier");
-			return -1;
-		}
-	return check_chr_unset(cmd);
+	if (is_alpha(cmd[0]) == 0)
+	{
+		print_error("minishell", "unset", cmd, "not a valid identifier");
+		return (-1);
+	}
+	return (check_chr_unset(cmd));
 }
 
-t_env *remove_node(t_env **env_list ,char *cmd)
+t_env	*remove_node(t_env **env_list, char *cmd)
 {
-	t_env *tmp;
-	t_env *befor_node;
+	t_env	*tmp;
+	t_env	*befor_node;
 
 	tmp = (*env_list);
 	befor_node = NULL;
@@ -66,7 +66,6 @@ t_env *remove_node(t_env **env_list ,char *cmd)
 	return (*env_list);
 }
 
-
 void	ft_unset(t_env **env_list, char **cmd)
 {
 	int	i;
@@ -80,10 +79,8 @@ void	ft_unset(t_env **env_list, char **cmd)
 			flag = 0;
 			flag = pars_args_unset(cmd[i]);
 			if (flag != -1)
-				(*env_list) = remove_node((env_list),cmd[i]);
+				(*env_list) = remove_node((env_list), cmd[i]);
 			i++;
 		}
 	}
 }
-
-

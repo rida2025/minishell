@@ -6,29 +6,35 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/17 01:54:54 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:12:35 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+
 void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 {
+	t_token		*token2;
 	t_redirect	*redirection;
 	t_cmd		*commands;
 
 	redirection = NULL;
 	commands = NULL;
+	token2 = NULL;
 	remove_dollar(token);
 	remove_quotes(token);
 	set_expanding(token);
 	expand_variables(token, var->env, NULL, 0);
-	parse_tokens(token, parse);
+	tokenizing2(token, &token2);
+	parse_tokens(&token2, parse);
 	name_redirections(parse, &redirection);
 	get_commands(parse, &commands);
 	create_execution(&redirection, &commands, &var->cmd);
 	redirect(var->cmd, var->env);
 	free_listx(parse);
+	free_list(&token2);
 	free_redirections(&redirection);
 	free_commands(&commands);
 	free_execution(&var->cmd);
