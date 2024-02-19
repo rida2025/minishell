@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:57:19 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 05:23:57 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:34:49 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	check_pipes_back(t_token *token)
 	token = token->previous;
 	if (token && token->key == 9)
 		token = token->previous;
-	if (!token || token->key == 1)
+	if (!token || token->key == 1 || token->key == 4 || token->key == 5
+		|| token->key == 6 || token->key == 7)
 	{
 		if (token && token->status != 0 && ft_strlen(token->value) > 2)
 			return (0);
@@ -88,53 +89,5 @@ int	check_redirection_front(t_token *token, t_var *var)
 	}
 	else
 		return (redirection_error(), 1);
-	return (0);
-}
-
-int	check_redirection(t_token *token, t_var *var)
-{
-	if (check_redirection_front(token, var))
-		return (1);
-	return (0);
-}
-
-int	help_checking(t_token *token, t_var *var)
-{
-	t_token	*tmp;
-
-	tmp = token->next;
-	if (token->key == 7)
-	{
-		if (tmp && tmp->key == 9)
-			tmp = tmp->next;
-		if (tmp && (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-				|| tmp->key == 7 || tmp->key == 1))
-			return (redirection_error4(), 1);
-	}
-	if (check_redirection(token, var))
-		return (1);
-	return (0);
-}
-
-int	check_tokenizing(t_token **token, t_var *var)
-{
-	t_token	*tmp;
-
-	tmp = *token;
-	while (tmp)
-	{
-		if (tmp && tmp->key == 1)
-		{
-			if (check_pipes(tmp))
-				return (1);
-		}
-		else if (tmp && (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-				|| tmp->key == 7))
-		{
-			if (help_checking(tmp, var))
-				return (1);
-		}
-		tmp = tmp->next;
-	}
 	return (0);
 }

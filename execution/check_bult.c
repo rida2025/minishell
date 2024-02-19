@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 23:02:17 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/15 23:19:31 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:44:28 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	exec_builtin(char **cmds, t_env *env_list)
 		return (ft_export(env_list, cmds), 0);
 	else if (!ft_strcmp(cmds[0], "pwd"))
 		return (ft_pwd(), 0);
-	// else if (!ft_strcmp(cmds[0], "exit"))
-	// 	return (ft_exit(cmds), 0);
+	else if (!ft_strcmp(cmds[0], "exit"))
+		return (ft_exit(cmds), 0);
 	else if (!ft_strcmp(cmds[0], "unset"))
 		return (ft_unset(&env_list, cmds), 0);
 	else if (!ft_strcmp(cmds[0], "cd"))

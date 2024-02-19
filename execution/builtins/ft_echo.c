@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 04:48:23 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/14 15:06:50 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/19 01:49:56 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static	int	check_line(char *args)
 	int	i;
 
 	i = 0;
-	if (args[i] != '-')
+	if (args[i] != '-' || (args[i] == '-' && args[i + 1] != 'n'))
 		return (1);
 	else
 	{

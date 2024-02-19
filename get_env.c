@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 15:30:27 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/16 11:25:36 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:28:23 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ t_env	*create_env_node(char *key, char *value)
 {
 	t_env	*node;
 
-	node = (t_env *)malloc(sizeof(t_env));
-	if (node == NULL)
-		exit(1);
+	node = (t_env *)ft_malloc(sizeof(t_env));
 	node->key = key;
 	node->value = ft_strdup(value);
 	node->n_av = 0;

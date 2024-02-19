@@ -6,7 +6,7 @@
 /*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:40:06 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 04:00:39 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:13:50 by mel-jira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	*ret_val(t_env *env_list, char *var)
 {
 	t_env	*tmp;
+	char	*str;
 
 	tmp = env_list;
 	if (!var)
@@ -23,8 +24,8 @@ char	*ret_val(t_env *env_list, char *var)
 	{
 		if (ft_strcmp(tmp->key, var) == 0)
 		{
-			char * ss = ft_strdup(tmp->value);
-			return (ss);
+			str = ft_strdup(tmp->value);
+			return (str);
 		}
 		tmp = tmp->next;
 	}
@@ -70,79 +71,4 @@ int	redirection_amount(t_parselist *parse)
 		parse = parse->next;
 	}
 	return (i);
-}
-
-void	name_redirections(t_parselist **parse, t_redirect **redirection)
-{
-	t_parselist	*tmp;
-	t_parselist	*remember;
-	int			flag;
-
-	tmp = *parse;
-	remember = NULL;
-	flag = 0;
-	while (tmp)
-	{
-		if (redirection_amount(tmp) == 0 && !flag)
-		{
-			put_node(redirection, NULL, -1, -1);
-			while (tmp && tmp->key != 1)
-				tmp = tmp->next;
-		}
-		if (tmp && (tmp->key == 4 || tmp->key == 5 || tmp->key == 6
-				|| tmp->key == 7))
-		{
-			flag = 1;
-			remember = tmp;
-			tmp = tmp->next;
-			if (tmp && tmp->key == 9)
-				tmp = tmp->next;
-			if (tmp)
-			{
-				tmp->key = -1;
-				put_node(redirection, ft_strdup(tmp->command), remember->key, remember->expand);
-			}
-		}
-		if (tmp && tmp->key == 1)
-			put_node(redirection, ft_strdup(tmp->command), 1, 1);
-		if (tmp)
-			tmp = tmp->next;
-	}
-}
-
-void	get_commands(t_parselist **parse, t_cmd **commands)
-{
-	t_parselist	*tmp;
-	int			value;
-	char		*str;
-	int			flag;
-
-	tmp = *parse;
-	value = 0;
-	str = NULL;
-	flag = 0;
-	while (tmp)
-	{
-		if (words_amout(tmp) == 0 && !flag)
-		{
-			put_nodex(commands, NULL, -1);
-			while (tmp && tmp->key != 1)
-				tmp = tmp->next;
-		}
-		if (!tmp)
-			break ;
-		if (tmp->key == 0
-			|| ((tmp->key == 2 || tmp->key == 3) && tmp->key != -1)
-			|| tmp->key == 8 || tmp->key == 1 || tmp->key == 10)
-		{
-			flag = 1;
-			if (tmp->key == 1)
-				flag = 0;
-			value = tmp->key;
-			str = ft_strdup(tmp->command);
-			put_nodex(commands, str, value);
-		}
-		if (tmp)
-			tmp = tmp->next;
-	}
 }

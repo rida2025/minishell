@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizing_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 12:46:27 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/11 15:16:40 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/19 20:08:56 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	insert_righr(t_token **token, char *input, t_info *var, int len)
 	{
 		insert_token(token, 4, ft_substr(input, var->i, 1));
 		var->i = var->i + 1;
-		while (input[var->i + 1] && check_space(input[var->i + len]))
+		while (input[var->i] && input[var->i + 1]
+			&& check_space(input[var->i + len]))
 			len++;
 		if (len > 0)
 			insert_token(token, 9, ft_substr(input, var->i, len));
@@ -57,7 +58,8 @@ void	insert_leftr(t_token **token, char *input, t_info *var, int len)
 	{
 		insert_token(token, 5, ft_substr(input, var->i, 1));
 		var->i = var->i + 1;
-		while (input[var->i + 1] && check_space(input[var->i + len]))
+		while (input[var->i] && input[var->i + 1]
+			&& check_space(input[var->i + len]))
 			len++;
 		if (len > 0)
 			insert_token(token, 9, ft_substr(input, var->i, len));
@@ -72,7 +74,8 @@ void	insert_append(t_token **token, char *input, t_info *var, int len)
 	{
 		insert_token(token, 6, ft_substr(input, var->i, 2));
 		var->i = var->i + 2;
-		while (input[var->i + 1] && check_space(input[var->i + len]))
+		while (input[var->i] && input[var->i + 1]
+			&& check_space(input[var->i + len]))
 			len++;
 		if (len > 0)
 			insert_token(token, 9, ft_substr(input, var->i, len));
@@ -87,7 +90,8 @@ void	insert_heredoc(t_token **token, char *input, t_info *var, int len)
 	{
 		insert_token(token, 7, ft_substr(input, var->i, 2));
 		var->i = var->i + 2;
-		while (input[var->i + 1] && check_space(input[var->i + len]))
+		while (input[var->i] && input[var->i + 1]
+			&& check_space(input[var->i + len]))
 			len++;
 		if (len > 0)
 			insert_token(token, 9, ft_substr(input, var->i, len));

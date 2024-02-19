@@ -2,8 +2,8 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror 
-OTHERFLAGS = -lreadline
+FLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+OTHERFLAGS = -lreadline  -L  /Users/sacharai/.brew/opt/readline//lib
 
 FILES = main.c \
 		utilities/ft_putstr_fd.c \
@@ -24,10 +24,12 @@ FILES = main.c \
 		utilities/ft_strcat.c \
 		utilities/ft_strcpy.c \
 		utilities/ft_strrcmp.c \
+		utilities/ft_atoi.c \
 		execution/builtins/ft_cd.c \
 		execution/builtins/ft_echo.c \
 		execution/builtins/ft_env.c \
 		execution/builtins/ft_export.c \
+		execution/builtins/ft_exit.c \
 		execution/builtins/ft_pwd.c \
 		execution/builtins/ft_unset.c \
 		execution/add_to_list.c \
@@ -35,13 +37,21 @@ FILES = main.c \
 		execution/find_path.c \
 		execution/list_to_tab.c \
 		execution/pars_args.c \
+		execution/red_help1.c \
+		execution/red_help2.c \
+		execution/red_help3.c \
+		execution/red_help4.c \
+		execution/red_help5.c \
 		execution/redirections.c \
 		structure_tools.c \
 		structure_tools2.c \
 		tokenizing.c \
 		tokenizing_2.c \
 		tokenizing_3.c \
+		tokenizing_4.c \
 		parsing.c \
+		parsing2.c \
+		parsing3.c \
 		parsing_tools.c \
 		get_env.c \
 		get_env_help.c \
@@ -56,17 +66,23 @@ FILES = main.c \
 		check_expand.c \
 		execution.c \
 		structure_helper.c \
-		printdata.c
+		structure_helper2.c \
+		signals.c \
+		printdata.c \
+		garbg_clctr.c
 
 OBJ = $(FILES:.c=.o)
+
+INC= /Users/sacharai/.brew/opt/readline/lib
+LIB= /Users/sacharai/.brew/opt/readline/include
 
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(COMPILER) $(FLAGS) $(OTHERFLAGS) -lreadline  -L  /Users/sacharai/.brew/opt/readline/lib  $(OBJ) -o $(NAME)
+	$(COMPILER) $(FLAGS) $(OTHERFLAGS) $(OBJ) -o $(NAME)
 
 %.o: %.c minishell.h
-	$(COMPILER) $(FLAGS) -I  /Users/sacharai/.brew/opt/readline/include -c $< -o $@
+	$(COMPILER) $(FLAGS) -I /Users/sacharai/.brew/opt/readline/include -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)

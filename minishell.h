@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:17:05 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 20:15:26 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/19 11:47:11 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # define EXP2 "abcdefghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ_"
 # define EXPANDO "0123456789-_#?"
 
+
+int get_id;
+
 /*
 type:
 0 = word
@@ -50,7 +53,13 @@ status:
 2 = inside sqoutes
 */
 
-
+/*------- garb_clctr --------*/
+typedef struct s_grb
+{
+	void			*ptr;
+	struct s_grb	*next;
+}	t_grb;
+/*---------------------------*/
 
 typedef struct s_info
 {
@@ -135,6 +144,7 @@ typedef struct s_var
 	char			*input;
 	t_env			*env;
 	t_ex			*cmd;
+	t_grb			*garb;
 }	t_var;
 
 //free functions
@@ -145,7 +155,9 @@ void	free_redirections(t_redirect **file);
 void	free_commands(t_cmd **cmds);
 void	free_execution(t_ex **cmd);
 
-//structure tools
+//signals
+void	sigint_handler(int signum);
+void	hangup_call(void);
 
 //utilits
 int		ft_strcmp(const char *s1, const char *s2);
@@ -164,9 +176,11 @@ int		ft_isdigit(int c);
 char	*ft_itoa(int n);
 int		ft_lstsize(t_ex *lst);
 char	*ft_strcat(char *dest, char *src);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char *str, char *charset);
 char	*ft_strcpy(char *dest, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+int		ft_atoi(const char *str);
+void	free_strings(char **strs);
 
 //tokenizing
 char	*ft_skip_spaces(char *str);
@@ -182,10 +196,15 @@ void	insert_variable(t_token **token, char *input, t_info *var, int len);
 void	insert_whitespaces(char *input, t_token **token, t_info *var, int len);
 void	tokenize(t_token **token, char *input);
 void	insert_token(t_token **info, int token, char *word);
+void	insert_token2(t_token **info, int token, int ex, char *word);
+int		string_size(char **strs);
+void	extra_tokenizing(t_token *token, t_token **token2);
+void	just_insert_the_node(t_token *token, t_token **token2);
+void	tokenizing2(t_token **token, t_token **token2);
 
 //expanding functions
 void	remove_dollar(t_token **token);
-void	expand_variables(t_token **token, t_env *env, char *str);
+void	expand_variables(t_token **token, t_env *env, char *str, int index);
 int		there_is_heredoc(t_token *token);
 void	reset_expand(t_token *token);
 char	*normal_expanding(t_env *env, char *str, int i);
@@ -205,11 +224,14 @@ void	parse_spaces(t_parselist **parse);
 //parsing function
 void	name_redirections(t_parselist **parse, t_redirect **redirection);
 void	get_commands(t_parselist **parse, t_cmd **commands);
+void	help_getcommand(t_parselist *tmp, t_cmd **commands, int *flag);
 void	put_node(t_redirect **redirection, char *str, int type, int expando);
 void	put_nodex(t_cmd **redirection, char *str, int type);
 void	insert_node(t_parselist **parse, char *value, int type, int expando);
 void	parse_tokens(t_token **token, t_parselist **parse);
 t_token	*parse_helper1(t_token *tmp, t_parselist **parse, char *str);
+int		redirection_amount(t_parselist *parse);
+int		words_amout(t_parselist *parse);
 
 //built in + exec
 t_env	*get_env(char **envp);
@@ -228,11 +250,37 @@ int		print_error(char *name, char *cmd, char *str, char *message);
 void	redirect(t_ex *t, t_env *env_list);
 char	**list_to_tab(t_env *env_list);
 void	ft_env(t_env *env_list);
+void	ft_exit(char **cmd);
 void	ft_export(t_env *exp_list, char **allcmd);
 void	ft_pwd(void);
 void	ft_cd(char **cmd, t_env *env_list);
 int		ft_echo(char **args);
 void	ft_unset(t_env **env_list, char **cmd);
+int		heredoc(t_env *env_list, char *name, int flag);
+char	*expand_herdoc(t_env *env_list, char *str);
+char	*expand_help(char **tmp2, char **str, t_env **env_list);
+void	ft_ini(char **tmp1, char **tmp2, char **tmp3, char **result);
+int		check_one_of(char *str);
+void	execution(t_ex *it, char **env, t_env *env_list);
+void	exist_status_handling(void);
+void	init_exec(int *fd, int *tmp, int *i);
+void	forking(t_ex *it, int *fd, char **env, t_env *env_list);
+int		ft_last_cmd(int i);
+void	piping(t_ex *it, int *fd, int i, int *tmp);
+void	child_execution(t_ex *it, char **env, t_env *env_list);
+void	child_dup(int *fd, t_ex *it);
+void	dup_built(int *fd, t_ex *it, t_env *env_list, int *i);
+void	pipe_lastcmd(int *tmp, int *fd, t_ex *it);
+void	pipe_secondcmd(int *tmp, int *fd, t_ex *it);
+void	pipe_firstcmd(int *fd, t_ex	*it);
+void	exit_status(int status);
+void	redirections(t_ex *t);
+void	add_back(t_env **lst, t_env *ls);
+int		base_redirection(t_ex *iterate, t_red *a);
+int		opening(t_ex *iterate, t_red *a, int flag, int index);
+void	open_faild(char *name, t_ex *iterate, int fd);
+int		open_herdocs(t_env *env_list, t_ex *t);
+void	handles(int help);
 
 //syntax error functions
 int		check_s_dqoute(char *str);
@@ -258,12 +306,12 @@ int		check_ambiguous(char *str, t_env *env);
 int		there_is_heredoc(t_token *token);
 
 //execution functions
-void		create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec);
-void		add_node(t_ex **execution, char **strs, t_red **redirection);
-int			get_size(t_cmd *cmd);
+void	create_execution(t_redirect **red, t_cmd **cmd, t_ex **exec);
+void	add_node(t_ex **execution, char **strs, t_red **redirection);
+int		get_size(t_cmd *cmd);
+void	add_red_node(t_red **redirection, char *str, int key, int expando);
+t_cmd	*create_commands_strs(t_cmd *cmds, char ***strs, int size);
 t_redirect	*create_redirection_list(t_redirect *redirect, t_red **red);
-void		add_red_node(t_red **redirection, char *str, int key, int expando);
-t_cmd		*create_commands_strs(t_cmd *cmds, char ***strs, int size);
 // void	add_child_node(t_main_exec **execute, char *command, int key, int exp);
 // void	add_files_node(t_main_exec **execute, char *name, int key, int expando);
 // void	free_execution(t_main_exec **info);
@@ -277,5 +325,11 @@ void	print_parsing(t_parselist **token);
 void	print_redirections(t_redirect *redirection);
 void	print_commands(t_cmd *commands);
 void	print_execution(t_ex *execution);
+
+t_grb	**ft_collector(void);
+t_grb	*ft_lstnew_clctr(void *lst);
+void	ft_lstadd_back_clctr(t_grb **lst, t_grb *new);
+void	*ft_malloc(size_t len);
+
 
 #endif
