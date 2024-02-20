@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:07:31 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/20 00:17:41 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:08:51 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	print_export(t_env *exp_list)
 			printf("declare -x %s=\"%s\"\n",
 				(exp_list)->key, (exp_list)->value);
 		else
-			printf("declare -x %s\n", (exp_list)->key);
+		{
+			if ((exp_list)->key[0])
+				printf("declare -x %s\n", (exp_list)->key);
+		}
 		(exp_list) = (exp_list)->next;
 	}
 }

@@ -2,7 +2,7 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror  -g3
 OTHERFLAGS = -lreadline  -L  /Users/sacharai/.brew/opt/readline//lib
 
 FILES = main.c \
