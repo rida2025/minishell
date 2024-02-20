@@ -2,8 +2,8 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror  -g3
-OTHERFLAGS = -lreadline  -L  /Users/sacharai/.brew/opt/readline//lib
+FLAGS = -Wall -Wextra -Werror
+OTHERFLAGS = -lreadline  -L  /Users/mel-jira/homebrew/opt/readline/lib
 
 FILES = main.c \
 		utilities/ft_putstr_fd.c \
@@ -74,16 +74,13 @@ FILES = main.c \
 
 OBJ = $(FILES:.c=.o)
 
-INC= /Users/sacharai/.brew/opt/readline/lib
-LIB= /Users/sacharai/.brew/opt/readline/include
-
 all: $(NAME)
 
 $(NAME) : $(OBJ)
 	$(COMPILER) $(FLAGS) $(OTHERFLAGS) $(OBJ) -o $(NAME)
 
 %.o: %.c minishell.h
-	$(COMPILER) $(FLAGS) -I /Users/sacharai/.brew/opt/readline/include -c $< -o $@
+	$(COMPILER) $(FLAGS) -I /Users/mel-jira/homebrew/opt/readline/include -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)
