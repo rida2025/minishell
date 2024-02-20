@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:09:26 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/16 21:32:16 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/20 09:04:20 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ char	*skipandexpand(char *str, int *i, t_env *env)
 	return (tmp2);
 }
 
+char	*handle_this(void)
+{
+	char	*new_str;
+
+	new_str = NULL;
+	new_str = ft_itoa(exit_status_fun(-500));
+	return (new_str);
+}
+
 char	*normal_expanding(t_env *env, char *str, int i)
 {
 	char	*new_str;
@@ -48,8 +57,8 @@ char	*normal_expanding(t_env *env, char *str, int i)
 	}
 	else if (str[i] && ft_strchr(EXP, str[i]))
 	{
-		if (ft_strlen(str) == 2 && str[i] == '?')
-			new_str = ft_itoa(exit_status_fun(-500));
+		if (str[i] == '?')
+			new_str = handle_this();
 		else
 			new_str = ret_val(env, &str[1]);
 	}

@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:40:37 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/18 17:29:13 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:38:10 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,11 @@ t_env	*add_to_list(char *cmd, int flag, t_env *exp_list)
 	}
 	sign_is_equa(cmd, &exp_list, equal_sign);
 	return (exp_list);
+}
+
+void	init_find_path(int *i, int *c, int *fd)
+{
+	*i = 0;
+	*c = 0;
+	*fd = -1;
 }

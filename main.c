@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 16:12:56 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/19 20:20:28 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:39:54 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	do_rest(t_token **token, t_var *var, t_parselist **parse)
 	remove_dollar(token);
 	remove_quotes(token);
 	set_expanding(token);
-	expand_variables(token, var->env, NULL, 0);
+	expand_variables(token, var->env, NULL);
 	tokenizing2(token, &token2);
 	parse_tokens(&token2, parse);
 	name_redirections(parse, &redirection);
@@ -45,12 +45,12 @@ void	free_rest(t_token **token, t_var *var)
 	free(var->input);
 }
 
-void	mini_help(char **str)
+void	minishell_help(t_token **token, t_var **var, t_parselist **parse)
 {
-	if (!*str)
-		hangup_call();
-	if (ft_strcmp((*str), ""))
-		add_history(*str);
+	do_rest(token, (*var), parse);
+	free_rest(token, (*var));
+	signal(SIGQUIT, sigint_handler);
+	signal(SIGINT, sigint_handler);
 }
 
 int	minishell(t_token **token, t_var *var, t_parselist	**parse)
@@ -60,9 +60,7 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 	f_dup = dup(STDIN_FILENO);
 	while (1)
 	{
-		if (ttyname(0) == NULL)
-			if (dup2(f_dup, STDIN_FILENO) == -1)
-				close(f_dup);
+		restore_stdin(&f_dup);
 		rl_catch_signals = 0;
 		var->input = readline("minishell-1.0$ ");
 		mini_help(&var->input);
@@ -79,20 +77,9 @@ int	minishell(t_token **token, t_var *var, t_parselist	**parse)
 			free_list(token);
 			continue ;
 		}
-		do_rest(token, var, parse);
-		free_rest(token, var);
-		signal(SIGQUIT, sigint_handler);
-		signal(SIGINT, sigint_handler);
+		minishell_help(token, &var, parse);
 	}
 	return (0);
-}
-
-void	init_the_var(t_var *var)
-{
-	var->expand = 0;
-	var->input = NULL;
-	var->env = NULL;
-	var->cmd = NULL;
 }
 
 int	main(int argc, char **argv, char **envp)

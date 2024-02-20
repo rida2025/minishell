@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 05:28:05 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/19 17:53:55 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:27:26 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,25 @@ void	child_dup(int *fd, t_ex *it)
 	}
 }
 
+void	check_err(char *path)
+{
+	if (opendir(path))
+	{
+		print_error(NULL, NULL, NULL, "is a directory");
+		exit(126);
+	}
+	else if (ft_strcmp(path, "") == 0)
+	{
+		print_error(NULL, NULL, NULL, "command not found");
+		exit(127);
+	}
+	else
+	{
+		perror("");
+		exit(127);
+	}
+}
+
 void	child_execution(t_ex *it, char **env, t_env *env_list)
 {
 	char	*path;
@@ -75,7 +94,12 @@ void	child_execution(t_ex *it, char **env, t_env *env_list)
 		full_path = check_env_path(env);
 		path = find_path(full_path, it->cmd[0]);
 		if (execve(path, it->cmd, env) == -1)
-			return write(2, "minishell: : command not found\n", 31), exit(127);
+		{
+			write(2, "minishell: ", 11);
+			write(2, it->cmd[0], ft_strlen(it->cmd[0]));
+			write(2, ": ", 2);
+			check_err(it->cmd[0]);
+		}
 		exit_status_fun(127);
 	}
 }
@@ -91,14 +115,4 @@ void	piping(t_ex *it, int *fd, int i, int *tmp)
 	}
 	else
 		pipe_lastcmd(tmp, fd, it);
-}
-
-int	ft_last_cmd(int i)
-{
-	static int	last;
-
-	if (i == -1)
-		return (last);
-	last = i;
-	return (last);
 }

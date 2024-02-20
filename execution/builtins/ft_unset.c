@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 04:05:41 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/18 19:39:44 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:35:40 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	ft_unset(t_env **env_list, char **cmd)
 			flag = pars_args_unset(cmd[i]);
 			if (flag != -1)
 				(*env_list) = remove_node((env_list), cmd[i]);
+			else
+				exit_status_fun(1);
 			i++;
 		}
 	}

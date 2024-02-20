@@ -2,7 +2,7 @@ NAME = minishell
 
 COMPILER = cc
 
-FLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+FLAGS = -Wall -Wextra -Werror
 OTHERFLAGS = -lreadline  -L  /Users/sacharai/.brew/opt/readline//lib
 
 FILES = main.c \
@@ -30,6 +30,7 @@ FILES = main.c \
 		execution/builtins/ft_env.c \
 		execution/builtins/ft_export.c \
 		execution/builtins/ft_exit.c \
+		execution/builtins/ft_exit1.c \
 		execution/builtins/ft_pwd.c \
 		execution/builtins/ft_unset.c \
 		execution/add_to_list.c \

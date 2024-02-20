@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 16:32:10 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/17 00:15:33 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/20 03:45:36 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	redirection_error3(char *str)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ambiguous redirect\n", 2);
-	exit_status_fun(258);
+	exit_status_fun(1);
 	return (1);
 }
 

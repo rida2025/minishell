@@ -6,11 +6,21 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:43 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/18 18:12:32 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:32:51 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_last_cmd(int i)
+{
+	static int	last;
+
+	if (i == -1)
+		return (last);
+	last = i;
+	return (last);
+}
 
 void	*ft_malloc(size_t len)
 {

@@ -6,11 +6,34 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 17:23:19 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/19 11:47:04 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 09:26:13 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	init_the_var(t_var *var)
+{
+	var->expand = 0;
+	var->input = NULL;
+	var->env = NULL;
+	var->cmd = NULL;
+}
+
+void	mini_help(char **str)
+{
+	if (!(*str))
+		hangup_call();
+	if (ft_strcmp((*str), ""))
+		add_history(*str);
+}
+
+void	restore_stdin(int *f_dup)
+{
+	if (ttyname(0) == NULL)
+		if (dup2((*f_dup), STDIN_FILENO) == -1)
+			close(*f_dup);
+}
 
 void	her_help(int *fd, char *str)
 {
@@ -31,7 +54,7 @@ int	heredoc(t_env *env_list, char *name, int flag)
 	{
 		str = readline("> ");
 		if (!str)
-			return (close(fd[1]), -10);
+			return (close(fd[1]), close(fd[0]), -10);
 		if (!ft_strrcmp(name, str))
 		{
 			free(str);

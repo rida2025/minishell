@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:09:30 by mel-jira          #+#    #+#             */
-/*   Updated: 2024/02/18 12:18:47 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/20 09:04:08 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ char	*bring_me_expand(char *str, int *i, t_env *env)
 	new_str = NULL;
 	if (str[*i + 1] && (ft_strchr(EXP, str[*i + 1]) || ft_isdigit(str[*i + 1])))
 	{
-		if (str[*i + 1] == '?' && ft_strlen(&str[*i]) == 2)
-			new_str = ft_itoa(exit_status_fun(-500));
+		if (str[*i + 1] == '?')
+		{
+			new_str = handle_this();
+			*i += 2;
+		}
 		else
 			new_str = skipandexpand(str, i, env);
 	}

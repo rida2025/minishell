@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 15:07:31 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/18 19:39:31 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:17:41 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	ft_export(t_env *exp_list, char **allcmd)
 			{
 				exp_list = add_to_list(allcmd[i], flag, exp_list);
 			}
+			else
+				exit_status_fun(1);
 			i++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 10:23:08 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/19 17:50:38 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:45:47 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	forking(t_ex *it, int *fd, char **env, t_env *env_list)
 {
-	int		pid;
+	int	pid;
 
 	pid = fork();
 	if (!pid)
@@ -52,7 +52,7 @@ void	exist_status_handling(void)
 		if (pid == last_process_id)
 			exit_status(status);
 	}
-	if (get_id == 2)
+	if (g_id == 2)
 	{
 		write(2, "\n", 1);
 		exit_status(130);
@@ -61,12 +61,12 @@ void	exist_status_handling(void)
 
 void	execution(t_ex *it, char **env, t_env *env_list)
 {
-	int		tmp;
-	int		fd[2];
-	int		i;
+	int	tmp;
+	int	fd[2];
+	int	i;
 
 	init_exec(fd, &tmp, &i);
-	get_id = 5;
+	g_id = 5;
 	while (it)
 	{
 		if (it->cmd[0] == NULL)
@@ -95,6 +95,5 @@ void	redirect(t_ex *t, t_env *env_list)
 	env = list_to_tab(env_list);
 	if (open_herdocs(env_list, t) == -1)
 		return ;
-	redirections(t);
 	execution(t, env, env_list);
 }

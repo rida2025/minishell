@@ -6,7 +6,7 @@
 /*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 04:48:23 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/19 01:49:56 by sacharai         ###   ########.fr       */
+/*   Updated: 2024/02/20 01:26:56 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_echo_help(char **args, int i, int *n_to_n, int *n_line)
 		{
 			*n_to_n = 0;
 			ft_putstr_fd(args[i], 1);
-			if (args[i][0] && args[i + 1])
+			if (args[i + 1])
 				ft_putchar_fd(' ', 1);
 			i++;
 		}
@@ -82,5 +82,6 @@ int	ft_echo(char **args)
 	}
 	if (n_line == 0)
 		write(1, "\n", 1);
+	exit_status_fun(0);
 	return (0);
 }

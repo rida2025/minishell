@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-jira <mel-jira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sacharai <sacharai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 19:10:06 by sacharai          #+#    #+#             */
-/*   Updated: 2024/02/18 20:55:23 by mel-jira         ###   ########.fr       */
+/*   Updated: 2024/02/19 21:12:16 by sacharai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	*ft_word(char *str, char *charset)
 
 	i = 0;
 	len_word = ft_strlen_sep(str, charset);
-	word = (char *)malloc(sizeof(char) * (len_word + 1));
+	word = (char *)ft_malloc(sizeof(char) * (len_word + 1));
 	while (i < len_word)
 	{
 		word[i] = str[i];
@@ -79,7 +79,7 @@ char	**ft_split(char *str, char *charset)
 	int		i;
 
 	i = 0;
-	strings = (char **)malloc(sizeof(char *)
+	strings = (char **)ft_malloc(sizeof(char *)
 			* (count_strings(str, charset) + 1));
 	while (*str != '\0')
 	{
